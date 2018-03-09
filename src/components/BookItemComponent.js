@@ -1,0 +1,85 @@
+import React, { Component, PropTypes } from 'react'
+import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as appStateControlActions from '../actions/appStateControl'
+import * as bookRequestActions from '../actions/booksRequest'
+
+class BookItem extends Component {
+	static propTypes = {
+		img: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		author: PropTypes.string.isRequired,
+		isMyBook: PropTypes.bool.isRequired,
+		book_id: PropTypes.number.isRequired
+	}
+	
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			isMyBook: this.props.isMyBook,
+			license_token: '124235asfa1k2431wasda',
+			access_token: window.localStorage.getItem('access_token')
+		}
+
+		this.onClickHandler = this.onClickHandler.bind(this)
+		this.setMyBookState = this.setMyBookState.bind(this)
+	}
+	
+	onClickHandler() {
+		let { book_id, img, name, author } = this.props
+		window.localStorage.setItem('book_id', book_id)
+		this.props.history.push({ 
+                    pathname: '/book', 
+                    state: { 
+                    	book_id: book_id,
+                    	img: img,
+                    	name: name,
+                    	author: author 
+                    }
+        })
+	}
+
+	setMyBookState(e) {
+		//let { opened_book_menu, opened_book_category } = this.props.appStateControl
+		//this.props.appStateControlActions()
+		this.setState({
+			isMyBook: e.target.checked
+		})
+		let { license_token, access_token } = this.state
+		let { book_id } = this.props
+		this.props.bookRequestActions.addToFavouriteBooks(license_token, access_token, book_id, e.target.checked)
+	}
+	
+	render() {
+		let { img, name, author} = this.props
+
+        return (
+            <div className="col-sm-4 books__book" >
+				<img onClick={this.onClickHandler} src={'http://smartkitap.avsoft.kz' + img} alt="book image" />
+				<div className="books__book__wrap">
+					<div className="books__book__text__wrap col-md-10">
+						<p className="books__book__name">{name}</p>
+						<p className="books__book__author">{author}</p>
+					</div>
+					<input className="star" type="checkbox" title="bookmark page" onChange={this.setMyBookState} checked={this.state.isMyBook} />
+				</div>
+			</div>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+  appStateControl: state.appStateControl
+})
+
+const mapDispatchToProps = dispatch => ({
+  appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
+  bookRequestActions: bindActionCreators(bookRequestActions, dispatch)
+})
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookItem))

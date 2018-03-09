@@ -1,0 +1,40 @@
+.books
+	display: inline-block
+	width: 100%
+	padding: 10px 10px
+	overflow-y: scroll
+	height: calc(100vh - 150px)
+	position: relative
+	
+	.books__book
+		width: 127px
+		display: grid
+		padding: 0
+		margin: 10px 34.3px
+		cursor: pointer
+		
+		img
+			width: 127px
+			height: 177px
+		
+		p.books__book__name, p.books__book__author
+			width: fit-content
+			font-weight: bold
+			color: #000
+			margin: 0
+			padding: 0 0 0 2px
+			
+		p.books__book__author
+			color: #989898
+			font-size: 12px
+			
+		.books__book__wrap
+			padding-top: 10px !important
+			width: fit-content
+			padding: 0
+
+			.books__book__text__wrap
+				padding-left: 0px !important
+
++scrollBarStyle(books, $scrollbar-color, $scrollbar-color1)
+

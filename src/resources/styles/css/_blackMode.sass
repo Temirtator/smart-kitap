@@ -1,0 +1,202 @@
+$black-mode-base-color: #2a2e35
+$black-mode-border-color: #404651
+
+$black-mode-scrollbar-color: $black-mode-base-color
+$black-mode-scrollbar-color1: $black-mode-border-color
+
+
+.blackMode
+	background-color: $black-mode-base-color !important
+	border-color: $black-mode-border-color !important
+	
+	.content__header__sub1
+		.sidebar
+			ul.main-menu, li
+				background-color: $black-mode-base-color !important
+		
+	ul.dropdown-menu
+		width: 102% !important
+		left: -2px !important
+		
+	.content__body__precises,
+	.content__header__sub,
+	ul.main-menu,
+	.content__body__main__header,
+	.text-settings,
+	.react-tabs__tab-list,
+	.react-tabs__tab-panel
+		h5, p, a, li, span
+			color: #fff !important
+				
+	svg
+		fill: #fff !important
+		color: #fff !important
+	
+	input.form-control
+		background-color: $black-mode-base-color
+		border-color: $black-mode-border-color
+		
+	li:hover 
+		background-color: $black-mode-base-color !important
+		
+	.react-toggle-track-check
+		p
+			color: $black-mode-base-color !important
+	
+	.form-group
+		input, li.dropdown
+			background-color: $black-mode-base-color !important
+			
+	.react-tabs
+	.react__tablist__wrap
+		background-color: $black-mode-base-color !important
+		border-color: $black-mode-border-color !important
+		ul.react-tabs__tab-list
+			background-color: unset !important
+			border-color: $black-mode-border-color !important
+			li.react-tabs__tab
+				padding: 16.5px 40px
+				border-bottom: 2px solid $black-mode-border-color
+
+			li.react-tabs__tab:hover
+				border-bottom: 2px solid #0c53a0
+				
+			li.react-tabs__tab--selected
+				border-bottom: 2px solid #0c53a0
+
+	.my-books
+		&__statistics
+			.my-books__development,
+			.my-books__test,
+			.my-books__duration
+				border-color: $black-mode-border-color
+				h4
+					color: #fff
+
+
+	.my-books__tab-test
+		border-color: $black-mode-border-color !important
+		background-color: $black-mode-base-color !important
+		ul.main-menu, li
+				background-color: $black-mode-base-color !important
+	
+	.my-books__test-by-books
+		h2
+			color: #fff
+
+	.readed-books-component
+		&__img
+		&__body
+			&__text
+				h4
+					color: #fff !important
+			&__statistics
+				.readed-books-component__body__development,
+				.readed-books-component__body__test,
+				.readed-books-component__body__duration
+					border-color: $black-mode-border-color !important
+					h4
+						color: #fff !important
+	
+	.content__body
+		&__main__header
+
+		&__main__body
+			border-color: $black-mode-border-color
+			.content__body__precises
+				background-color: $black-mode-base-color
+				border-color: $black-mode-border-color
+	
+	/* temporary solution */
+	/* .content__body__main__body
+		.content__text
+			 h5, p, a, li, span
+				color: #000 !important
+			
+			ul, li
+				background-color: unset !important */
+ 
+	
+	.text-settings__text-style
+		span:nth-child(1),
+		span:nth-child(3)
+			color: #000 !important
+	
+	.video-body__content
+		background-color: $black-mode-base-color
+		
+	.video-body__precises, .test-component__header
+		background-color: $black-mode-base-color
+		border-color: $black-mode-border-color
+
+	.video-body__description
+		h2, p
+			color: #9a9ea2 !important
+
+	.test-component__body
+		.test-question
+			background-color: $black-mode-base-color
+			border-color: $black-mode-border-color
+
+			h3
+				color: #fff
+
+			.test-answers
+				label
+					p
+						color: #9a9ea2 !important
+
+					input[type=radio]:checked ~ p
+						color: $correct-test-answer !important
+
+	.about-component
+		.container
+			.about-component__body
+				h3, p
+					color: #fff
+
+	.precis-component
+		.precisEdit,
+		.precisClear
+			color: #fff !important
+
+	.content__body__main__header, .personal-home-page__body__header
+		.book-orientation-component
+			a
+				.content__body__main__header__back
+					div, p
+						color: #fff !important
+
+			.content__body__main__header__menu
+				.header__menu__conspect,
+				.header__menu__video,
+				.header__menu__test
+					border-color: #fff
+
+					p
+						color: #fff
+
+	.video-component
+		.video-body
+			&__precises
+				background-color: $black-mode-base-color
+			&__content
+				background-color: $black-mode-base-color
+
+				&__player
+				
+				.video-body__description
+					h2, p
+						color: #fff !important
+
+
+	+scrollBarStyle(books, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(my-books, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(readed-books-component__body__statistics, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(main-menu, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(person-settings, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(about-component, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(react-tabs__tab-panel, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	+scrollBarStyle(video-body__content, $black-mode-scrollbar-color, $black-mode-scrollbar-color1)
+	
+	

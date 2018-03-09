@@ -1,0 +1,37 @@
+.about-component
+	overflow-y: scroll
+	height: calc(100vh - 97px)
+	width: 100%
+	.container
+		width: 100% !important
+
+		.about-component__header
+
+			.logo__wrap, h1
+				text-align: center
+
+			.logo__wrap
+				img
+					width: 200px
+
+			h1
+				font-family: $roboto-bold
+				color: #3e76bd
+
+		.about-component__body
+			text-align: center
+			padding: 0 23px
+			h3
+				font-family: $roboto-bold
+				color: #595959
+
+			p
+				color: #595959
+
+			p:nth-child(3)
+				padding: 0 105px
+				font-family: $roboto-bold
+				font-style: italic
+				color: #595959
+
++scrollBarStyle(about-component, $scrollbar-color, $scrollbar-color1)

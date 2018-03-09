@@ -1,0 +1,169 @@
+$BM-base-color: #626468
+
+$BM-scrollbar-color: #484e56
+$BM-scrollbar-color1: #e1e6ea 
+$white-color: #fff
+
+
+.blindMode
+	background-color: $BM-base-color !important
+	
+
+	.content__body__precises,
+	.content__header__sub,
+	ul.main-menu,
+	.content__body__main__header,
+	.text-settings,
+	.react-tabs__tab-list,
+	.react-tabs__tab-panel
+		h5, p, a, li, span
+			color: $white-color !important
+	
+	li:hover 
+		background-color: $BM-base-color !important
+
+	.react-tabs
+		.react__tablist__wrap
+			background-color: $BM-base-color
+
+			ul.react-tabs__tab-list
+				li.react-tabs__tab--selected
+					border-color: $white-color
+
+				li.react-tabs__tab:hover
+					border-color: $white-color
+
+		.react-tabs__tab-panel--selected
+			.form-group
+				h4
+					color: $white-color
+
+				li.dropdown
+					background-color: $BM-base-color
+					
+					ul.dropdown-menu
+						background-color: $BM-base-color
+
+						li
+							background-color: $BM-base-color
+
+	.my-books
+		.my-books__statistics
+			.my-books__development,
+			.my-books__test,
+			.my-books__duration
+				border-color: $white-color
+
+				h4
+					color: $white-color
+
+		.my-books__test-by-books
+			h2
+				color: $white-color
+
+			.react-tabs
+				.my-books__tab-test
+					background-color: $BM-base-color
+					border-color: $white-color
+					
+					ul.react-tabs__tab-list
+						li.react-tabs__tab--selected
+							border-color: $white-color
+
+						li.react-tabs__tab:hover
+							border-color: $white-color
+
+				.react-tabs__tab-panel--selected
+					.readed-books-component
+						&__img
+						&__body
+							&__text
+								h4
+									color: $white-color
+							&__statistics
+								.readed-books-component__body__development,
+								.readed-books-component__body__test,
+								.readed-books-component__body__duration
+									border-color: $white-color
+									
+									h4
+										color: $white-color
+	.about-component
+		.container
+			.about-component__body
+				h3, p
+					color: $white-color
+
+
+	.content__body__main__header, .personal-home-page__body__header
+		.book-orientation-component
+			a
+				.content__body__main__header__back
+					div, p
+						color: $white-color !important
+
+			.content__body__main__header__menu
+				.header__menu__conspect,
+				.header__menu__video,
+				.header__menu__test
+					border-color: $white-color
+
+					p
+						color: $white-color
+	
+	.content__body__main__body
+		.content__body__precises
+			background-color: $BM-base-color
+
+			.text-settings
+				.text-settings__text-size
+				
+				.text-settings__text-style
+					span:nth-child(1), span:nth-child(3)
+						color: $BM-base-color !important
+
+	.precis-component
+		.precisEdit,
+		.precisClear
+			color: $white-color !important
+
+	.video-component
+		.video-body
+			&__precises
+				background-color: $BM-base-color
+			&__content
+				background-color: $BM-base-color
+
+				&__player
+				
+				.video-body__description
+					h2, p
+						color: $white-color
+
+	.test-component
+		&__header
+			background-color: $BM-base-color
+
+		&__body
+			.test-question
+				background-color: $BM-base-color
+	
+				h3
+					color: $white-color
+				
+				.test-answers
+					label
+						p
+							color: $white-color
+
+					
+		
+	+scrollBarStyle(blindMode, $BM-scrollbar-color, $BM-scrollbar-color1)
+	+scrollBarStyle(new-precises, $BM-scrollbar-color, $BM-scrollbar-color1)
+	+scrollBarStyle(video-body__content, $BM-scrollbar-color, $BM-scrollbar-color1)
+	+scrollBarStyle(test-component__body, $BM-scrollbar-color, $BM-scrollbar-color1)	
+	+scrollBarStyle(books, $BM-scrollbar-color, $BM-scrollbar-color1)	
+	+scrollBarStyle(my-books, $BM-scrollbar-color, $BM-scrollbar-color1)	
+	+scrollBarStyle(about-component, $BM-scrollbar-color, $BM-scrollbar-color1)	
+	+scrollBarStyle(person-settings, $BM-scrollbar-color, $BM-scrollbar-color1)	
+	
