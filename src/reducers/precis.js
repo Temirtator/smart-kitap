@@ -6,9 +6,6 @@ import {  CHANGE_NEW_PRECIS,
 
 const initialPrecises = {
 	precises: {
-        name: '',
-        author: '',
-        img: '',
         new_precises: [
           
         ],

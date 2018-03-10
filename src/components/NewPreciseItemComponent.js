@@ -8,9 +8,6 @@ import { withRouter } from 'react-router'
 
 class NewPreciseItem extends Component {
     static propTypes = {
-        img: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        author: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         index: PropTypes.number.isRequired,
         book_id: PropTypes.number.isRequired,
@@ -68,7 +65,6 @@ class NewPreciseItem extends Component {
     
     //for clearing precises
     clearPrecis(index, precis_id) {
-        console.log(precis_id)
         let { precises } = this.props.precisesStore
         let { access_token, license_token } = this.state
         let newPrecises, book_position
@@ -85,8 +81,8 @@ class NewPreciseItem extends Component {
         this.props.precisActions.clearBookPrecis(access_token, license_token, precis_id)
     }
     
-    scrollToPrecis(yPos) {
-        this.props.appStateControlActions.setBookScrollPos(yPos) 
+    scrollToPrecis(book_page_id) {
+        this.props.appStateControlActions.setBookScrollPos(book_page_id) 
         this.props.history.goBack()
     }
     
@@ -109,7 +105,7 @@ class NewPreciseItem extends Component {
     	let { new_precises } = precisesStore.precises
         let book_position
         for (var i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
-            if (new_precises[i].book_id  === book_id) {
+            if (Number(new_precises[i].book_id)  === Number(book_id)) {
                 book_position = i
             }
         }
@@ -140,7 +136,7 @@ class NewPreciseItem extends Component {
 	    			</div>
 	    		</div>
                 
-        		<div onClick={() => this.scrollToPrecis(new_precises[book_position].precise[index].yPos)} className="new-precise__body">
+        		<div onClick={() => this.scrollToPrecis(new_precises[book_position].precise[index].book_page_id)} className="new-precise__body">
         			{ editing ? this.renderForm() : <p>{text}</p>}
         		</div>
         	</div>   

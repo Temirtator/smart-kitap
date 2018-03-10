@@ -23,7 +23,7 @@ const initialPrecises = {
 		isTurnOn: false
 	},
   openedBookId: null,
-  book_y_scroll: 0,
+  book_page_id: 0,
   opened_book_category: null,
   opened_book_menu: null,
   searchBookText: '',
@@ -53,7 +53,7 @@ export default function appStateControl(state = initialPrecises, action) {
     	return { ...state, theme_settings: theme_settings }
 
     case SET_BOOK_SCROLL:
-      return {...state, book_y_scroll: action.yPos}
+      return {...state, book_page_id: action.book_page_id}
 
     case SAVE_OPENED_BOOK_ID:
       return {...state, openedBookId: action.book_id}

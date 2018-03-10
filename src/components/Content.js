@@ -519,14 +519,17 @@ class Content extends Component {
             this.increaseProgressBar()
             this.imageZoom()
             this.sidebarFunc(this.scrollToElement)
+            /*to scroll into view*/
             try {
-                let { book_y_scroll } = this.props.appStateControl
-                statiContent.scrollTop = book_y_scroll
+                let { book_page_id } = this.props.appStateControl
+                let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                element.scrollIntoView()
                 this.props.appStateControlActions.setBookScrollPos(0)
             } 
             catch(e) {
-                console.log('no y-pos in content js')
-            }    
+                console.log('Error on scrolling by precise', e)
+            }
+
         })
     }
     
@@ -636,7 +639,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
    precisActions: bindActionCreators(precis_action, dispatch),
    booksRequestActions: bindActionCreators(booksRequest, dispatch),
-   main_actions: bindActionCreators(main_actions, dispatch)
+   main_actions: bindActionCreators(main_actions, dispatch),
+   appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
 })
 
 export default withRouter(connect(

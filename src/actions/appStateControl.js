@@ -33,11 +33,11 @@ export function saveAppTheme(isTurnOn, app_theme) {
 	}
 }
 
-export function setBookScrollPos(yPos) {
+export function setBookScrollPos(book_page_id) {
 	return dispatch => {
 		dispatch({
 			type: types.SET_BOOK_SCROLL,
-			yPos: yPos
+			book_page_id
 		})
 	}
 }
