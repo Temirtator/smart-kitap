@@ -1405,7 +1405,7 @@ button {
     .text-settings .text-settings__blind-mode svg {
       width: 25px; }
   .text-settings .blind-mode-turn-on svg {
-    fill: #09519f; }
+    fill: #fff; }
 
 .text-settings__text-size {
   position: relative;

@@ -112,6 +112,7 @@ class NewPrecises extends Component {
                                 img={img}
                                 text={object.precis}
                                 index={i}
+                                precis_id={object.precis_id}
                                 book_id={book_id}
                                 key={i}
                             />

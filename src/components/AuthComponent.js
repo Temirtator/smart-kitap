@@ -3,6 +3,9 @@ import Login from './LoginComponent'
 import Registration from './RegistrationComponent'
 import EnterKey from './EnterKeyComponent'
 import { withRouter } from 'react-router'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as licenseRequestActions from '../actions/licenseRequest'
 
 class AuthComponent extends Component {
     constructor(props) {
@@ -12,7 +15,8 @@ class AuthComponent extends Component {
         	enterKey: true,
             registration: false,
             login: false,
-            access_token: window.localStorage.getItem('access_token')
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token')
         }
         this.checkAuth = this.checkAuth.bind(this)
     }
@@ -24,7 +28,15 @@ class AuthComponent extends Component {
     }
 
     componentWillMount() {
-        this.checkAuth()
+        if (this.state.license_token !== undefined) { // if license toke exist
+            this.props.licenseRequestActions.checkActivation(this.state.license_token)
+            .then(response => {
+                if (response.status === 200) { 
+                    alert(response.msg)
+                    this.checkAuth()    
+                }
+            })
+        } 
     }
     
     authType(key) {
@@ -107,4 +119,16 @@ class AuthComponent extends Component {
     }
 }
 
-export default withRouter(AuthComponent)
+const mapStateToProps = state => ({
+   
+})
+
+const mapDispatchToProps = dispatch => ({
+   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthComponent)
+

@@ -78,6 +78,7 @@ class Content extends Component {
             access_token: window.localStorage.getItem('access_token'),
             license_token: '124235asfa1k2431wasda',
             book_id: null,
+            book_page_id: 'null',
             name: '',
             author: '',
             img: '',
@@ -108,23 +109,24 @@ class Content extends Component {
         let id = e.target.id.substr(0, e.target.id.length-5)
         //let book = ReactDOM.findDOMNode(this.refs.book)
         let element = document.getElementById(id)
-        console.log(e.target.id)
         element.scrollIntoView()
     }
 
-    validateNewText(newText, oldText, rectanglePos) {
+    validateNewText(newText, oldText, rectanglePos, book_page_id) {
          if (newText !== oldText) {
             if (newText.trim() === '') {
                 this.setState({
                     selectionText: '',
                     quoteExist: false,
-                    rect: null
+                    rect: null,
+                    book_page_id: null
                 })
             } else {
                 // Show tooltip when selection text 
                 this.showToolTip()
                 this.setState({
                     selectionText: newText,
+                    book_page_id: book_page_id,
                     rect: rectanglePos
                 })
             }
@@ -135,8 +137,9 @@ class Content extends Component {
     getSelectionText() {
         let {quoteExist, selectionText} = this.state
         let selection, text, range, rect, parentPos, relativePos;
-        let scrollTop = window.pageYOffset || this.refs.statiContent.scrollTop
-        parentPos = book.getBoundingClientRect()
+        //let scrollTop = window.pageYOffset || this.refs.statiContent.scrollTop
+        let parentEl = null
+        parentPos = book.getBoundingClientRect() // book is global variable
         relativePos = {}
         if (window.getSelection && !quoteExist) {
             selection = window.getSelection()
@@ -147,30 +150,48 @@ class Content extends Component {
                 range = selection.getRangeAt(0)
                 rect  = range.getBoundingClientRect()
 
+                parentEl = range.commonAncestorContainer
+                if (parentEl.nodeType != 1) {
+                    parentEl = parentEl.parentNode;
+                }
+                parentEl = parentEl.closest('.page') 
+                let parentElId = parentEl.id
+                let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
+                console.log('book_page_id', book_page_id)
+
                 relativePos.top = rect.top - parentPos.top,
                 relativePos.right = rect.right - parentPos.right,
                 relativePos.bottom = rect.bottom - parentPos.bottom,
                 relativePos.left = rect.left - parentPos.left,
                 relativePos.width = rect.width,
-                this.validateNewText(text, selectionText, relativePos, scrollTop)
+                this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
             
         } else if (window.getSelection && quoteExist) {
             selection = window.getSelection()
-            
             if (selection && selection.rangeCount > 0) {
                 text  = selection.toString()
                 range = selection.getRangeAt(0)
                 rect  = range.getBoundingClientRect()
                 
+                parentEl = range.commonAncestorContainer
+                if (parentEl.nodeType != 1) {
+                    parentEl = parentEl.parentNode;
+                }
+                parentEl = parentEl.closest('.page')
+                let parentElId = parentEl.id
+                let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
+                console.log('book_page_id', book_page_id)
+
                 relativePos.top = rect.top - parentPos.top,
                 relativePos.right = rect.right - parentPos.right,
                 relativePos.bottom = rect.bottom - parentPos.bottom,
                 relativePos.left = rect.left - parentPos.left,
                 relativePos.width = rect.width,
-                this.validateNewText(text, selectionText, relativePos, scrollTop)
+                this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
-        }      
+        }
+        
     }
     
     // on call show tooltip by some rect position
@@ -190,11 +211,11 @@ class Content extends Component {
     onToolTipClick(e) {
         let { new_precises } = this.props.preciStore.precises
         let book_id = Number(this.state.book_id)
-        let { selectionText, rect } = this.state
+        let { selectionText, rect, access_token, book_page_id } = this.state
         let newPrecises, book_position
         
         for (var i = new_precises.length - 1; i >= 0; i--) {
-            console.log(new_precises[i].book_id, '===', book_id)
+            //console.log(new_precises[i].book_id, '===', book_id)
             if (Number(new_precises[i].book_id) === book_id) {
                 newPrecises = new_precises[i].precise //array of objects
                 book_position = i
@@ -205,6 +226,7 @@ class Content extends Component {
             precis: selectionText,
             yPos: rect.top
         }
+        this.props.precisActions.addBookPrecis(access_token, book_id, book_page_id, selectionText)
         // it means there is no any precises for this book
         if (newPrecises === undefined) {
             newPrecises = { // creating empty new precise

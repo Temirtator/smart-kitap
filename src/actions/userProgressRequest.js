@@ -77,14 +77,14 @@ export function getAllUserProgress(license_token, access_token) {
 			let readed_book_progress = [],
 			  	correct_count = [],
 			  	incorrect_count = []
-			for (let i = readed_books.length - 1; i >= 0; i--) {
-				correct_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0].correct_count
-				incorrect_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0].incorrect_count
-				
+			for (let i = readed_books.length - 1; i >= 0; i--) {				
+				correct_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0]
+				incorrect_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0]
+				//console.log(correct_count, 'correct_count')
 				let book_readed_progress = {
-			      image: './image/harry_potter.jpg',
-			      name: 'Гарри Поттер и Узник Азкабана',
-			      author: 'Джоан Роулинг', 
+			      image: 'http://smartkitap.avsoft.kz' + readed_books[i].book.cover,
+			      name: readed_books[i].book.name,
+			      author: readed_books[i].book.author, 
 			      statistics: [
 			        [
 			          {
@@ -100,12 +100,12 @@ export function getAllUserProgress(license_token, access_token) {
 			        ],
 			        [
 			          {
-			            value: (correct_count === undefined) ? 0 : correct_count,
+			            value: (correct_count === undefined) ? 1 : correct_count.correct_count,
 			            color:color,
 			            highlight:color
 			          },
 			          {
-			            value: (incorrect_count === undefined) ? 0 : incorrect_count,
+			            value: (incorrect_count === undefined) ? 1 : incorrect_count.correct_count,
 			            color:highlight,
 			            highlight:highlight
 			          }
@@ -124,14 +124,15 @@ export function getAllUserProgress(license_token, access_token) {
 			}
 
 			let iread_book_progress = []
+			//console.log(opened_books, 'bla bafwef fwe bla')
 			for (let j = opened_books.length - 1; j >= 0; j--) {
 				correct_count = exam_progress.filter(object => object.book_id === opened_books[j].book_id)[0]
 				incorrect_count = exam_progress.filter(object => object.book_id === opened_books[j].book_id)[0]
-				console.log('correct_count', correct_count)
+				//console.log('correct_count', correct_count)
 				let book_iread_progress = {
-			      image: './image/harry_potter.jpg',
-			      name: 'Гарри Поттер и Узник Азкабана',
-			      author: 'Джоан Роулинг', 
+			      image: 'http://smartkitap.avsoft.kz' + opened_books[j].book.cover,
+			      name: readed_books[j].book.name,
+			      author: readed_books[j].book.author, 
 			      statistics: [
 			        [
 			          {
@@ -147,12 +148,12 @@ export function getAllUserProgress(license_token, access_token) {
 			        ],
 			        [
 			          {
-			            value: (correct_count === undefined) ? 0 : correct_count,
+			            value: (correct_count === undefined) ? 0 : correct_count.correct_count,
 			            color:color,
 			            highlight:color
 			          },
 			          {
-			            value: (incorrect_count === undefined) ? 0 : incorrect_count,
+			            value: (incorrect_count === undefined) ? 0 : incorrect_count.correct_count,
 			            color:highlight,
 			            highlight:highlight
 			          }
@@ -169,13 +170,13 @@ export function getAllUserProgress(license_token, access_token) {
 
 			    iread_book_progress.push(book_iread_progress)
 			}
-
-
+			//console.log('iread_book_progress', iread_book_progress)
+			//console.log('readed_book_progress', readed_book_progress)
+			
 			dispatch({
 				type: types.GET_GENERAL_PROGRESS,
 				general_progress
 			})
-
 			dispatch({
 				type: types.GET_READED_PROGRESS,
 				readed_book_progress

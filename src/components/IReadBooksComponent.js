@@ -11,6 +11,7 @@ class IReadBooks extends Component {
     	let { i_read } = this.props.books_progress
         let { language } = this.props.appStateControl.user_settings
     	let choosenLang = languages[0][language]
+    	//console.log(i_read, 'i_read')
         return (
         <div>
 	        { i_read.map((value, index) =>

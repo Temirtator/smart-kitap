@@ -13,7 +13,8 @@ class NewPreciseItem extends Component {
         author: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         index: PropTypes.number.isRequired,
-        book_id: PropTypes.number.isRequired
+        book_id: PropTypes.number.isRequired,
+        precis_id: PropTypes.number.isRequired
     }
 
     constructor(props) {
@@ -22,7 +23,12 @@ class NewPreciseItem extends Component {
         this.state = {
         	editing: false,
             editingText: '',
-            editingId: null
+            editingId: null,
+            name: window.localStorage.getItem('name'),
+            img: window.localStorage.getItem('img'),
+            author: window.localStorage.getItem('author'),
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token')
         }
         this.editPrecis = this.editPrecis.bind(this)
         this.clearPrecis = this.clearPrecis.bind(this)
@@ -61,8 +67,10 @@ class NewPreciseItem extends Component {
     }
     
     //for clearing precises
-    clearPrecis(index) {
+    clearPrecis(index, precis_id) {
+        console.log(precis_id)
         let { precises } = this.props.precisesStore
+        let { access_token, license_token } = this.state
         let newPrecises, book_position
         for (var i = precises.new_precises.length - 1; i >= 0; i--) {
             if (Number(precises.new_precises[i].book_id) === Number(this.props.book_id)) {
@@ -71,10 +79,10 @@ class NewPreciseItem extends Component {
                 break
             }
         }
-        console.log('newPrecises', newPrecises)
+        //console.log('newPrecises', newPrecises)
         newPrecises.splice(index, 1)
-        
         this.props.precisActions.changeNewPrecis(book_position, newPrecises)
+        this.props.precisActions.clearBookPrecis(access_token, license_token, precis_id)
     }
     
     scrollToPrecis(yPos) {
@@ -96,8 +104,8 @@ class NewPreciseItem extends Component {
     }
     
     render() {
-    	let { img, name, author, text, index, precisesStore, book_id } = this.props
-    	let { editing, editingText } = this.state
+    	let { text, index, precisesStore, book_id, precis_id } = this.props
+    	let { editing, editingText, name, author, img } = this.state
     	let { new_precises } = precisesStore.precises
         let book_position
         for (var i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
@@ -118,10 +126,10 @@ class NewPreciseItem extends Component {
 	    						<h5>{name}</h5>
 	    					</div>
 	    					<div className="col-sm-2">
-	    						<div className="precisEdit" onClick={() => this.editPrecis(index, text)}>
+	    						{/*<div className="precisEdit" onClick={() => this.editPrecis(index, text)}>
                                     <i className="fas fa-pencil-alt"></i>
-                                </div>
-	    						<div className="precisClear" onClick={() => this.clearPrecis(index)}>
+                                </div>*/}
+	    						<div className="precisClear" onClick={() => this.clearPrecis(index, precis_id)}>
                                     <i className="fas fa-eraser"></i>
                                 </div>
 	    					</div>
