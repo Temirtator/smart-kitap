@@ -20,17 +20,17 @@ export function getAllUserProgress(license_token, access_token) {
 		.then(response => {
 			console.log('getAllUserProgress', response)
 			let color = "#3e76bd", highlight = "#bdd0e6"
-
+			
 			let progress = response.data.progress
 			let exam_progress = response.data.exam_progress
-
+			
 			let book_page_count=0, readed_page_count=0, general_duration=0
 			for (let i = progress.length - 1; i >= 0; i--) {
-				book_page_count += progress[i].book.page_count //count of all book pages
-				readed_page_count += progress[i].last_opened_page_id //count of readed book pages
+				book_page_count += progress[i].total_page //count of all book pages
+				readed_page_count += progress[i].last_opened_page //count of readed book pages
 				general_duration += progress[i].duration
 			}
-
+			
 			let general_correct_answ=0, general_incorrect_answ=0
 			for (let i = exam_progress.length - 1; i >= 0; i--) {
 				general_correct_answ += exam_progress[i].correct_count
@@ -88,12 +88,12 @@ export function getAllUserProgress(license_token, access_token) {
 			      statistics: [
 			        [
 			          {
-			            value: readed_books[i].book.page_count,
+			            value: readed_books[i].total_page,
 			            color:color,
 			            highlight: color
 			          },
 			          {
-			            value: readed_books[i].last_opened_page_id,
+			            value: readed_books[i].last_opened_page,
 			            color:highlight,
 			            highlight:highlight
 			          }
@@ -136,12 +136,12 @@ export function getAllUserProgress(license_token, access_token) {
 			      statistics: [
 			        [
 			          {
-			            value: opened_books[j].book.page_count,
+			            value: opened_books[j].total_page,
 			            color:color,
 			            highlight: color
 			          },
 			          {
-			            value: opened_books[j].last_opened_page_id,
+			            value: opened_books[j].last_opened_page,
 			            color:highlight,
 			            highlight:highlight
 			          }

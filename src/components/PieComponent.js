@@ -1,3 +1,4 @@
+//import chartLabel from '../resources/chartLabel.js'
 import React, { Component, PropTypes } from 'react'
 var PieChart = require("react-chartjs").Pie
 
@@ -44,7 +45,45 @@ var chartOptions = {
 	animateScale : false,
 
 	//String - A legend template
-	legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span></li><%}%></ul>"
+	legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span></li><%}%></ul>",
+
+	pieceLabel: {
+      // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
+      render: 'percentage',
+
+      // precision for percentage, default is 0
+      precision: 0,
+
+      // identifies whether or not labels of value 0 are displayed, default is false
+      showZero: true,
+
+      // font size, default is defaultFontSize
+      fontSize: 12,
+
+      // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+      fontColor: '#fff',
+
+      // font style, default is defaultFontStyle
+      fontStyle: 'normal',
+
+      // font family, default is defaultFontFamily
+      fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+      // draw label in arc, default is false
+      arc: true,
+
+      // position to draw label, available value is 'default', 'border' and 'outside'
+      // default is 'default'
+      position: 'default',
+
+      // draw label even it's overlap, default is false
+      overlap: true,
+
+      // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+      showActualPercentages: true,
+
+    }
+
 }
 
 
