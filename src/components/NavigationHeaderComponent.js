@@ -22,7 +22,13 @@ class NavigationHeader extends Component {
         else if (isTurnOn && (theme === 1)) {
             mainClass += " blackMode"
         }
-
+        let fl_name, fl_surname
+        try {
+            fl_name = userData.first_name.charAt(0)
+            fl_surname = userData.last_name.charAt(0)
+        } catch(e) {
+            console.log('get charAt from string is return null, this is try catch handler')
+        }
         return (
             <div className={mainClass}>
         		<div className="personal-home-page__header__first-lvl">
@@ -31,7 +37,7 @@ class NavigationHeader extends Component {
                         <h3>SmartKitap</h3>
         			</div>
                     <div className="first-lvl__avatar">
-                        <img src={userData.avatar} alt="avatar" />
+                        <div className="first-lvl__avatar__initial"><p>{fl_name} {fl_surname}</p></div>
                         <h4>{userData.first_name} {userData.last_name}</h4>
                     </div>
         		</div>

@@ -77,3 +77,12 @@ export function setFilteredBooks(filteredBooks) {
 		})
 	}
 } 
+
+export function setLicenseState(licenseState) {
+	return dispatch => {
+		dispatch({
+			type: types.SET_LICENSE_STATE,
+			licenseState
+		})
+	}
+}

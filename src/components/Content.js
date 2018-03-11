@@ -54,6 +54,14 @@ const iconStyle = {
     padding: '0 10px 0 0'
 }
 
+const progressBarStyle =  {
+    background: '#009b29', /* Old browsers */
+    background: '-moz-linear-gradient(top, #009b29 1%, #db8667 61%, #d8615f 78%, #ea2623 100%)', /* FF3.6-15 */
+    background: '-webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* Chrome10-25,Safari5.1-6 */
+    background: 'linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#009b29", endColorstr="#ea2623",GradientType=0 )' /* IE6-9 */
+}
+
 
 class Content extends Component {
     constructor(props) {
@@ -414,8 +422,8 @@ class Content extends Component {
 
     setIdHeader() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        let headers = book.getElementsByTagName('h3')
-        let sub_headers = book.getElementsByTagName('h4')
+        let headers = book.getElementsByTagName('h1')
+        let sub_headers = book.getElementsByTagName('h2')
         for (var i = headers.length - 1; i >= 0; i--) {
             headers[i].setAttribute('id', 'header_'+i)
         }
@@ -428,7 +436,7 @@ class Content extends Component {
     sidebarFunc(scrollToElement) {
         var sidebarMainMenu = $('#sidebar-menu .main-menu')
         var content = $('#static-content')
-        content.find('h3').each(function(e){
+        content.find('h1').each(function(e){
         
         let id = $(this).attr('id') + '-menu'
         //console.log($(this).attr('id'), 'fwefwefewfewfwef')
@@ -441,9 +449,9 @@ class Content extends Component {
         sidebarMainMenu.append(header)
         })
 
-        content.find('h4').each(function() {
+        content.find('h2').each(function() {
             console.log('content find header 4')
-            var prevTitle = sidebarMainMenu.find('#' + $(this).prevAll('h3').first().attr('id') + '-menu')
+            var prevTitle = sidebarMainMenu.find('#' + $(this).prevAll('h1').first().attr('id') + '-menu')
             prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>')
             prevTitle.find('.sub-menu').append('<li class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
         })
@@ -495,7 +503,7 @@ class Content extends Component {
                 img: data.cover,
                 content: content,
                 pageCount: data.page_count,
-                readedPage: 0
+                readedPage: data.progress.last_opened_page_id
             })
             
         })
@@ -503,8 +511,8 @@ class Content extends Component {
             let {statiContent, sidebar} = this.refs
             // here i get an array of elements
             this.setState({
-                chapters: statiContent.getElementsByTagName('h3'),
-                subChapters: statiContent.getElementsByTagName('h4'),
+                chapters: statiContent.getElementsByTagName('h1'),
+                subChapters: statiContent.getElementsByTagName('h2'),
                 sidebarChapters: document.getElementsByClassName('header'),
                 sidebarSubChapters: document.getElementsByClassName('sub-header')
             })
@@ -540,8 +548,9 @@ class Content extends Component {
         this.stopTimer(this)
         let {license_token, access_token, book_id, timerCount} = this.state
         let id = Number(book_id)
-        //console.log(license_token, access_token, id, timerCount)
-        this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
+        if (timerCount >= 30) { // if spend time in book more than 30 sec
+            this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
+        }
     }
     
     render() {
@@ -587,7 +596,9 @@ class Content extends Component {
                                 <Line   ref="bookReadedLoader"
                                         percent={progressBarPercent}
                                         strokeWidth="4"
-                                        strokeColor={color}/>
+                                        strokeColor={color}
+                                        strokeLinecap='butt'
+                                        />
                                 <p>{progressBarPage} / {pageCount}</p>
                             </div>
                         </div>
@@ -647,3 +658,8 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 )(Content))
+
+
+
+//background: -webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%); /* Chrome10-25,Safari5.1-6 */
+//background: linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */

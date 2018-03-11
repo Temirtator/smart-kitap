@@ -32,7 +32,7 @@ class VideoComponent extends Component {
 
 		this.loadVideoLectures = this.loadVideoLectures.bind(this)
 	}
-
+	
 	componentWillMount() {
 		let {license_token, access_token, book_id} = this.state
 		this.props.bookVideoRequestActions.getVideoLectures(license_token, access_token, book_id)
@@ -40,13 +40,13 @@ class VideoComponent extends Component {
 			
 		})
 	}
-
+	
 	loadVideoLectures(title, description, cover, videoSrc) {
 		this.setState({
 			title, description, cover, videoSrc
 		})
 	}
-
+	
     render() {
     	let { bookVideoState } = this.props
     	let { title, description, cover, videoSrc } = this.state
@@ -59,7 +59,7 @@ class VideoComponent extends Component {
 	            	<div className="video-body__content">
 						{ bookVideoState.map((value, index) => 
 							<div className="video-body__content__video-element">
-								<p onClick={() => this.loadVideoLectures(value.title, value.description, value.cover, value.video_url)}>{value.title}</p>
+								<p key={index} onClick={() => this.loadVideoLectures(value.title, value.description, value.cover, value.video_url)}>{value.title}</p>
 							</div>
 						)}
 						{ 

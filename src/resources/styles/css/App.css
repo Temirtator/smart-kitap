@@ -385,6 +385,14 @@
   overflow: hidden;
   text-align: justify;
   font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif; }
+  .page td, .page th {
+    border: 1px solid black !important;
+    padding: 8px !important; }
+  .page table {
+    width: 100%;
+    border-spacing: 0;
+    border: 1px solid #aaa;
+    border-collapse: collapse; }
   .page h1 {
     font-size: 32; }
   .page h2 {
@@ -712,9 +720,19 @@ a {
       margin: 0 auto;
       position: relative;
       top: 55px; }
-      .personal-home-page__header .personal-home-page__header__first-lvl .first-lvl__avatar img {
-        width: 64px;
-        margin: 0 auto; }
+      .personal-home-page__header .personal-home-page__header__first-lvl .first-lvl__avatar__initial {
+        width: 65px;
+        height: 65px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        margin: 0 auto;
+        color: #fff; }
+        .personal-home-page__header .personal-home-page__header__first-lvl .first-lvl__avatar__initial p {
+          margin: 0;
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 20px; }
       .personal-home-page__header .personal-home-page__header__first-lvl .first-lvl__avatar h4 {
         float: left; }
   .personal-home-page__header .second-lvl__menu {
@@ -995,7 +1013,7 @@ button {
     float: left;
     display: flex;
     margin-left: 80px;
-    padding: 23px 0;
+    padding: 16px 0;
     font-family: Roboto_Bold; }
     .book-orientation-component .content__body__main__header__menu .header__menu__conspect,
     .book-orientation-component .content__body__main__header__menu .header__menu__video,
@@ -1003,13 +1021,30 @@ button {
       padding: 13px 20px;
       border-bottom: 1px solid #838384;
       margin: 0 10px;
-      cursor: pointer; }
+      cursor: pointer;
+      display: flex; }
       .book-orientation-component .content__body__main__header__menu .header__menu__conspect p,
       .book-orientation-component .content__body__main__header__menu .header__menu__video p,
       .book-orientation-component .content__body__main__header__menu .header__menu__test p {
         margin: 0;
         color: #838384;
-        font-size: 12px; }
+        font-size: 12px;
+        height: fit-content;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%); }
+      .book-orientation-component .content__body__main__header__menu .header__menu__conspect svg, .book-orientation-component .content__body__main__header__menu .header__menu__conspect g#svg, .book-orientation-component .content__body__main__header__menu .header__menu__conspect path#path0, .book-orientation-component .content__body__main__header__menu .header__menu__conspect path#path1,
+      .book-orientation-component .content__body__main__header__menu .header__menu__video svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__video g#svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__video path#path0,
+      .book-orientation-component .content__body__main__header__menu .header__menu__video path#path1,
+      .book-orientation-component .content__body__main__header__menu .header__menu__test svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__test g#svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__test path#path0,
+      .book-orientation-component .content__body__main__header__menu .header__menu__test path#path1 {
+        width: 40px;
+        height: 30px;
+        fill: #919291; }
     .book-orientation-component .content__body__main__header__menu .header__menu__conspect:hover,
     .book-orientation-component .content__body__main__header__menu .header__menu__video:hover,
     .book-orientation-component .content__body__main__header__menu .header__menu__test:hover {
@@ -1018,6 +1053,10 @@ button {
       .book-orientation-component .content__body__main__header__menu .header__menu__video:hover p,
       .book-orientation-component .content__body__main__header__menu .header__menu__test:hover p {
         color: #09519f; }
+      .book-orientation-component .content__body__main__header__menu .header__menu__conspect:hover svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__video:hover svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu__test:hover svg {
+        fill: #09519f; }
 
 .model-3d {
   width: fit-content;
@@ -1714,7 +1753,7 @@ div.my-books__test-by-books {
 
   .content__body__main__header__menu {
     margin-left: 35px !important;
-    padding: 24px 0 !important; }
+    padding: 16px 0 !important; }
     .content__body__main__header__menu .header__menu__conspect,
     .content__body__main__header__menu .header__menu__video,
     .content__body__main__header__menu .header__menu__test {
@@ -1818,6 +1857,12 @@ div.my-books__test-by-books {
 .not-verified {
   color: #ff7878 !important;
   border-color: #ff7878 !important; }
+
+.disableElement {
+  pointer-events: none !important; }
+
+.highcharts-root {
+  width: 100% !important; }
 
 .blackMode {
   background-color: #2a2e35 !important;
@@ -2156,6 +2201,12 @@ div.my-books__test-by-books {
     .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__video p,
     .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__test p {
       color: #fff; }
+    .blindMode .content__body__main__header .book-orientation-component .content__body__main__header__menu .header__menu__conspect svg,
+    .blindMode .content__body__main__header .book-orientation-component .content__body__main__header__menu .header__menu__video svg,
+    .blindMode .content__body__main__header .book-orientation-component .content__body__main__header__menu .header__menu__test svg, .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__conspect svg,
+    .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__video svg,
+    .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__test svg {
+      fill: #fff; }
   .blindMode .content__body__main__body .content__body__precises {
     background-color: #626468; }
     .blindMode .content__body__main__body .content__body__precises .text-settings .text-settings__text-style span:nth-child(1), .blindMode .content__body__main__body .content__body__precises .text-settings .text-settings__text-style span:nth-child(3) {

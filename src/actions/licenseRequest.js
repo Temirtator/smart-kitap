@@ -20,7 +20,7 @@ export function activation(serial_code) {
 		})
 		.then(response => {
 			console.log(response)
-			return response.data.data.access_token
+			return response
 		})
 		.catch(error => {
 			console.log(error)

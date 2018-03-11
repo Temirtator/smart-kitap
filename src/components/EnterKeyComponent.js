@@ -1,9 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 
+
 class EnterKey extends Component {
+    static PropTypes = {
+        callBackFunc: PropTypes.func
+    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -14,8 +19,15 @@ class EnterKey extends Component {
 
     enterKey() {
         this.props.licenseRequestActions.activation(this.state.key)
-        .then(license_token => {
-            window.localStorage.setItem('license_token', license_token)
+        .then(response => {
+            if (response.data.status === 200) {
+                window.localStorage.setItem('license_token', response.data.data.access_token)
+                this.props.callBackFunc() // i'm unlbock registration and login buttons
+                alert(response.data.msg)
+            }
+            else {
+                alert(response.data.msg)
+            }
         })
     }
 

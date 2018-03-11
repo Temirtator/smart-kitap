@@ -203,12 +203,20 @@ a
 			position: relative
 			top: 55px
 			
-			img
-				width: 64px
+			&__initial
+				width: 65px
+				height: 65px
+				border: 3px solid #fff
+				border-radius: 50%
 				margin: 0 auto
-				//position: relative
-				//top: 50%
-				//transform: translateY(-50%)
+				color: #fff
+
+				p
+					margin: 0
+					position: relative
+					top: 50%
+					transform: translateY(-50%)
+					font-size: 20px 
 
 			h4
 				float: left
@@ -542,7 +550,7 @@ button
 		float: left
 		display: flex
 		margin-left: 80px
-		padding: 23px 0
+		padding: 16px 0
 		font-family: $roboto-bold
 
 		.header__menu__conspect,
@@ -552,11 +560,21 @@ button
 			border-bottom: 1px solid #838384
 			margin: 0 10px
 			cursor: pointer
+			display: flex
 
 			p
 				margin: 0
 				color: #838384
 				font-size: 12px
+				height: fit-content
+				position: relative
+				top: 50%
+				transform: translateY(-50%)
+				
+			svg, g#svg, path#path0, path#path1
+				width: 40px
+				height: 30px
+				fill: #919291
 
 		.header__menu__conspect:hover,
 		.header__menu__video:hover,
@@ -565,6 +583,9 @@ button
 
 			p
 				color: $base-color
+				
+			svg
+				fill: $base-color
 
 .model-3d
 	width: fit-content
@@ -1297,7 +1318,7 @@ div.my-books__test-by-books
 
 		&__main__body
 			width: 100% !important
-
+			
 	.content__body__main__header__back
 		div
 			font-size: 1.5em !important
@@ -1307,7 +1328,7 @@ div.my-books__test-by-books
 
 	.content__body__main__header__menu
 		margin-left: 35px !important
-		padding: 24px 0 !important
+		padding: 16px 0 !important
 
 		.header__menu__conspect,
 		.header__menu__video,
@@ -1440,6 +1461,12 @@ div.my-books__test-by-books
 .not-verified	
 	color: #ff7878 !important
 	border-color: #ff7878 !important
+
+.disableElement
+	pointer-events: none !important
+
+.highcharts-root
+	width: 100% !important
 
 //@media (min-width: @screen-md-min)
 

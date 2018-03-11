@@ -16,7 +16,10 @@ class AuthComponent extends Component {
             registration: false,
             login: false,
             access_token: window.localStorage.getItem('access_token'),
-            license_token: window.localStorage.getItem('license_token')
+            license_token: window.localStorage.getItem('license_token'),
+            enterKeyClass: 'auth-component__header__enter-key',
+            registrationClass: 'auth-component__header__registration',
+            loginClass: 'auth-component__header__login'
         }
         this.checkAuth = this.checkAuth.bind(this)
     }
@@ -28,18 +31,34 @@ class AuthComponent extends Component {
     }
 
     componentWillMount() {
-        if (this.state.license_token !== undefined) { // if license toke exist
-            this.props.licenseRequestActions.checkActivation(this.state.license_token)
+        let {license_token} = this.state
+        if (license_token !== undefined && license_token !== null) { // if license toke exist
+            this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
             .then(response => {
                 if (response.status === 200) { 
+                    this.setState(prev => {
+                        return {
+                            enterKeyClass: prev.enterKeyClass + ' disableElement'
+                        }
+                    })        
                     alert(response.msg)
-                    this.checkAuth()    
+                    this.checkAuth()
                 }
             })
-        } 
+        } else {
+            //enterKeyClass += ' disableElement'
+            this.setState(prev => {
+                return {
+                    registrationClass: prev.registrationClass + ' disableElement',
+                    loginClass: prev.loginClass + ' disableElement'
+                }
+            })
+        }
     }
-    
+
+   
     authType(key) {
+        let {license_token} = this.state
         switch(key) {
             case 'enter-key':
                 this.setState({ enterKey: true, registration: false, login: false })
@@ -56,14 +75,14 @@ class AuthComponent extends Component {
     }
     
     render() {
-        let { enterKey, registration, login } = this.state
-        let element, 
-            enterKeyClass = 'auth-component__header__enter-key', 
-            registrationClass = 'auth-component__header__registration', 
-            loginClass = 'auth-component__header__login'
+        let { enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass } = this.state
+        let element
+        
 
         if (enterKey) {
-            element = <EnterKey />
+            element = <EnterKey callBackFunc={() => this.setState(prev => { return { enterKeyClass: prev.enterKeyClass + ' disableElement',
+                                                                                     registrationClass: 'auth-component__header__registration',
+                                                                                     loginClass: 'auth-component__header__login' }  })} />
             enterKeyClass += " auth-component--selected"
         } 
         else if (registration) {

@@ -69,7 +69,7 @@ export default function appStateControl(state = initialPrecises, action) {
 
     case SET_FILTERED_BOOKS:
       return {...state, filteredBooks: action.filteredBooks}
-      
+    
     default:
       return state
   }

@@ -99,7 +99,10 @@ class PersonalHomePage extends Component {
 
     switchFunction(key) {
         if (key == 'quit') {
-            window.localStorage.clear()
+            let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
+            massive.map((value, index) => {
+                window.localStorage.removeItem(value)
+            })
             this.props.history.push('/')
         }
 
