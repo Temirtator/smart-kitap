@@ -24,13 +24,13 @@ class UpdateApp extends Component {
     const { isLoading } = this.props
 
     return  <div>
-              <ModalContainer>
+              <div>
                 {
                   isLoading ?
                   <div><ReactSpinner color="white" /> <p style={textStyle}>Идет обновление...</p></div> :
                   <div></div>
                 }
-              </ModalContainer> 
+              </div>
             </div>
   }
 }

@@ -8,7 +8,7 @@ export function checkVersion(version) {
 	return dispatch => {
 		return axios({
 			method: 'post',
-			url: url + api + 'app_version/' + version,
+			url: url + api + 'app_version',
 			data: {},
 			headers: {
 				'Content-Type': 'application/json'

@@ -1,33 +1,34 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 import Login from './LoginComponent'
 import Registration from './RegistrationComponent'
 import EnterKey from './EnterKeyComponent'
 import UpdateApp from './UpdateAppComponent'
-
-import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import {withRouter} from 'react-router'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 import * as updateAppActions from '../actions/updateVersion'
 
-import { version } from '../../package.json'
+import {version} from '../../package.json'
 
 window.onbeforeunload = function () { // i need finish to write this function
     let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
     massive.map((value, index) => {
         window.localStorage.removeItem(value)
     })
-    
+
+
     return 'Данные авторизации будут удалены, хотите закрыть?'
 }
 
 class AuthComponent extends Component {
+
     constructor(props) {
         super(props)
 
         this.state = {
-        	enterKey: true,
+            enterKey: true,
             registration: false,
             login: false,
             access_token: window.localStorage.getItem('access_token'),
@@ -37,7 +38,6 @@ class AuthComponent extends Component {
             loginClass: 'auth-component__header__login',
             isLoading: false
         }
-
         this.checkAuth = this.checkAuth.bind(this)
     }
 
@@ -49,17 +49,17 @@ class AuthComponent extends Component {
 
     authType(key) {
         let {license_token} = this.state
-        switch(key) {
+        switch (key) {
             case 'enter-key':
-                this.setState({ enterKey: true, registration: false, login: false })
+                this.setState({enterKey: true, registration: false, login: false})
                 break
 
             case 'registration':
-                this.setState({ enterKey: false, registration: true, login: false })
+                this.setState({enterKey: false, registration: true, login: false})
                 break
 
             case 'login':
-                this.setState({ enterKey: false, registration: false, login: true })
+                this.setState({enterKey: false, registration: false, login: true})
                 break
         }
     }
@@ -67,52 +67,85 @@ class AuthComponent extends Component {
     componentWillMount() {
         let {license_token} = this.state
         this.props.updateAppActions.checkVersion(version)
-        .then(response => {
-            if (version !== response.data.version) { // check for new version
-                // here we need to start download new version
-                this.setState({ isLoading: true })
-            }
-            else {
-                if (license_token !== undefined && license_token !== null) { // if license toke exist
-                    this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
-                    .then(response => {
-                        if (response.status === 200) { 
-                            this.setState(prev => {
-                                return {
-                                    enterKeyClass: prev.enterKeyClass + ' disableElement',
-                                    enter: false,
-                                    registration: true
+            .then(response => {
+                if (version !== response.data.version) { // check for new version
+                    // here we need to start download new version
+                    if (window.isReactJS()) {
+                        console.log('Is not NW.JS project');
+                        this.setState({isLoading: false})
+                    } else {
+                        console.log("It's NW.JS Project");
+                        this.setState({isLoading: true});
+                        window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
+                            //Сохраняет
+                            if (data.status === 200) {
+
+                                this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'});
+                                window.runUpdate();
+                                // var intervalId = setInterval(function () {
+                                //     if (self.state.timer >= 1) {
+                                //         self.setState({timer: self.state.timer - 1});
+                                //     } else {
+                                //         self.setState({timer: 3, fileStatus: 'update'});
+                                //         clearInterval(intervalId);
+                                //
+                                //     }
+                                // }.bind(self), 1000);
+                                // self.intervalId = intervalId;
+                            } else if (data.status === 201) {//Загружается
+                                this.setState({progress: data.progress});
+                                // $('.ui.progress').progress({total: 100, percent: data.progress});
+                            }
+                            console.log(data);
+                            //Выключается приложение
+                            //быстро заменяется файл и включает приложение
+                        });
+                    }
+                } else {
+                    if (license_token !== undefined && license_token !== null) { // if license toke exist
+                        this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
+                            .then(response => {
+                                if (response.status === 200) {
+                                    this.setState(prev => {
+                                        return {
+                                            enterKeyClass: prev.enterKeyClass + ' disableElement',
+                                            enter: false,
+                                            registration: true
+                                        }
+                                    })
+                                    alert(response.msg)
+                                    this.checkAuth()
                                 }
                             })
-                            alert(response.msg)
-                            this.checkAuth()
-                        }
-                    })
-                } else {
-                    //enterKeyClass += ' disableElement'
-                    this.setState(prev => {
-                        return {
-                            registrationClass: prev.registrationClass + ' disableElement',
-                            loginClass: prev.loginClass + ' disableElement'
-                        }
-                    })
-                }               
-            }
-        })
+                    } else {
+                        //enterKeyClass += ' disableElement'
+                        this.setState(prev => {
+                            return {
+                                registrationClass: prev.registrationClass + ' disableElement',
+                                loginClass: prev.loginClass + ' disableElement'
+                            }
+                        })
+                    }
+                }
+            })
     }
 
     render() {
-        let { enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading } = this.state
+        let {enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
-        
+
 
         if (enterKey) {
-            element = <EnterKey callBackFunc={() => this.setState(prev => { return { enterKeyClass: prev.enterKeyClass + ' disableElement',
-                                                                                     registrationClass: 'auth-component__header__registration',
-                                                                                     loginClass: 'auth-component__header__login',
-                                                                                     enterKey: false, registration: true }  })} />
+            element = <EnterKey callBackFunc={() => this.setState(prev => {
+                return {
+                    enterKeyClass: prev.enterKeyClass + ' disableElement',
+                    registrationClass: 'auth-component__header__registration',
+                    loginClass: 'auth-component__header__login',
+                    enterKey: false, registration: true
+                }
+            })}/>
             enterKeyClass += " auth-component--selected"
-        } 
+        }
         else if (registration) {
             element = <Registration />
             registrationClass += " auth-component--selected"
@@ -121,18 +154,18 @@ class AuthComponent extends Component {
             element = <Login />
             loginClass += " auth-component--selected"
         }
-    	return (
-        	<div className="auth-component">
-                <UpdateApp isLoading={isLoading} />
-        		<div className="auth-component__header">
-        			<div className="auth-component__abs">
-                        <img src="./image/logo_white.png" alt="logo" />
+        return (
+            <div className="auth-component">
+                <UpdateApp isLoading={false}/>
+                <div className="auth-component__header">
+                    <div className="auth-component__abs">
+                        <img src="./image/logo_white.png" alt="logo"/>
                     </div>
-        		</div>
-                
-        		<div className="auth-component__content">
-        			<div className="auth-component__content__wrap">
-        				<div className="row">
+                </div>
+
+                <div className="auth-component__content">
+                    <div className="auth-component__content__wrap">
+                        <div className="row">
                             <div className="auth-component__header__buttons">
                                 <div onClick={() => this.authType('enter-key')} className={enterKeyClass}>
                                     <span>Ввести ключ</span>
@@ -144,10 +177,10 @@ class AuthComponent extends Component {
                                     <span>Войти</span>
                                 </div>
                             </div>
-        				</div>
-        				{ element }
-        			</div>
-        		</div>
+                        </div>
+                        { element }
+                    </div>
+                </div>
 
                 <div className="container av-support auth-av-support">
                     <div className="row">
@@ -161,22 +194,20 @@ class AuthComponent extends Component {
                     </div>
                 </div>
 
-        	</div>   
+            </div>
         )
     }
 }
 
-const mapStateToProps = state => ({
-   
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch),
-   updateAppActions: bindActionCreators(updateAppActions, dispatch)
+    licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch),
+    updateAppActions: bindActionCreators(updateAppActions, dispatch),
 })
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(AuthComponent)
 
