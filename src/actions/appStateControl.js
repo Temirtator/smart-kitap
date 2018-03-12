@@ -8,16 +8,10 @@ export function changeBlindMode() {
 	}
 }
 
-
-export function saveUserSettings(name, surname, email, password, repeat_password, app_lang) {
+export function saveUserLang(app_lang) {
 	return dispatch => {
 		dispatch({
-			type: types.SAVE_USER_SETTINGS,
-			name: name,
-			surname: surname,
-			email: email,
-			password: password,
-			repeat_password: repeat_password,
+			type: types.SAVE_USER_LANG,
 			app_lang: app_lang
 		})
 	}

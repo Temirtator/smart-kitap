@@ -8,13 +8,11 @@ import '../resources/styles/font-awesome/svg-with-js/js/fontawesome-all.js'
 //const Fragment = React.Fragment;
 class App extends Component {
 	
-	componentWillMount() {
-
+	constructor(props) {
+		super(props)
 	}
-
 	
-
-    render() {
+	render() {
 	    return (
 	      <div>
 	        <Ereader />

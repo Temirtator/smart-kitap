@@ -14,7 +14,7 @@ class PersonSettings extends Component {
 	
     constructor(props) {
         super(props)
-        let { nameStore, surnameStore, emailStore, passwordStore, repeat_passwordStore, language } = this.props.appStateControl.user_settings
+        let { passwordStore, repeat_passwordStore, language } = this.props.appStateControl.user_settings
         let { first_name, last_name, email } = this.props.userData
         let { theme, isTurnOn } = this.props.appStateControl.theme_settings
         this.state = {
@@ -28,12 +28,16 @@ class PersonSettings extends Component {
         	app_theme: theme,
         	access_token: window.localStorage.getItem('access_token'),
         	license_token: '124235asfa1k2431wasda',
-        	isPasswRepeated: true
+        	isPasswRepeated: true,
+            isNameVerified: true,
+            isSurnameVerified: true
         }
         this.onChangeSettings = this.onChangeSettings.bind(this)
         this.handleThemeChanged = this.handleThemeChanged.bind(this)
         this.handleUserSettingsChange = this.handleUserSettingsChange.bind(this)
         this.checkAuth = this.checkAuth.bind(this)
+        this.changeAppLang = this.changeAppLang.bind(this)
+        this.changeAppTheme = this.changeAppTheme.bind(this)
     }
 
     checkAuth() {
@@ -44,6 +48,17 @@ class PersonSettings extends Component {
 
     componentWillMount() {
         this.checkAuth()
+    }
+
+    changeAppLang(value) {
+        this.setState({app_lang: value}) // possible i dont need this state
+        this.props.appStateControlAction.saveUserLang(value)
+    }
+
+    changeAppTheme(value) {
+        this.setState({app_theme: value}) // possible i dont need thi state too
+        if (this.props.appStateControl.blindMode === false) 
+            this.props.appStateControlAction.saveAppTheme(this.state.themeOn, value)
     }
 
     onChangeSettings(e, key) {
@@ -70,30 +85,46 @@ class PersonSettings extends Component {
     }
     
     handleThemeChanged() {
+        let { themeOn, app_theme} = this.state 
     	this.setState({
     		themeOn: !this.state.themeOn 
     	})
-    }
+        if (this.props.appStateControl.blindMode === false) 
+            this.props.appStateControlAction.saveAppTheme(!themeOn, app_theme) // here themeOn reverse, because of setState is async
+    } // so i must change it by myself, but in the sameway, save it on localState
 
     handleUserSettingsChange() {
-    	let { name, surname, email, password, repeat_password, themeOn, app_lang, app_theme, access_token, license_token } = this.state
-    	
-    	if ((password !== repeat_password) && (password.trim() !== '')) {
-    		this.setState({ isPasswRepeated: false })
-    	}
-    	else {
-    		this.setState({ isPasswRepeated: true })
-    		this.props.authActions.editPassword(license_token, access_token, password)
-    		this.props.appStateControlAction.saveUserSettings(name, surname, email, password, repeat_password, app_lang)
-    		if (this.props.appStateControl.blindMode === false)	
-    			this.props.appStateControlAction.saveAppTheme(themeOn, app_theme)
-
-    		alert('Настройки изменены')
-    	}
+    	let { name, surname, password, repeat_password, access_token, license_token } = this.state
+        
+        //validation of name and surname
+        if (name.trim() === '') {
+            this.setState({ isNameVerified: false })
+        }
+        else {
+            this.setState({ isNameVerified: true })
+            
+            if ( surname.trim() == '' ) { // next step of validation
+                this.setState({ isSurnameVerified: false })
+            }
+            else {
+                this.setState({ isSurnameVerified: true }) // here we can be sure, that verification is passed, so we can save settings
+                // validation of password
+                if ((password !== repeat_password) || (password.trim() === '') || (password.length < 6)) {
+                    this.setState({ isPasswRepeated: false }) // flashed by red color
+                }
+                else { // 'password' is defalt naming for form of writing password
+                    this.setState({ isPasswRepeated: true })
+                    this.props.authActions.editPassword(license_token, access_token, password)
+                    this.props.authActions.editUserInfo(license_token, access_token, name, surname)
+                    alert('Настройки изменены')
+                }
+            }
+        }
+        
     }
     
     render() {
-    	let { name, surname, email, password, repeat_password, app_lang, app_theme, isPasswRepeated } = this.state
+    	let { name, surname, email, password, repeat_password, app_lang, app_theme, isPasswRepeated, isNameVerified, isSurnameVerified } = this.state
     	let { language } = this.props.appStateControl.user_settings
     	let { blindMode } = this.props.appStateControl
 		let choosenLang = languages[0][language]
@@ -110,12 +141,12 @@ class PersonSettings extends Component {
 							<TabPanel>
 								<div className="form-group">
 									<h4>{choosenLang['name']}</h4>
-									<input type="text" value={name} onChange={(e) => this.onChangeSettings(e, 'name')} className="form-control" />
+									<input type="text" value={name} onChange={(e) => this.onChangeSettings(e, 'name')} className={isNameVerified ? "form-control verified" : "form-control not-verified"} />
 								</div>
 								
 								<div className="form-group">
 									<h4>{choosenLang['surname']}</h4>
-									<input type="text" value={surname} onChange={(e) => this.onChangeSettings(e, 'surname')} className="form-control" />
+									<input type="text" value={surname} onChange={(e) => this.onChangeSettings(e, 'surname')} className={isSurnameVerified ? "form-control verified" : "form-control not-verified"} />
 								</div>
 								
 								<div className="form-group">
@@ -148,11 +179,11 @@ class PersonSettings extends Component {
 							<TabPanel>
 								<div className="form-group">
 									<h4>{choosenLang['app-lang']}</h4>
-									<Dropdown returnSelect={(value) => this.setState({app_lang: value})} selected={app_lang} selections={[choosenLang['russian'], choosenLang['english'], choosenLang['kazakh']]} />
+									<Dropdown returnSelect={(value) => this.changeAppLang(value)} selected={app_lang} selections={[choosenLang['russian'], choosenLang['english'], choosenLang['kazakh']]} />
 								</div>
 								<div className="form-group">
 									<h4>{choosenLang['app-theme']}</h4>
-									<Dropdown returnSelect={(value) => this.setState({app_theme: value})} selected={app_theme} selections={[choosenLang['white-theme'], choosenLang['dark-theme']]} />
+									<Dropdown returnSelect={(value) => this.changeAppTheme(value)} selected={app_theme} selections={[choosenLang['white-theme'], choosenLang['dark-theme']]} />
 								</div>
 								<div className="form-group">
 									<h4>{choosenLang['app-theme']}</h4>

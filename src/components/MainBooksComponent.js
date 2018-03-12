@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../resources/language/languages.json'
 import * as booksRequest from '../actions/booksRequest'
 import * as appStateControlActions from '../actions/appStateControl'
+import { withRouter } from 'react-router'
 
 class MainBooks extends Component {
 	constructor(props) {
@@ -82,8 +83,8 @@ const mapDispatchToProps = dispatch => ({
 	appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
 })
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(MainBooks)
+)(MainBooks))
 

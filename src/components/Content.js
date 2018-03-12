@@ -62,7 +62,6 @@ const progressBarStyle =  {
     filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#009b29", endColorstr="#ea2623",GradientType=0 )' /* IE6-9 */
 }
 
-
 class Content extends Component {
     constructor(props) {
         super(props);
@@ -162,17 +161,23 @@ class Content extends Component {
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode;
                 }
+                console.log('parentEl', parentEl)
                 parentEl = parentEl.closest('.page') 
-                let parentElId = parentEl.id
-                let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
-                console.log('book_page_id', book_page_id)
-
-                relativePos.top = rect.top - parentPos.top,
-                relativePos.right = rect.right - parentPos.right,
-                relativePos.bottom = rect.bottom - parentPos.bottom,
-                relativePos.left = rect.left - parentPos.left,
-                relativePos.width = rect.width,
-                this.validateNewText(text, selectionText, relativePos, book_page_id)
+                try{
+                    let parentElId = parentEl.id // cannot read property id of null
+                    let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
+                    console.log('book_page_id', book_page_id)
+                    
+                    relativePos.top = rect.top - parentPos.top,
+                    relativePos.right = rect.right - parentPos.right,
+                    relativePos.bottom = rect.bottom - parentPos.bottom,
+                    relativePos.left = rect.left - parentPos.left,
+                    relativePos.width = rect.width,
+                    this.validateNewText(text, selectionText, relativePos, book_page_id)
+                }
+                catch(e) {
+                    console.log('Some error on parentElId', e)
+                }
             }
             
         } else if (window.getSelection && quoteExist) {
@@ -412,14 +417,14 @@ class Content extends Component {
             let parentNode = images[i].parentNode
             let src = images[i].src //src link of my image
             let newEl = document.createElement('div')
-            let srcLink = './' + src.substr(22, src.length) // rectify image link
+            let srcLink = src //.substr(22, src.length) rectify image link
             parentNode.removeChild(images[i])
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
         }
     }
-    
+
     setIdHeader() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
@@ -521,7 +526,7 @@ class Content extends Component {
             window.addEventListener('scroll', this.pageInViewport)
             window.addEventListener('scroll', this.chapterFlashing)
             book = statiContent.getElementsByClassName('book')[0]
-            book.onmouseup = book.onkeyup = book.onselectionchange = this.getSelectionText
+            book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
             //window.oncontextmenu = this.cancelDefaultMenu
             this.countOfPage()
             this.setIdHeader()

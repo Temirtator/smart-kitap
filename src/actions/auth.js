@@ -104,3 +104,25 @@ export function editPassword(license_token, access_token, password) {
 	}
 }
 
+export function	editUserInfo(license_token, access_token, name, surname) {
+	return dispatch => {
+		axios({
+			method: 'post',
+			url: url + api + 'user',
+			data: {
+				first_name: name,
+				last_name: surname
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + access_token
+			}
+		})
+		.then(response => {
+			console.log('editUserInfo', response)
+		})
+		.catch(error => {
+			console.log('editUserInfo', error)
+		})
+	}
+}

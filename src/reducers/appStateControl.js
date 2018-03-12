@@ -1,5 +1,5 @@
 import {  CHANGE_BLIND_MODE, 
-          SAVE_USER_SETTINGS, 
+          SAVE_USER_LANG, 
           SAVE_THEME_SETTINGS, 
           SET_BOOK_SCROLL,
           SAVE_OPENED_BOOK_ID,
@@ -11,11 +11,11 @@ import {  CHANGE_BLIND_MODE,
 const initialPrecises = {
 	blindMode: false,
 	user_settings: {
-		nameStore: 'Dilnaz',
-		surnameStore: 'Abdullaeva',
-		emailStore: 'd.abdullaeva@mail.ru',
-		passwordStore: 'password',
-		repeat_passwordStore: 'password',
+		nameStore: '',
+		surnameStore: '',
+		emailStore: '',
+		passwordStore: '',
+		repeat_passwordStore: '',
 		language: 0
 	},
 	theme_settings: {
@@ -36,13 +36,8 @@ export default function appStateControl(state = initialPrecises, action) {
   	case CHANGE_BLIND_MODE:
   		return {...state, blindMode: !state.blindMode}
 
-    case SAVE_USER_SETTINGS:
+    case SAVE_USER_LANG:
     	let user_settings = state.user_settings
-    	user_settings.nameStore = action.name
-    	user_settings.surnameStore = action.surname
-    	user_settings.emailStore = action.email
-    	user_settings.passwordStore = action.password
-    	user_settings.repeat_passwordStore = action.repeat_password
     	user_settings.language = action.app_lang
     	return {...state, user_settings: user_settings}
 

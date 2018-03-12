@@ -7,6 +7,15 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 
+window.onbeforeunload = function () {
+    let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
+    massive.map((value, index) => {
+        window.localStorage.removeItem(value)
+    })
+    
+    return 'Данные авторизации будут удалены, хотите закрыть?'
+}
+
 class AuthComponent extends Component {
     constructor(props) {
         super(props)
@@ -21,8 +30,8 @@ class AuthComponent extends Component {
             registrationClass: 'auth-component__header__registration',
             loginClass: 'auth-component__header__login'
         }
+
         this.checkAuth = this.checkAuth.bind(this)
-        //this.clearData = this.clearData.bind(this)
     }
 
     checkAuth() {
@@ -39,9 +48,11 @@ class AuthComponent extends Component {
                 if (response.status === 200) { 
                     this.setState(prev => {
                         return {
-                            enterKeyClass: prev.enterKeyClass + ' disableElement'
+                            enterKeyClass: prev.enterKeyClass + ' disableElement',
+                            enter: false,
+                            registration: true
                         }
-                    })        
+                    })
                     alert(response.msg)
                     this.checkAuth()
                 }
@@ -83,7 +94,8 @@ class AuthComponent extends Component {
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => { return { enterKeyClass: prev.enterKeyClass + ' disableElement',
                                                                                      registrationClass: 'auth-component__header__registration',
-                                                                                     loginClass: 'auth-component__header__login' }  })} />
+                                                                                     loginClass: 'auth-component__header__login',
+                                                                                     enterKey: false, registration: true }  })} />
             enterKeyClass += " auth-component--selected"
         } 
         else if (registration) {
