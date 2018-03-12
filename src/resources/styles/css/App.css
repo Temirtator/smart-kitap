@@ -570,7 +570,10 @@ a {
       font-weight: bold;
       color: #000000;
       font-family: Roboto_Regular;
-      padding: 4px 20px; }
+      padding: 4px 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
     .sidebar .main-menu a:hover, .sidebar .main-menu .chapter-header:hover {
       color: #09519f;
       text-decoration: none;

@@ -148,11 +148,11 @@ class PersonSettings extends Component {
 							<TabPanel>
 								<div className="form-group">
 									<h4>{choosenLang['app-lang']}</h4>
-									<Dropdown returnSelect={(value) => this.setState({app_lang: value})} selected={app_lang} selections={['Русский', 'Английский']} />
+									<Dropdown returnSelect={(value) => this.setState({app_lang: value})} selected={app_lang} selections={[choosenLang['russian'], choosenLang['english'], choosenLang['kazakh']]} />
 								</div>
 								<div className="form-group">
 									<h4>{choosenLang['app-theme']}</h4>
-									<Dropdown returnSelect={(value) => this.setState({app_theme: value})} selected={app_theme} selections={['Белая', 'Темная']} />
+									<Dropdown returnSelect={(value) => this.setState({app_theme: value})} selected={app_theme} selections={[choosenLang['white-theme'], choosenLang['dark-theme']]} />
 								</div>
 								<div className="form-group">
 									<h4>{choosenLang['app-theme']}</h4>

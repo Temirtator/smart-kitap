@@ -419,7 +419,7 @@ class Content extends Component {
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
         }
     }
-
+    
     setIdHeader() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
@@ -444,16 +444,17 @@ class Content extends Component {
         header.id = id
         header.setAttribute('class', 'chapter-header')
         header.innerHTML = $(this).text()
+        header.title = $(this).text()
         //console.log('scrollToElement', scrollToElement)
         header.addEventListener('click', scrollToElement, false)
         sidebarMainMenu.append(header)
         })
 
         content.find('h2').each(function() {
-            console.log('content find header 4')
+            //console.log('content find header 4')
             var prevTitle = sidebarMainMenu.find('#' + $(this).prevAll('h1').first().attr('id') + '-menu')
             prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>')
-            prevTitle.find('.sub-menu').append('<li class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
+            prevTitle.find('.sub-menu').append('<li title="' + $(this).text() + '" class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
         })
     }
     

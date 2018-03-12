@@ -22,6 +22,7 @@ class AuthComponent extends Component {
             loginClass: 'auth-component__header__login'
         }
         this.checkAuth = this.checkAuth.bind(this)
+        //this.clearData = this.clearData.bind(this)
     }
 
     checkAuth() {
