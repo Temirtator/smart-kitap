@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
+
 import Login from './LoginComponent'
 import Registration from './RegistrationComponent'
 import EnterKey from './EnterKeyComponent'
+import UpdateApp from './UpdateAppComponent'
+
 import { withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
+import * as updateAppActions from '../actions/updateVersion'
 
-window.onbeforeunload = function () {
+import { version } from '../../package.json'
+
+window.onbeforeunload = function () { // i need finish to write this function
     let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
     massive.map((value, index) => {
         window.localStorage.removeItem(value)
@@ -28,7 +34,8 @@ class AuthComponent extends Component {
             license_token: window.localStorage.getItem('license_token'),
             enterKeyClass: 'auth-component__header__enter-key',
             registrationClass: 'auth-component__header__registration',
-            loginClass: 'auth-component__header__login'
+            loginClass: 'auth-component__header__login',
+            isLoading: false
         }
 
         this.checkAuth = this.checkAuth.bind(this)
@@ -40,35 +47,6 @@ class AuthComponent extends Component {
         }
     }
 
-    componentWillMount() {
-        let {license_token} = this.state
-        if (license_token !== undefined && license_token !== null) { // if license toke exist
-            this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
-            .then(response => {
-                if (response.status === 200) { 
-                    this.setState(prev => {
-                        return {
-                            enterKeyClass: prev.enterKeyClass + ' disableElement',
-                            enter: false,
-                            registration: true
-                        }
-                    })
-                    alert(response.msg)
-                    this.checkAuth()
-                }
-            })
-        } else {
-            //enterKeyClass += ' disableElement'
-            this.setState(prev => {
-                return {
-                    registrationClass: prev.registrationClass + ' disableElement',
-                    loginClass: prev.loginClass + ' disableElement'
-                }
-            })
-        }
-    }
-
-   
     authType(key) {
         let {license_token} = this.state
         switch(key) {
@@ -85,9 +63,46 @@ class AuthComponent extends Component {
                 break
         }
     }
-    
+
+    componentWillMount() {
+        let {license_token} = this.state
+        this.props.updateAppActions.checkVersion(version)
+        .then(response => {
+            if (version !== response.data.version) { // check for new version
+                // here we need to start download new version
+                this.setState({ isLoading: true })
+            }
+            else {
+                if (license_token !== undefined && license_token !== null) { // if license toke exist
+                    this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
+                    .then(response => {
+                        if (response.status === 200) { 
+                            this.setState(prev => {
+                                return {
+                                    enterKeyClass: prev.enterKeyClass + ' disableElement',
+                                    enter: false,
+                                    registration: true
+                                }
+                            })
+                            alert(response.msg)
+                            this.checkAuth()
+                        }
+                    })
+                } else {
+                    //enterKeyClass += ' disableElement'
+                    this.setState(prev => {
+                        return {
+                            registrationClass: prev.registrationClass + ' disableElement',
+                            loginClass: prev.loginClass + ' disableElement'
+                        }
+                    })
+                }               
+            }
+        })
+    }
+
     render() {
-        let { enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass } = this.state
+        let { enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading } = this.state
         let element
         
 
@@ -108,7 +123,7 @@ class AuthComponent extends Component {
         }
     	return (
         	<div className="auth-component">
-                
+                <UpdateApp isLoading={isLoading} />
         		<div className="auth-component__header">
         			<div className="auth-component__abs">
                         <img src="./image/logo_white.png" alt="logo" />
@@ -156,7 +171,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch)
+   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch),
+   updateAppActions: bindActionCreators(updateAppActions, dispatch)
 })
 
 export default connect(
