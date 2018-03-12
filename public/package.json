@@ -5,12 +5,6 @@
   "main": "index.html",
   "runAsAdmin": true,
   "chromium-args": "--disable-password-generation",
-  "manifestUrl": "http://185.100.67.187/app_version",
-  "packages": {
-    "win": {
-      "url": "http://185.100.67.187/setup/windows.zip"
-    }
-  },
   "window": {
     "icon": "icon.png",
     "width": 1200,
