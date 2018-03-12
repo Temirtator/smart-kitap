@@ -4,6 +4,9 @@ import axios from 'axios'
 let url = 'http://smartkitap.avsoft.kz'
 let api = '/api/v1/'
 
+
+/* here in index js wroted all book tests requests  */
+// it was accidentally, :))
 export function setSelectedQuestion(page) {
 	return dispatch => {
 		dispatch({
@@ -21,6 +24,7 @@ export function setSelectedAnswer(answer) {
 		})
 	}
 }
+
 
 export function saveOpenedBookId(book_id) {
 	return dispatch => {
@@ -80,7 +84,6 @@ export function getTestQuestions(license_token, access_token, book_id, exam_id) 
 	}
 }
 
-
 export function setTestResults(license_token, access_token, book_id, exam_id, correct_answers, incorrect_answers) {
 	//console.log(license_token, access_token, book_id, exam_id, correct_answers, incorrect_answers)
 	return dispatch => {
@@ -112,7 +115,6 @@ export function setTestResults(license_token, access_token, book_id, exam_id, co
 		})
 	}
 }
-
 
 export function setAnswer(answers) {
 	return dispatch => {

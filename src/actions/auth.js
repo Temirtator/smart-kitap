@@ -29,7 +29,6 @@ export function login(email, password) {
 		.catch(error => {
 			return error
 		})
-
 	}
 }
 
