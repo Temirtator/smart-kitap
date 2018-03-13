@@ -90,10 +90,8 @@ class AuthComponent extends Component {
                     console.log("Checkin version", version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
-                        this.setState({isLoading: false})
                     } else {
                         console.log("It's NW.JS Project")
-                        this.setState({isLoading: true})
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
                             if (data.status === 200) {
@@ -101,7 +99,7 @@ class AuthComponent extends Component {
                                 window.runUpdate()
                                 // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
                             } else if (data.status === 201) {//Загружается
-                                this.setState({progress: data.progress, isLoading: true})
+                                this.setState({progress: data.progress})
 
                                 // $('.ui.progress').progress({total: 100, percent: data.progress});
                             }
@@ -110,7 +108,9 @@ class AuthComponent extends Component {
                             //быстро заменяется файл и включает приложение
                         })
                     }
-                } 
+                } else{
+                    this.setState({isLoading: false})
+                }
             })
             .then(() => {
                 if (license_token !== undefined && license_token !== null) { // if license toke exist
