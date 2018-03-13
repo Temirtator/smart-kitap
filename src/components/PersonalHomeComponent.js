@@ -77,11 +77,11 @@ class PersonalHomePage extends Component {
             this.props.userDataRequest.getUserInfo(access_token)
         }
     }
-
+    
     componentWillMount() {
         this.checkAuth()
     }
-
+    
     isBookOrientation(key) {
         var components = [
             'book/video',
@@ -96,7 +96,7 @@ class PersonalHomePage extends Component {
         }
         //this.setState({ isBookOrientation: false })
     }
-
+    
     switchFunction(key) {
         if (key == 'quit') {
             let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
@@ -173,7 +173,7 @@ class PersonalHomePage extends Component {
                             </div>
                         </div>
                     </div>
-
+                    
             		<div className={bodyMainClass}>
 						<MyElement menuItem={this.state.menuSelected} />
 					</div>

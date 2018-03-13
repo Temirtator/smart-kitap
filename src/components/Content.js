@@ -296,11 +296,13 @@ class Content extends Component {
     // search text from book content
     findText(e) {
         if (e.keyCode === 13) {
-            let { findTextValue, book } = this.refs
-            if (window.find)
+            let { findTextValue } = this.refs
+            if (window.find){
                 window.find(findTextValue.value)
-            else
+            }
+            else{
                 alert('Your application does not support window.find() function')
+            }
         }
     }
     
