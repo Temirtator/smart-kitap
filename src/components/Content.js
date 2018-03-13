@@ -122,7 +122,7 @@ class Content extends Component {
 
     scrollToElement(e) {
         let id = e.target.id.substr(0, e.target.id.length-5)
-        //let book = ReactDOM.findDOMNode(this.refs.book)
+        console.log('scrollToElement', id)
         let element = document.getElementById(id)
         element.scrollIntoView()
     }
@@ -319,25 +319,34 @@ class Content extends Component {
             var isVisible = this.isElementInViewport(chapters, i)
             let { curElement } = this.state
             
-            if (isVisible) {
-                if ((curElement !== -1) && (i !== curElement)) {
+            if (isVisible) { // if header is visible
+                if ((curElement !== -1) && (i !== curElement)) { // if there is curElement which already flashing
                     try {
-                        sidebarChapters[curElement].classList.remove("flash-on-viewport")
-                        sidebarChapters[i].className += " flash-on-viewport"
-                        this.setState({ curElement: i })
+                        sidebarChapters[curElement].classList.remove("flash-on-viewport") // deleting class from current chapter
+                        sidebarChapters[i].className += " flash-on-viewport" // here flashing new class
+                        this.setState({ curElement: i }) // now i change current element
                     }
                     catch(e) {
                         console.log('Error', e)
                     }
-                } else {
-                    let isExistClass = $(sidebarChapters[i]).hasClass("flash-on-viewport")
-                    if (!isExistClass) {
-                        // if not exist this class
-                        sidebarChapters[i].className += " flash-on-viewport"
-                        this.setState({ curElement: i })
+                } else {// there is no curElement which flashing, its not current element
+                    let isExistClass = $(sidebarChapters[i]).hasClass("flash-on-viewport") // checking for existence of classes
+                    if (!isExistClass) { // if this element is not flashing
+                        sidebarChapters[i].className += " flash-on-viewport" // do flash this elem
+                        this.setState({ curElement: i }) // so, now our flashing element is curElement
                     }
                 }
                 break
+            }
+            else {
+                try {
+                    if (curElement !== -1) {
+                        sidebarChapters[curElement].classList.remove("flash-on-viewport")
+                        this.setState({ curElement: -1 })
+                    }
+                } catch(e) {
+                    console.log('error on deleting class from chapter')
+                }
             }
         }
         
@@ -347,18 +356,29 @@ class Content extends Component {
             let { curElementSub } = this.state
             
             if (isVisible1) {
+                console.log('isVisible', curElementSub)
                 if ((curElementSub !== -1) && (j !== curElementSub)) {
                     sidebarSubChapters[curElementSub].classList.remove("flash-on-viewport")
                     sidebarSubChapters[j].className += " flash-on-viewport"
-                    this.setState({ curElementSub: j })
+                    this.setState({ curElementSub: j }) // curElementSub is some index j
                 } else {
-                    let isExistClass = $(sidebarSubChapters[j]).hasClass("flash-on-viewport")
-                    if (!isExistClass) {
+                    let isExistClass1 = $(sidebarSubChapters[j]).hasClass("flash-on-viewport") // check for existing subchapter
+                    if (!isExistClass1) {
                         sidebarSubChapters[j].className += " flash-on-viewport"
                         this.setState({ curElementSub: j })
                     }
                 }
                 break
+            }
+            else {
+                try {
+                    if (curElementSub !== -1) {
+                        sidebarSubChapters[curElementSub].classList.remove("flash-on-viewport")
+                        this.setState({ curElementSub: -1 })
+                    }
+                } catch(e) {
+                    console.log('error on deleting class from subchapter')
+                }
             }
         }
         /* callback(chapters)*/
@@ -366,13 +386,15 @@ class Content extends Component {
     
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
-        var top = el[index].offsetTop
-        var height = el[index].offsetHeight
+        let relativeEl = el[index].getBoundingClientRect()
+        //let top = el[index].offsetTop
+        let top = relativeEl.top + window.scrollY
+        let height = el[index].offsetHeight
         while(el.offsetParent) {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
-        
+        //console.log(top, 'pageYOffset', el[index])
         let isVisible = 
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
@@ -451,7 +473,7 @@ class Content extends Component {
             sub_headers[j].setAttribute('id', 'sub-header_'+j)
         }
     }
-
+    // i want to rewrite this function
     sidebarFunc(scrollToElement) {
         var sidebarMainMenu = $('#sidebar-menu .main-menu')
         var content = $('#static-content')
@@ -460,12 +482,16 @@ class Content extends Component {
         let id = $(this).attr('id') + '-menu'
         //console.log($(this).attr('id'), 'fwefwefewfewfwef')
         let header = document.createElement("li")
-        header.id = id
+
         header.setAttribute('class', 'chapter-header')
-        header.innerHTML = $(this).text()
+        //header.innerHTML = $(this).text()
         header.title = $(this).text()
         //console.log('scrollToElement', scrollToElement)
-        header.addEventListener('click', scrollToElement, false)
+        let header_p = document.createElement("p")
+        header_p.id = id
+        header_p.innerHTML = $(this).text()
+        header_p.addEventListener('click', scrollToElement, false)
+        header.append(header_p)
         sidebarMainMenu.append(header)
         })
 
@@ -577,13 +603,17 @@ class Content extends Component {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
         //window.oncontextmenu = this.cancelDefaultMenu
+        
         this.stopTimer(this)
-        let {license_token, access_token, book_id, timerCount} = this.state
+        
+        let {license_token, access_token, book_id, timerCount, pageInView} = this.state
         let id = Number(book_id)
+        
         if (timerCount >= 30) { // if spend time in book more than 30 sec
-            this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id)
+            this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
+        this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, pageInView) // pageInView its my last opened page
     }
     
     render() {

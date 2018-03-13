@@ -1,5 +1,6 @@
 $base-color: #09519f
 $book-sidebar-color: #e8e9eb
+$book-sidebar-menu-color: #8cbdd2
 
 $scrollbar-color: #F5F5F5
 $scrollbar-color1: #e1e6ea 
@@ -56,35 +57,49 @@ a
 	.main-menu
 		height: calc(100vh - 193px)
 		
-		a, .chapter-header
+		.chapter-header, a
 			display: block
 			font-size: 14px
 			font-weight: bold
 			color: #000000
 			font-family: $page-font
 			padding: 4px 20px
-			text-overflow: ellipsis
-			white-space: nowrap
-			overflow: hidden
-		
-		a:hover, .chapter-header:hover
-			color: $base-color
-			text-decoration: none
-			background-color: $book-sidebar-color
-			border-left: 1px solid $base-color
-			cursor: pointer
+
+			p
+				text-overflow: ellipsis
+				white-space: nowrap
+				overflow: hidden
+				margin: 0 0 5px
 			
-		.sub-menu 
+			p:hover,
+			p:active
+				text-decoration: none
+				color: $base-color
+				background-color: $book-sidebar-color
+				border-left: 1px solid $base-color		
+				cursor: pointer
+				padding: 0 0 0 10px
+					
+		.sub-menu
+			margin-left: 15px
+				 
 			.sub-header
+				cursor: pointer
 				padding-top: 1px
 				padding-bottom: 1px
-				padding-left: 30px
 				font-size: 12px
 				font-weight: 400
 				white-space: nowrap
 				overflow: hidden
 				text-overflow: ellipsis
 				max-width: 250px
+
+			.sub-header:hover,
+			.sub-header:active
+				background-color: $book-sidebar-color
+				color: $base-color
+				border-left: 1px solid $base-color
+				padding: 0 0 0 10px
 				
 
 	.main-menu:last-child
@@ -604,7 +619,13 @@ button
 	top: 250px
 
 .flash-on-viewport
-	background-color: #5a9799
+	color: $base-color
+	background-color: $book-sidebar-color
+	padding: 0 0 0 10px
+	p
+		color: $base-color
+		border-left: 1px solid $base-color
+		padding: 0 0 0 10px	
 
 .precis-component
 	width: 100%

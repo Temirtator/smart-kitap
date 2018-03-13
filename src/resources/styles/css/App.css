@@ -564,32 +564,45 @@ a {
       width: 100%; }
   .sidebar .main-menu {
     height: calc(100vh - 193px); }
-    .sidebar .main-menu a, .sidebar .main-menu .chapter-header {
+    .sidebar .main-menu .chapter-header, .sidebar .main-menu a {
       display: block;
       font-size: 14px;
       font-weight: bold;
       color: #000000;
       font-family: Roboto_Regular;
-      padding: 4px 20px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden; }
-    .sidebar .main-menu a:hover, .sidebar .main-menu .chapter-header:hover {
-      color: #09519f;
-      text-decoration: none;
-      background-color: #e8e9eb;
-      border-left: 1px solid #09519f;
-      cursor: pointer; }
-    .sidebar .main-menu .sub-menu .sub-header {
-      padding-top: 1px;
-      padding-bottom: 1px;
-      padding-left: 30px;
-      font-size: 12px;
-      font-weight: 400;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 250px; }
+      padding: 4px 20px; }
+      .sidebar .main-menu .chapter-header p, .sidebar .main-menu a p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin: 0 0 5px; }
+      .sidebar .main-menu .chapter-header p:hover,
+      .sidebar .main-menu .chapter-header p:active, .sidebar .main-menu a p:hover,
+      .sidebar .main-menu a p:active {
+        text-decoration: none;
+        color: #09519f;
+        background-color: #e8e9eb;
+        border-left: 1px solid #09519f;
+        cursor: pointer;
+        padding: 0 0 0 10px; }
+    .sidebar .main-menu .sub-menu {
+      margin-left: 15px; }
+      .sidebar .main-menu .sub-menu .sub-header {
+        cursor: pointer;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        font-size: 12px;
+        font-weight: 400;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 250px; }
+      .sidebar .main-menu .sub-menu .sub-header:hover,
+      .sidebar .main-menu .sub-menu .sub-header:active {
+        background-color: #e8e9eb;
+        color: #09519f;
+        border-left: 1px solid #09519f;
+        padding: 0 0 0 10px; }
   .sidebar .main-menu:last-child {
     padding-bottom: 0px; }
 
@@ -1073,7 +1086,13 @@ button {
   top: 250px; }
 
 .flash-on-viewport {
-  background-color: #5a9799; }
+  color: #09519f;
+  background-color: #e8e9eb;
+  padding: 0 0 0 10px; }
+  .flash-on-viewport p {
+    color: #09519f;
+    border-left: 1px solid #09519f;
+    padding: 0 0 0 10px; }
 
 .precis-component {
   width: 100%;

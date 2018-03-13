@@ -13,7 +13,7 @@ import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 class TestComponent extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
           access_token: window.localStorage.getItem('access_token'),
           license_token: '124235asfa1k2431wasda',
@@ -76,7 +76,9 @@ class TestComponent extends Component {
         return (
             <div className="test-component">
                 <div className="test-component__header">
-                    <TextSettings textSize={{padding:'5px 5px'}} textColor={{display: 'none'}} blindMode={{padding: '13px 0'}} />
+                    <TextSettings   textSize={{padding:'5px 5px'}} 
+                                    textColor={{display: 'none'}} 
+                                    blindMode={{padding: '13px 0'}} />
                 </div>
                 <div className="test-component__body">
                   { this.state.isShowingModal &&
@@ -91,7 +93,8 @@ class TestComponent extends Component {
                     { (test_state && questions.length > 0) ? questions.map((object, index) =>
                          <Question objectQuestion={object} key={index} index={index} />
                     ) : null}                  
-                    { (test_state && questions.length > 0) ? <button onClick={this.sendTestResults} type="submit" className="btn btn-primary">Завершить тест</button> : null}
+                    { (test_state && questions.length > 0) ? <button onClick={this.sendTestResults} type="submit" 
+                                                                                                    className="btn btn-primary">Завершить тест</button> : null}
                   </div>
 
                   <div className="col-md-4 side-test-menu">
@@ -101,7 +104,6 @@ class TestComponent extends Component {
                       </div>  
                     )}
                   </div>
-
                 </div>
             </div>
         )
