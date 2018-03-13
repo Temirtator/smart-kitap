@@ -6,6 +6,7 @@ import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 import Book from './Book'
 import $ from 'jquery'
 
+import * as userProgressRequest from '../actions/userProgressRequest'
 import * as booksRequest from '../actions/booksRequest'
 import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
@@ -110,6 +111,13 @@ class Content extends Component {
         this.scrollToElement = this.scrollToElement.bind(this)
         this.countOfPage = this.countOfPage.bind(this)
         this.setIdHeader = this.setIdHeader.bind(this)
+    }
+
+    checkAuth() {
+        let { access_token } = this.state
+        if (!access_token) { // if access token isnt exist
+            this.props.history.push('/')
+        }
     }
 
     scrollToElement(e) {
@@ -356,7 +364,6 @@ class Content extends Component {
     isElementInViewport(el, index) {
         var top = el[index].offsetTop
         var height = el[index].offsetHeight
-        
         while(el.offsetParent) {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
@@ -364,17 +371,20 @@ class Content extends Component {
         
         let isVisible = 
             top < (window.pageYOffset + window.innerHeight) &&
-            (top + height) > window.pageYOffset;
+            (top + height) > window.pageYOffset
             
+        //console.log('isVisible', isVisible, 'index', index, el[index] )
+
         return isVisible
     }
 
     // identify, is book page in viewport?
     pageInViewport() {
-        let {statiContent} = this.refs
-        var el = statiContent.getElementsByClassName("page")
-        for (var i = 0; i < el.length; i++) {
-            var isVisible = this.isElementInViewport(el, i);
+        let book = ReactDOM.findDOMNode(this.refs.book) 
+        var el = book.getElementsByClassName("page")
+        //console.log('pageInViewport', el.length)
+        for (var i = 0; i < el.length; i++) { // iterate over all pages
+            var isVisible = this.isElementInViewport(el, i)
             
             if(isVisible){
                 this.setState({ pageInView: i+1 })
@@ -486,6 +496,7 @@ class Content extends Component {
     }
     
     componentWillMount() {
+        this.checkAuth()
         this.startTimer(this)
     }
     
@@ -493,58 +504,69 @@ class Content extends Component {
         this.setState({
             book_id: window.localStorage.getItem('book_id')
         })
-        this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
-        .then((data) => {
-            let content = ''
-            for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                content += data.book_page[i].content
-            }
-            window.localStorage.setItem('img', data.cover)
-            window.localStorage.setItem('author', data.author)
-            window.localStorage.setItem('name', data.name)
-            
-            this.setState({
-                name: data.name,
-                author: data.author,
-                img: data.cover,
-                content: content,
-                pageCount: data.page_count,
-                readedPage: data.progress.last_opened_page_id
+            this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
+            .then((data) => {
+                try {
+                    let content = ''
+                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
+                        content += data.book_page[i].content
+                    }
+                    window.localStorage.setItem('img', data.cover)
+                    window.localStorage.setItem('author', data.author)
+                    window.localStorage.setItem('name', data.name)
+                    
+                    this.setState({
+                        name: data.name,
+                        author: data.author,
+                        img: data.cover,
+                        content: content,
+                        pageCount: data.page_count,
+                        readedPage: data.progress.last_opened_page_id
+                    })
+                }
+                catch(e) {
+                    console.log('Error on loading book')
+                }
+                
             })
-            
-        })
-        .then(() => {
-            let {statiContent, sidebar} = this.refs
-            // here i get an array of elements
-            this.setState({
-                chapters: statiContent.getElementsByTagName('h1'),
-                subChapters: statiContent.getElementsByTagName('h2'),
-                sidebarChapters: document.getElementsByClassName('header'),
-                sidebarSubChapters: document.getElementsByClassName('sub-header')
+            .then(() => {
+                try {
+                    let {statiContent, sidebar_place} = this.refs
+                    console.log('sidebar_place', sidebar_place)
+                    // here i get an array of elements
+                    this.setState({
+                        chapters: statiContent.getElementsByTagName('h1'),
+                        subChapters: statiContent.getElementsByTagName('h2'),
+                        sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
+                        sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
+                    })
+                    
+                    statiContent.addEventListener('scroll', this.pageInViewport)
+                    statiContent.addEventListener('scroll', this.chapterFlashing)
+                    book = statiContent.getElementsByClassName('book')[0]
+                    book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
+                    //window.oncontextmenu = this.cancelDefaultMenu
+                    this.countOfPage()
+                    this.setIdHeader()
+                    this.increaseProgressBar()
+                    this.imageZoom()
+                    this.sidebarFunc(this.scrollToElement)
+                    /*to scroll into view*/
+                    try {
+                        let { book_page_id } = this.props.appStateControl
+                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                        element.scrollIntoView()
+                        this.props.appStateControlActions.setBookScrollPos(0)
+                    } 
+                    catch(e) {
+                        console.log('Error on scrolling by precise', e)
+                    }
+                }
+                catch(e) {
+                    console.log('Error on loading book too')
+                }
             })
-            
-            window.addEventListener('scroll', this.pageInViewport)
-            window.addEventListener('scroll', this.chapterFlashing)
-            book = statiContent.getElementsByClassName('book')[0]
-            book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-            //window.oncontextmenu = this.cancelDefaultMenu
-            this.countOfPage()
-            this.setIdHeader()
-            this.increaseProgressBar()
-            this.imageZoom()
-            this.sidebarFunc(this.scrollToElement)
-            /*to scroll into view*/
-            try {
-                let { book_page_id } = this.props.appStateControl
-                let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
-                element.scrollIntoView()
-                this.props.appStateControlActions.setBookScrollPos(0)
-            } 
-            catch(e) {
-                console.log('Error on scrolling by precise', e)
-            }
-
-        })
+        
     }
     
     componentWillUnmount() {
@@ -555,6 +577,7 @@ class Content extends Component {
         let {license_token, access_token, book_id, timerCount} = this.state
         let id = Number(book_id)
         if (timerCount >= 30) { // if spend time in book more than 30 sec
+            this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id)
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
     }
@@ -609,7 +632,7 @@ class Content extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="content__header__sub1">
+                    <div ref="sidebar_place" className="content__header__sub1">
                         <Sidebar />
                     </div>
                 </div>
@@ -647,17 +670,18 @@ class Content extends Component {
 }
 
 const mapStateToProps = state => ({
-   main_book_item: state.main_book_item,
-   my_book_item: state.my_book_item,
-   appStateControl: state.appStateControl,
-   preciStore: state.precis
+    main_book_item: state.main_book_item,
+    my_book_item: state.my_book_item,
+    appStateControl: state.appStateControl,
+    preciStore: state.precis
 })
 
 const mapDispatchToProps = dispatch => ({
-   precisActions: bindActionCreators(precis_action, dispatch),
-   booksRequestActions: bindActionCreators(booksRequest, dispatch),
-   main_actions: bindActionCreators(main_actions, dispatch),
-   appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
+    userProgressRequestActions: bindActionCreators(userProgressRequest, dispatch),
+    precisActions: bindActionCreators(precis_action, dispatch),
+    booksRequestActions: bindActionCreators(booksRequest, dispatch),
+    main_actions: bindActionCreators(main_actions, dispatch),
+    appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
 })
 
 export default withRouter(connect(

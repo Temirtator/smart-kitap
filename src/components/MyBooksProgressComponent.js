@@ -11,7 +11,7 @@ import * as userProgressRequestActions from '../actions/userProgressRequest'
 class MyBooksProgress extends Component {
 	constructor(props) {
 		super(props)
-
+        
 		this.state = {
 			access_token: window.localStorage.getItem('access_token'),
 			license_token: '124235asfa1k2431wasda',
@@ -20,7 +20,7 @@ class MyBooksProgress extends Component {
 
 		this.checkAuth = this.checkAuth.bind(this)
 	}
-
+    
 	checkAuth() {
         if (!this.state.access_token) {
             this.props.history.push('/')
@@ -44,7 +44,7 @@ class MyBooksProgress extends Component {
     	console.log('Render method books_progress', books_progress)
     	let { language } = this.props.appStateControl.user_settings
     	let choosenLang = languages[0][language]
-
+        
     	return (
     		<div>
     		{books_progress.length > 0 ? <div className="my-books">

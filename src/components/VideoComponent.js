@@ -57,14 +57,19 @@ class VideoComponent extends Component {
 	            		<TextSettings textSize={{padding:'5px 5px'}} textColor={{display: 'none'}} blindMode={{padding: '13px 0'}} />
 	            	</div>
 	            	<div className="video-body__content">
-						{ bookVideoState.map((value, index) => 
-							<div className="video-body__content__video-element">
-								<p key={index} onClick={() => this.loadVideoLectures(value.title, value.description, value.cover, value.video_url)}>{value.title}</p>
-							</div>
-						)}
-						{ 
-							<VideoLecture title={title} description={description} cover={cover} videoSrc={videoSrc} />
-						}           		
+						<div className="col-md-8">
+							{ bookVideoState.length >= 1 ? 
+								<VideoLecture title={title} description={description} cover={cover} videoSrc={videoSrc} /> : null
+							}
+						</div>
+						<div className="col-md-4 video-body__content__side-video-menu">
+							{ bookVideoState.map((value, index) => 
+								<div className="video-body__content__video-element" key={index}>
+									<p key={index} onClick={() => this.loadVideoLectures(value.title, value.description, value.cover, value.video_url)}>{value.title}</p>
+								</div>
+							)}
+						</div>
+						           		
 	            	</div>
 	            </div>
 	        </div>

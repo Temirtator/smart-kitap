@@ -10,7 +10,12 @@ let textStyle = {
     left: '56%'
 }
 
-
+let backgroundStyle = {
+  opacity: '0.3',
+  backgroundColor: '#000',
+  width: '100%',
+  height: '100%'
+}
 
 class UpdateApp extends Component {
   static propTypes = {
@@ -18,20 +23,16 @@ class UpdateApp extends Component {
     isLoading: PropTypes.bool,
   }
   
-
-
   render() {
     const { isLoading } = this.props
 
-    return  <div>
-              <div>
+    return  <ModalContainer>
                 {
                   isLoading ?
-                  <div><ReactSpinner color="white" /> <p style={textStyle}>Идет обновление...</p></div> :
+                  <div ><ReactSpinner color="white" /> <p style={textStyle}>Идет обновление...</p></div> :
                   <div></div>
                 }
-              </div>
-            </div>
+            </ModalContainer>
   }
 }
 

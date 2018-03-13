@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import Masonry from 'react-masonry-infinite'
 import OldPreciseItem from './OldPreciseItemComponent'
 
+let oldPrecisesArray = []
 class OldPrecises extends Component {
     constructor(props) {
         super(props)
@@ -16,7 +17,8 @@ class OldPrecises extends Component {
             indexBook: null,
             name: '',
             author: '',
-            img: ''
+            img: '',
+            localStorage: window.localStorage.getItem('access_token')
         }
 
         this.loadMorePrecis = this.loadMorePrecis.bind(this)
@@ -27,38 +29,53 @@ class OldPrecises extends Component {
     	console.log('load more precis')
     }
 
-    getIndexes(book_id, book_category) {
-        let old_precises = this.props.precisesStore.precises.old_precises
+    getIndexes(book_id) {
+        //console.log('book_id', book_id, 'book_category', book_category)
+        let new_precises = this.props.precisesStore.precises.new_precises
         let indexPrecise, indexBook
-        for (var i = old_precises.length - 1; i >= 0; i--) {
-            console.log(old_precises[i].book_id, '===', book_id)
-            if (old_precises[i].book_id === book_id) {
+        for (var i = new_precises.length - 1; i >= 0; i--) {
+            //console.log(new_precises[i].book_id, '===', book_id)
+            if (Number(new_precises[i].book_id) === Number(book_id)) {
                 indexPrecise = i
             }
         }
-
+        
         if (indexPrecise === undefined) { // if there is no precise for book
-            let oldPreciseObject = { // creating empty old precise
+            let newPreciseObject = { // creating empty new precise
                 book_id: book_id,
                 precise: [] 
             }
-
-            this.props.precisActions.setOldBookPrecis(oldPreciseObject) // adding old precise
-            indexPrecise = old_precises.length-1 //assign index value position of old precise to access them 
+            
+            this.props.precisActions.setNewBookPrecis(newPreciseObject) // adding new precise
+            indexPrecise = new_precises.length-1 //assign index value position of new precise to access them 
         }
-
-        for (var j = book_category.length - 1; j >= 0; j--) {
-            console.log(book_category[j].id, '===', book_id)
-            if (book_category[j].id === book_id) {
-                indexBook = j
-            }
-        }
-
-        let { name, author, img } = book_category[indexBook]
 
         this.setState({
-            name,author,img, indexPrecise
+            indexPrecise
         })
+
+        oldPrecisesArray = [] // this is because, some data may pushed here several times, so we need it set to zero
+        let somePrecise = new_precises[indexPrecise].precise
+        
+        let today = new Date()
+        let day1 = today.getDate()
+        let month1 = today.getMonth() + 1
+        let year1 = today.getFullYear()
+        let currentDate = month1 + '/' + day1 + '/' + year1
+        
+        for (var i = somePrecise.length - 1; i >= 0; i--) {
+            let created_date = somePrecise[i].created_at
+            let day = new Date(created_date).getDate()
+            let month = new Date(created_date).getMonth() + 1
+            let year = new Date(created_date).getFullYear()
+            let precisDate = month + '/' + day + '/' + year
+            let timeDiff = Math.abs(new Date(currentDate).getTime() - new Date(precisDate).getTime())
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
+            if (diffDays >= 1) {
+                oldPrecisesArray.push(somePrecise[i])
+            }
+        }
+        this.props.precisActions.getUserOldPrecis(oldPrecisesArray)
     }
 
     componentWillMount() {
@@ -76,41 +93,16 @@ class OldPrecises extends Component {
             })
             book_id_local = book_id
         }
-
-        let { opened_book_category } = this.props.appStateControl
-        let selected_book_item, opened_book_menu = localStorage.getItem('opened_book_menu')
-        if (opened_book_menu === 'main_books') {
-            selected_book_item = this.props.main_book_item
-        } 
-        else if (opened_book_menu === 'my_books') {
-            selected_book_item = this.props.my_book_item
-        }
-        let { all_books, humanitarian_books, technical_books, medical_books } = selected_book_item
-        let book_category
-        switch(opened_book_category) {
-            case 'all_books':
-                book_category = all_books
-                break
-            case 'humanitarian_books':
-                book_category = humanitarian_books
-                break
-            case 'technical_books':
-                book_category = technical_books
-                break
-            case 'medical_books':
-                book_category = medical_books
-                break
-            default:
-                book_category = all_books
-                break
-        }
-        this.getIndexes(Number(book_id_local), book_category)
+        
+        //this.props.precisActions.getUserPrecis(this.state.localStorage, book_id_local)
+        this.getIndexes(Number(book_id_local))
     }
 
    	render() {
     	let { precisesStore, appStateControl } = this.props
         let book_id = Number(this.state.book_id)
-        let { indexPrecise, name, author, img } = this.state
+        let { indexPrecise } = this.state
+        let { name, author, img } = this.props.precisesStore.precises
 
     	return (
             
@@ -132,13 +124,14 @@ class OldPrecises extends Component {
 		            loadMore={this.loadMorePrecis}
 		          >
 		            {
-		            	precisesStore.precises.old_precises[indexPrecise].precise.map((object, i) => (
+		            	precisesStore.precises.old_precises.map((object, i) => (
 		            		<OldPreciseItem 
                                 name={name}
                                 author={author}
                                 img={img}
                                 text={object.precis}
                                 index={i}
+                                precis_id={object.precis_id}
                                 book_id={book_id}
                                 key={i}
                             />

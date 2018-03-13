@@ -1199,7 +1199,8 @@ button {
     .test-component .test-component__body .btn-primary {
       position: relative !important;
       left: 50% !important;
-      transform: translateX(-50%) !important; }
+      transform: translateX(-50%) !important;
+      margin: 20px 0; }
 
 .test-component__body::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -1231,6 +1232,8 @@ button {
     .video-body__content__video-element p {
       margin: 0;
       cursor: pointer; }
+  .video-body__content__side-video-menu {
+    padding: 30px 14px 0 0; }
 
 .video-body__content::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -2111,8 +2114,11 @@ div.my-books__test-by-books {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #404651 !important; }
 
+/* #626468 */
 .blindMode {
-  background-color: #626468 !important; }
+  background-color: #000 !important; }
+  .blindMode .form-group input.form-control {
+    color: #000 !important; }
   .blindMode .content__body__precises h5, .blindMode .content__body__precises p, .blindMode .content__body__precises a, .blindMode .content__body__precises li, .blindMode .content__body__precises span,
   .blindMode .content__header__sub h5,
   .blindMode .content__header__sub p,
@@ -2145,22 +2151,29 @@ div.my-books__test-by-books {
   .blindMode .react-tabs__tab-panel li,
   .blindMode .react-tabs__tab-panel span {
     color: #fff !important; }
+  .blindMode .content__body__precises .text-settings__text-style span {
+    border: 1px solid #fff !important; }
   .blindMode li:hover {
-    background-color: #626468 !important; }
+    background-color: #000 !important; }
   .blindMode .react-tabs .react__tablist__wrap {
-    background-color: #626468; }
+    background-color: #000; }
     .blindMode .react-tabs .react__tablist__wrap ul.react-tabs__tab-list li.react-tabs__tab--selected {
       border-color: #fff; }
     .blindMode .react-tabs .react__tablist__wrap ul.react-tabs__tab-list li.react-tabs__tab:hover {
       border-color: #fff; }
+  .blindMode .react-tabs .react-tabs__tab-panel--selected .save-user-settings-button {
+    background-color: #000;
+    border: 1px solid #fff; }
+  .blindMode .react-tabs .react-tabs__tab-panel--selected .star {
+    color: #fff; }
   .blindMode .react-tabs .react-tabs__tab-panel--selected .form-group h4 {
     color: #fff; }
   .blindMode .react-tabs .react-tabs__tab-panel--selected .form-group li.dropdown {
-    background-color: #626468; }
+    background-color: #000; }
     .blindMode .react-tabs .react-tabs__tab-panel--selected .form-group li.dropdown ul.dropdown-menu {
-      background-color: #626468; }
+      background-color: #000; }
       .blindMode .react-tabs .react-tabs__tab-panel--selected .form-group li.dropdown ul.dropdown-menu li {
-        background-color: #626468; }
+        background-color: #000; }
   .blindMode .my-books .my-books__statistics .my-books__development,
   .blindMode .my-books .my-books__statistics .my-books__test,
   .blindMode .my-books .my-books__statistics .my-books__duration {
@@ -2172,7 +2185,7 @@ div.my-books__test-by-books {
   .blindMode .my-books .my-books__test-by-books h2 {
     color: #fff; }
   .blindMode .my-books .my-books__test-by-books .react-tabs .my-books__tab-test {
-    background-color: #626468;
+    background-color: #000;
     border-color: #fff; }
     .blindMode .my-books .my-books__test-by-books .react-tabs .my-books__tab-test ul.react-tabs__tab-list li.react-tabs__tab--selected {
       border-color: #fff; }
@@ -2211,26 +2224,44 @@ div.my-books__test-by-books {
     .blindMode .personal-home-page__body__header .book-orientation-component .content__body__main__header__menu .header__menu__test svg {
       fill: #fff; }
   .blindMode .content__body__main__body .content__body__precises {
-    background-color: #626468; }
+    background-color: #000; }
     .blindMode .content__body__main__body .content__body__precises .text-settings .text-settings__text-style span:nth-child(1), .blindMode .content__body__main__body .content__body__precises .text-settings .text-settings__text-style span:nth-child(3) {
-      color: #626468 !important; }
+      color: #000 !important; }
   .blindMode .precis-component .precisEdit,
   .blindMode .precis-component .precisClear {
     color: #fff !important; }
   .blindMode .video-component .video-body__precises {
-    background-color: #626468; }
+    background-color: #000; }
   .blindMode .video-component .video-body__content {
-    background-color: #626468; }
+    background-color: #000; }
     .blindMode .video-component .video-body__content .video-body__description h2, .blindMode .video-component .video-body__content .video-body__description p {
       color: #fff; }
+  .blindMode .video-component .video-body__content__side-video-menu p {
+    color: #fff; }
+  .blindMode .video-component .video-body__content .video-react,
+  .blindMode .video-component .video-body__content .video-react-fluid {
+    border: 1px solid #fff !important; }
   .blindMode .test-component__header {
-    background-color: #626468; }
+    background-color: #000; }
+    .blindMode .test-component__header .text-settings__text-size {
+      padding: 4px 0 0 0 !important; }
+    .blindMode .test-component__header .text-settings__text-style span {
+      border: 1px solid #fff !important; }
+  .blindMode .test-component__body__test-menu {
+    color: #fff; }
   .blindMode .test-component__body .test-question {
-    background-color: #626468; }
+    background-color: #000; }
     .blindMode .test-component__body .test-question h3 {
       color: #fff; }
     .blindMode .test-component__body .test-question .test-answers label p {
       color: #fff; }
+  .blindMode .test-component__body .btn-primary,
+  .blindMode .test-component__body .btn-primary:hover,
+  .blindMode .test-component__body .btn-primary:active {
+    background-color: #000;
+    border-color: #fff; }
+  .blindMode .new-precises .new-precise {
+    border: 1px solid #fff; }
   .blindMode .blindMode::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;

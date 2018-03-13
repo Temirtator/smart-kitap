@@ -8,21 +8,24 @@ import { withRouter } from 'react-router'
 
 class OldPreciseItem extends Component {
     static propTypes = {
-        img: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        author: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
+         text: PropTypes.string.isRequired,
         index: PropTypes.number.isRequired,
-        book_id: PropTypes.number.isRequired
+        book_id: PropTypes.number.isRequired,
+        precis_id: PropTypes.number.isRequired
     }
     
     constructor(props) {
         super(props)
 
         this.state = {
-        	editing: false,
+            editing: false,
             editingText: '',
-            editingId: null
+            editingId: null,
+            name: window.localStorage.getItem('name'),
+            img: window.localStorage.getItem('img'),
+            author: window.localStorage.getItem('author'),
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token')
         }
         this.editPrecis = this.editPrecis.bind(this)
         this.clearPrecis = this.clearPrecis.bind(this)
@@ -61,23 +64,18 @@ class OldPreciseItem extends Component {
     }
     
     //for clearing precises
-    clearPrecis(index) {
+    clearPrecis(index, precis_id) {
         let { precises } = this.props.precisesStore
-        let oldPrecises=[], book_position
-        for (var i = precises.old_precises.length - 1; i >= 0; i--) {
-            if (precises.old_precises[i].book_id === this.props.book_id) {
-                oldPrecises = precises.old_precises[i].precise //array of object
-                book_position = i
-                break
-            }
-        }
-        oldPrecises.splice(index, 1)
+        let { access_token, license_token } = this.state
         
-        this.props.precisActions.changeOldPrecis(book_position, oldPrecises)
+        let oldPrecises = precises.old_precises //array of object
+        oldPrecises.splice(index, 1)
+        this.props.precisActions.changeOldPrecis(oldPrecises)
+        this.props.precisActions.clearBookPrecis(access_token, license_token, precis_id)
     }
     
-    scrollToPrecis(yPos) {
-        this.props.appStateControlActions.setBookScrollPos(yPos) 
+    scrollToPrecis(book_page_id) {
+        this.props.appStateControlActions.setBookScrollPos(book_page_id) 
         this.props.history.goBack()
     }
     
@@ -95,12 +93,12 @@ class OldPreciseItem extends Component {
     }
     
     render() {
-    	let { img, name, author, text, index, precisesStore, book_id } = this.props
-    	let { editing, editingText } = this.state
-    	let { old_precises } = precisesStore.precises
+    	let { text, index, precisesStore, book_id, precis_id } = this.props
+        let { editing, editingText, name, author, img } = this.state
+        let { new_precises } = precisesStore.precises
         let book_position
-        for (var i = old_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
-            if (old_precises[i].book_id  === book_id) {
+        for (var i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
+            if (Number(new_precises[i].book_id) === Number(book_id)) {
                 book_position = i
             }
         }
@@ -109,7 +107,7 @@ class OldPreciseItem extends Component {
          	<div className="col-sm-6 new-precise">    			
     			<div className="new-precise__header" >
 	    			<div className="new-precise__header__left">
-	    				<img src={img} alt="book" />
+	    				<img src={'http://smartkitap.avsoft.kz' + img} alt="book" />
 	    			</div>
 	    			<div className="new-precise__header__right">
 	    				<div className="new-precise__header__right__first-lvl">
@@ -117,10 +115,10 @@ class OldPreciseItem extends Component {
 	    						<h5>{name}</h5>
 	    					</div>
 	    					<div className="col-sm-2">
-	    						<div className="precisEdit" onClick={() => this.editPrecis(index, text)}>
+	    						{/*<div className="precisEdit" onClick={() => this.editPrecis(index, text)}>
                                     <i className="fas fa-pencil-alt"></i>
-                                </div>
-	    						<div className="precisClear" onClick={() => this.clearPrecis(index)}>
+                                </div>*/}
+	    						<div className="precisClear" onClick={() => this.clearPrecis(index, precis_id)}>
                                     <i className="fas fa-eraser"></i>
                                 </div>
 	    					</div>
@@ -131,7 +129,7 @@ class OldPreciseItem extends Component {
 	    			</div>
 	    		</div>
                 
-        		<div onClick={() => this.scrollToPrecis(old_precises[book_position].precise[index].yPos)} className="new-precise__body">
+        		<div onClick={() => this.scrollToPrecis(new_precises[book_position].precise[index].book_page_id)} className="new-precise__body">
         			{ editing ? this.renderForm() : <p>{text}</p>}
         		</div>
         	</div>   

@@ -1,5 +1,5 @@
-$BM-base-color: #626468
-
+$BM-base-color: #000
+/* #626468 */
 $BM-scrollbar-color: #484e56
 $BM-scrollbar-color1: #e1e6ea 
 $white-color: #fff
@@ -8,6 +8,10 @@ $white-color: #fff
 .blindMode
 	background-color: $BM-base-color !important
 	
+	.form-group
+		input.form-control
+			color: #000 !important
+
 
 	.content__body__precises,
 	.content__header__sub,
@@ -18,6 +22,11 @@ $white-color: #fff
 	.react-tabs__tab-panel
 		h5, p, a, li, span
 			color: $white-color !important
+	
+	.content__body__precises
+		.text-settings__text-style
+			span
+				border: 1px solid #fff !important
 	
 	li:hover 
 		background-color: $BM-base-color !important
@@ -34,6 +43,13 @@ $white-color: #fff
 					border-color: $white-color
 
 		.react-tabs__tab-panel--selected
+			.save-user-settings-button
+				background-color: #000
+				border: 1px solid $white-color
+
+			.star
+				color: #fff
+
 			.form-group
 				h4
 					color: $white-color
@@ -143,11 +159,31 @@ $white-color: #fff
 					h2, p
 						color: $white-color
 
+		.video-body__content
+			&__side-video-menu
+				p
+					color: $white-color
+
+			.video-react, 
+			.video-react-fluid
+				border: 1px solid #fff !important
+
 	.test-component
 		&__header
 			background-color: $BM-base-color
 
+			.text-settings
+				&__text-size
+					padding: 4px 0 0 0 !important
+
+				&__text-style
+					span
+						border: 1px solid #fff !important
+
 		&__body
+			&__test-menu
+				color: #fff
+
 			.test-question
 				background-color: $BM-base-color
 	
@@ -159,7 +195,15 @@ $white-color: #fff
 						p
 							color: $white-color
 
-					
+			.btn-primary,
+			.btn-primary:hover,
+			.btn-primary:active,
+				background-color: $BM-base-color
+				border-color: #fff
+
+	.new-precises
+		.new-precise
+			border: 1px solid #fff
 		
 	+scrollBarStyle(blindMode, $BM-scrollbar-color, $BM-scrollbar-color1)
 	+scrollBarStyle(new-precises, $BM-scrollbar-color, $BM-scrollbar-color1)

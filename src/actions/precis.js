@@ -14,11 +14,10 @@ export function changeNewPrecis(position, newPrecis) {
 	}
 }
 
-export function changeOldPrecis(position, oldPrecis) {
+export function changeOldPrecis(oldPrecis) {
 	return dispatch => {
 		dispatch({
 			type: types.CHANGE_OLD_PRECIS,
-			position,
 			oldPrecis
 		})
 	}
@@ -42,18 +41,28 @@ export function setOldBookPrecis(oldBookPrecis) {
 	}
 }
 
+export function getUserOldPrecis(someArray) {
+	return dispatch => {
+		dispatch({
+			type: types.GET_USER_OLD_PRECIS,
+			someArray
+		})
+	}
+}
+
 //most ugly function i ever wrote maybe
 export function getUserPrecis(token, book_id) {
 	return dispatch => {
 		return axios({
 			method: 'get',
-			url: url+api+'precis',
+			url: url + api + 'precis',
 			data: {},
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
 		})
 		.then(response => {
+			console.log('getUserPrecis', response)
 			let object = {
 				book_id: book_id,
 				precise: []
@@ -65,7 +74,8 @@ export function getUserPrecis(token, book_id) {
 					object.precise.push({
 						precis: response.data[i].text, 
 						book_page_id: response.data[i].book_page_id,
-						precis_id: response.data[i].id
+						precis_id: response.data[i].id,
+						created_at: response.data[i].created_at
 					})
 				}
 			}

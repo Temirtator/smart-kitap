@@ -100,12 +100,12 @@ export function getAllUserProgress(license_token, access_token) {
 			        ],
 			        [
 			          {
-			            value: (correct_count === undefined) ? 1 : correct_count.correct_count,
+			            value: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
 			            color:color,
 			            highlight:color
 			          },
 			          {
-			            value: (incorrect_count === undefined) ? 1 : incorrect_count.correct_count,
+			            value: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			            color:highlight,
 			            highlight:highlight
 			          }
@@ -131,8 +131,8 @@ export function getAllUserProgress(license_token, access_token) {
 				//console.log('correct_count', correct_count)
 				let book_iread_progress = {
 			      image: 'http://smartkitap.avsoft.kz' + opened_books[j].book.cover,
-			      name: readed_books[j].book.name,
-			      author: readed_books[j].book.author, 
+			      name: opened_books[j].book.name,
+			      author: opened_books[j].book.author, 
 			      statistics: [
 			        [
 			          {
@@ -148,12 +148,12 @@ export function getAllUserProgress(license_token, access_token) {
 			        ],
 			        [
 			          {
-			            value: (correct_count === undefined) ? 0 : correct_count.correct_count,
+			            value: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
 			            color:color,
 			            highlight:color
 			          },
 			          {
-			            value: (incorrect_count === undefined) ? 0 : incorrect_count.correct_count,
+			            value: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			            color:highlight,
 			            highlight:highlight
 			          }
@@ -197,15 +197,14 @@ export function getAllUserProgress(license_token, access_token) {
 
 /*where is the user id*/
 /*what if i want to send isOpened and isReaded in one time?*/
-export function setUserProgress(license_token, access_token, book_id, isFavourite, key) {
+export function bookIsOpened(license_token, access_token, book_id) {
 	return dispatch => {
 		axios({
 			method: 'post',
 			url: url+api+'user/progress',
 			data: {
 				book_id: book_id,
-				isFavourite: isFavourite,
-				key: key,
+				key: 'isOpened',
 				COMP_ACCESS_TOKEN: license_token,
 			},
 			headers: {
@@ -225,3 +224,53 @@ export function setUserProgress(license_token, access_token, book_id, isFavourit
 	}
 }
 
+export function bookIsReaded(license_token, access_token, book_id) {
+	return dispatch => {
+		axios({
+			method: 'post',
+			url: url+api+'user/progress',
+			data: {
+				book_id: book_id,
+				key: 'isReaded',
+				COMP_ACCESS_TOKEN: license_token,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + access_token
+			}
+		})
+		.then(response => {
+			console.log('setUserProgress', response)
+
+			//return response
+		})
+		.catch(error => {
+			console.log('setUserProgress', error)
+		})
+
+	}
+}
+
+export function setLastOpenedPage(license_token, access_token, book_id, last_opened_page) {
+	return dispatch => {
+		axios({
+			method: 'post',
+			url: url + api + 'user/progress',
+			data: {
+				book_id: book_id,
+				key: 'last_opened_page',
+				last_opened_page: last_opened_page
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + access_token	
+			}
+		})
+		.then(response => {
+			console.log('setLastOpenedPage', response)
+		})
+		.catch(error => {
+			console.log('setLastOpenedPage', error)
+		})
+	}
+}

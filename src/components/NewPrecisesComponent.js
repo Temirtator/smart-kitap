@@ -51,7 +51,7 @@ class NewPrecises extends Component {
         }
         this.setState({
             indexPrecise
-        })
+        })  
     }
     
     componentWillMount() {
