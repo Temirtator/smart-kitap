@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="EslintConfiguration">
-    <custom-configuration-file used="false" path="C:\another_projects\nwjs\reactjs_temirlan_smarktkitap\.eslintrc" />
-    <extra-options value="{&#9;&#9; &quot;extends&quot;: &quot;eslint: recommended&quot;, &quot;parser&quot;: &quot;babel-eslint&quot;,&#9;&#9; &quot;env&quot;:&#9;{ &#9;&quot;browser&quot;:true, &#9;&quot;node&quot;:&#9;true },&#9;&#9; &quot;plugins&quot;:[&quot;react&quot;], &#9;&quot;rules&quot;:&#9;{ &#9;&quot;no-debugger&quot;:&#9;0, &#9;&quot;no-console&quot;:&#9;0, &#9;&quot;new-cap&quot;:&#9;0, &#9;&quot;strict&quot;:&#9;0, &#9;&quot;no-underscore-dangle&quot;:&#9;0, &#9;&quot;no-use-before-define&quot;:&#9;0, &#9;&quot;eol-last&quot;:&#9;0, &#9;&quot;quotes&quot;:&#9;[2,&#9;&quot;single&quot;], &#9;&quot;jsx-quotes&quot;:&#9;[1,&#9;&quot;prefer-single&quot;], &#9;&quot;react/jsx-no-undef&quot;:&#9;1, &#9;&quot;react/jsx-uses-react&quot;:&#9;1, &#9;&quot;react/jsx-uses-vars&quot;:&#9;1} }" />
-  </component>
-</project>

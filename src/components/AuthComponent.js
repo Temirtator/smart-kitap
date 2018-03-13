@@ -43,7 +43,7 @@ class AuthComponent extends Component {
             registrationClass: 'auth-component__header__registration',
             loginClass: 'auth-component__header__login',
             isLoading: false,
-            progress:0,
+            progress: 0,
         }
         this.checkAuth = this.checkAuth.bind(this)
 
@@ -74,7 +74,13 @@ class AuthComponent extends Component {
 
     componentWillMount() {
         let {license_token} = this.state
-        window.getMacAddress()
+        try {
+            if (window.getMacAddress !== undefined) {
+                window.getMacAddress()
+            }
+        } catch (e) {
+            console.log("IS NOT NW JS");
+        }
         this.props.updateAppActions.checkVersion(version)
             .then(response => {
 
@@ -94,11 +100,11 @@ class AuthComponent extends Component {
                                 window.runUpdate()
                                 // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
                             } else if (data.status === 201) {//Загружается
-                                this.setState({progress: data.progress,isLoading:true})
+                                this.setState({progress: data.progress, isLoading: true})
 
                                 // $('.ui.progress').progress({total: 100, percent: data.progress});
                             }
-                            console.log(data,data.status === 200)
+                            console.log(data, data.status === 200)
                             //Выключается приложение
                             //быстро заменяется файл и включает приложение
                         })
@@ -117,7 +123,7 @@ class AuthComponent extends Component {
                                             registration: true
                                         }
                                     })
-                                    alert(response.msg)
+                                    // alert(response.msg)
                                     this.checkAuth()
                                 }
                             })
@@ -139,7 +145,7 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {enterKey, registration, login,progress, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
+        let {enterKey, registration, login, progress, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
 
 

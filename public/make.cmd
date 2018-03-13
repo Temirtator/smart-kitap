@@ -4,7 +4,7 @@ cls
 taskkill /f /t /im  nw.exe
 taskkill /f /t /im  SmartKitap.exe
 
-winrar a -afzip -m1 SmartKitap.nw .\assets .\image updater.js .\static favicon.ico index.html manifest.json ..\package.json
+winrar a -afzip -m1 SmartKitap.nw .\assets replaceAndStartApp.bat step1.bat .\image updater.js .\static favicon.ico index.html manifest.json ..\package.json
 copy /b nw.exe+SmartKitap.nw SmartKitap.exe
 DEL SmartKitap.nw
 cls

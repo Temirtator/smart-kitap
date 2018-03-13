@@ -32,14 +32,16 @@ window.runUpdate = function () {
     var location = (path.dirname(process.execPath));
     console.log(location);
     try {
+        console.log('step0');
         var spawn = require('child_process').spawn;
         var bat = spawn('step1.bat', [location]);
+        console.log('step1');
         bat.stdout.on('data', (data) => {
-            // console.log(data);
+            console.log(data);
         });
 
         bat.stderr.on('data', (data) => {
-            // console.log(data);
+            console.log(data);
         });
 
         bat.on('exit', (code) => {
