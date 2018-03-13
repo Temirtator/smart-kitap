@@ -34,7 +34,7 @@ const ShowToolTipComponent = (props) => {
     if ((typeof rect === 'object') && (rect !== null)) {
         let centralizeLeft = (rect.left + ((rect.width)/2)+25),
             centralizeTop = (rect.top - 25)
-        return (                                                                         
+        return (
             <div onClick={onToolTipClick} className="quote" id="quote" style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
                 <img src='./image/quote.png' style={{ width: '100%' }} />
             </div>
@@ -49,7 +49,7 @@ const ShowToolTipComponent = (props) => {
 }
 
 const iconStyle = {
-    fontSize: '2em', 
+    fontSize: '2em',
     color: '#000',
     float: 'left',
     padding: '0 10px 0 0'
@@ -147,7 +147,7 @@ class Content extends Component {
             }
         }
     }
-    
+
     // firing when text selected on book content 
     getSelectionText() {
         let {quoteExist, selectionText} = this.state
@@ -158,7 +158,7 @@ class Content extends Component {
         relativePos = {}
         if (window.getSelection && !quoteExist) {
             selection = window.getSelection()
-                
+
             //checking for rangeCount bug, sometimes it might be equal to 0
             if (selection && selection.rangeCount > 0) {
                 text  = selection.toString()
@@ -170,12 +170,12 @@ class Content extends Component {
                     parentEl = parentEl.parentNode;
                 }
                 console.log('parentEl', parentEl)
-                parentEl = parentEl.closest('.page') 
+                parentEl = parentEl.closest('.page')
                 try{
                     let parentElId = parentEl.id // cannot read property id of null
                     let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
                     console.log('book_page_id', book_page_id)
-                    
+
                     relativePos.top = rect.top - parentPos.top,
                     relativePos.right = rect.right - parentPos.right,
                     relativePos.bottom = rect.bottom - parentPos.bottom,
@@ -187,14 +187,14 @@ class Content extends Component {
                     console.log('Some error on parentElId', e)
                 }
             }
-            
+
         } else if (window.getSelection && quoteExist) {
             selection = window.getSelection()
             if (selection && selection.rangeCount > 0) {
                 text  = selection.toString()
                 range = selection.getRangeAt(0)
                 rect  = range.getBoundingClientRect()
-                
+
                 parentEl = range.commonAncestorContainer
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode;
@@ -212,9 +212,9 @@ class Content extends Component {
                 this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
         }
-        
+
     }
-    
+
     // on call show tooltip by some rect position
     showToolTip() {
         if (this.state.rect !== null) {
@@ -227,14 +227,14 @@ class Content extends Component {
             quoteExist: true
         })
     }
-    
+
     // take click action on tooltip
     onToolTipClick(e) {
         let { new_precises } = this.props.preciStore.precises
         let book_id = Number(this.state.book_id)
         let { selectionText, rect, access_token, book_page_id } = this.state
         let newPrecises, book_position
-        
+
         for (var i = new_precises.length - 1; i >= 0; i--) {
             //console.log(new_precises[i].book_id, '===', book_id)
             if (Number(new_precises[i].book_id) === book_id) {
@@ -254,8 +254,8 @@ class Content extends Component {
                 book_id: book_id,
                 precise: []
             }
-            
-            newPrecises.precise.push(newObject)    
+
+            newPrecises.precise.push(newObject)
             this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
             book_position = new_precises.length - 1
         }
@@ -263,7 +263,7 @@ class Content extends Component {
             newPrecises.push(newObject)
             this.props.precisActions.changeNewPrecis(book_position, newPrecises)
         }
-        
+
         if (this.state.rect !== null) {
             this.setState({
                 quoteExist: false,
@@ -271,7 +271,7 @@ class Content extends Component {
             })
         }
     }
-    
+
     increaseProgressBar() {
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
@@ -284,7 +284,7 @@ class Content extends Component {
                     clearTimeout(this.tm)
                     return;
                 }
-                this.setState({ 
+                this.setState({
                     progressBarPercent: percent,
                     progressBarPage: Math.ceil((percent/100)*pageCount)
                  })
@@ -292,7 +292,7 @@ class Content extends Component {
             }
         }
     }
-    
+
     // search text from book content
     findText(e) {
         if (e.keyCode === 13) {
@@ -306,12 +306,12 @@ class Content extends Component {
             }
         }
     }
-    
+
     //this function cancel default menu on right click
     cancelDefaultMenu() {
         return false
     }
-    
+
     // sidebar chapters flashing
     // firing when scroll event happen
     chapterFlashing() {
@@ -319,7 +319,7 @@ class Content extends Component {
         for (var i = 0; i < chapters.length; i++) {
             var isVisible = this.isElementInViewport(chapters, i)
             let { curElement } = this.state
-            
+
             if (isVisible) { // if header is visible
                 if ((curElement !== -1) && (i !== curElement)) { // if there is curElement which already flashing
                     try {
@@ -350,12 +350,12 @@ class Content extends Component {
                 }
             }
         }
-        
+
         //For subchapters
         for (var j = 0; j < subChapters.length; j++) {
             var isVisible1 = this.isElementInViewport(subChapters, j)
             let { curElementSub } = this.state
-            
+
             if (isVisible1) {
                 console.log('isVisible', curElementSub)
                 if ((curElementSub !== -1) && (j !== curElementSub)) {
@@ -384,7 +384,7 @@ class Content extends Component {
         }
         /* callback(chapters)*/
     }
-    
+
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
         let relativeEl = el[index].getBoundingClientRect()
@@ -395,9 +395,10 @@ class Content extends Component {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
+        let isVisible=
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
-            
+
         //console.log('isVisible', isVisible, 'index', index, el[index] )
 
         return isVisible
@@ -405,15 +406,15 @@ class Content extends Component {
 
     // identify, is book page in viewport?
     pageInViewport() {
-        let book = ReactDOM.findDOMNode(this.refs.book) 
+        let book = ReactDOM.findDOMNode(this.refs.book)
         var el = book.getElementsByClassName("page")
         //console.log('pageInViewport', el.length)
         for (var i = 0; i < el.length; i++) { // iterate over all pages
             var isVisible = this.isElementInViewport(el, i)
-            
+
             if(isVisible){
                 this.setState({ pageInView: i+1 })
-                break 
+                break
             } else {
                 continue
             }
@@ -421,7 +422,7 @@ class Content extends Component {
     }
 
     changeTextSize(newTextSize) {
-        let book = ReactDOM.findDOMNode(this.refs.book) 
+        let book = ReactDOM.findDOMNode(this.refs.book)
         let pages = book.getElementsByClassName('page')
         for (var i = pages.length - 1; i >= 0; i--) {
             // if text size settings, first time
@@ -432,7 +433,7 @@ class Content extends Component {
         }
         prevTextSize = newTextSize
     }
-    
+
     changeColor(colorStyle) {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let pages = book.getElementsByClassName('page')
@@ -440,7 +441,7 @@ class Content extends Component {
             if (prevStyle !== null)
                 pages[i].classList.remove("page-style-" + prevStyle)
 
-            pages[i].className += " page-style-" + colorStyle 
+            pages[i].className += " page-style-" + colorStyle
         }
         prevStyle = colorStyle
     }
@@ -479,7 +480,7 @@ class Content extends Component {
         var sidebarMainMenu = $('#sidebar-menu .main-menu')
         var content = $('#static-content')
         content.find('h1').each(function(e){
-        
+
         let id = $(this).attr('id') + '-menu'
         //console.log($(this).attr('id'), 'fwefwefewfewfwef')
         let header = document.createElement("li")
@@ -503,16 +504,16 @@ class Content extends Component {
             prevTitle.find('.sub-menu').append('<li title="' + $(this).text() + '" class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
         })
     }
-    
+
     tick() {
         this.setState({timerCount: (this.state.timerCount + 1)})
     }
-    
+
     startTimer() {
         clearInterval(this.timer)
         this.timer = setInterval(this.tick.bind(this), 1000)
     }
-    
+
     stopTimer() {
         clearInterval(this.timer)
     }
@@ -521,16 +522,16 @@ class Content extends Component {
         let divs = document.getElementsByClassName("page")
         for (let i = 0; i < divs.length; i++) {
             //divs[i].setAttribute('id', 'menu_' + i)
-            let pageNum = i + 1 
+            let pageNum = i + 1
             $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i]);
         }
     }
-    
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
     }
-    
+
     componentDidMount() {
         this.setState({
             book_id: window.localStorage.getItem('book_id')
@@ -545,7 +546,7 @@ class Content extends Component {
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
                     window.localStorage.setItem('name', data.name)
-                    
+
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -558,7 +559,7 @@ class Content extends Component {
                 catch(e) {
                     console.log('Error on loading book')
                 }
-                
+
             })
             .then(() => {
                 try {
@@ -571,7 +572,7 @@ class Content extends Component {
                         sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
                         sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
                     })
-                    
+
                     statiContent.addEventListener('scroll', this.pageInViewport)
                     statiContent.addEventListener('scroll', this.chapterFlashing)
                     book = statiContent.getElementsByClassName('book')[0]
@@ -588,7 +589,7 @@ class Content extends Component {
                         let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
                         element.scrollIntoView()
                         this.props.appStateControlActions.setBookScrollPos(0)
-                    } 
+                    }
                     catch(e) {
                         console.log('Error on scrolling by precise', e)
                     }
@@ -597,19 +598,19 @@ class Content extends Component {
                     console.log('Error on loading book too')
                 }
             })
-        
+
     }
-    
+
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
         //window.oncontextmenu = this.cancelDefaultMenu
-        
+
         this.stopTimer(this)
-        
+
         let {license_token, access_token, book_id, timerCount, pageInView, pageCount} = this.state
         let id = Number(book_id)
-        
+
         if (timerCount >= 30) { // if spend time in book more than 30 sec
             this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
@@ -621,18 +622,18 @@ class Content extends Component {
     }
 
     render() {
-        let {   pageInView, 
-                rect, 
-                readedPage, 
-                pageCount, 
-                progressBarPercent, 
+        let {   pageInView,
+                rect,
+                readedPage,
+                pageCount,
+                progressBarPercent,
                 progressBarPage,
-                color, 
-                book_id, 
-                localStorage, 
-                content, 
-                name, 
-                author, 
+                color,
+                book_id,
+                localStorage,
+                content,
+                name,
+                author,
                 img } = this.state
         let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
         let choosenLang = languages[0][user_settings.language]
@@ -693,7 +694,7 @@ class Content extends Component {
                                             changeTextSize={(textSize) => this.changeTextSize(textSize)}
                                             changeColor={(colorType) => this.changeColor(colorType)} />
                         </div>
-                        
+
                         <div ref="statiContent" id="static-content" className="content__text">
                             <ShowToolTipComponent onToolTipClick={this.onToolTipClick} rect={rect} />
                             <Book ref="book" book={content} />
@@ -701,7 +702,7 @@ class Content extends Component {
                     </div>
                 </div>
                 {/* <p className="fixed-page-show">стр. {pageInView}</p>*/}
-                
+
             </div>
         );
     }

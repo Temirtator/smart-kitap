@@ -130,7 +130,7 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
+        let {enterKey, registration,progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
 
 
