@@ -29,7 +29,7 @@ const versionStyle = {
     padding: '15px 15px'
 }
 class AuthComponent extends Component {
-    
+
     constructor(props) {
         super(props)
         let license_token = window.localStorage.getItem('license_token')
@@ -45,7 +45,8 @@ class AuthComponent extends Component {
             enterKeyClass: license_token ? enterKeyClass + ' disableElement' : enterKeyClass,
             registrationClass: license_token ? registrationClass : registrationClass + ' disableElement',
             loginClass: license_token ? loginClass : loginClass + ' disableElement',
-            isLoading: false
+            isLoading: false,
+            progress: 0
         }
         this.checkAuth = this.checkAuth.bind(this)
     }
@@ -75,10 +76,18 @@ class AuthComponent extends Component {
 
     componentWillMount() {
         let {license_token} = this.state
+        try {
+            if (window.getMacAddress !== undefined) {
+                window.getMacAddress()
+            }
+        } catch (e) {
+            console.log("IS NOT NW JS");
+        }
         this.props.updateAppActions.checkVersion(version)
             .then(response => {
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
+                    console.log("Checkin version", version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                         this.setState({isLoading: false})
@@ -88,13 +97,15 @@ class AuthComponent extends Component {
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
                             if (data.status === 200) {
-                                this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
+                                this.setState({isLoading: false})
                                 window.runUpdate()
+                                // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
                             } else if (data.status === 201) {//Загружается
-                                this.setState({progress: data.progress})
+                                this.setState({progress: data.progress, isLoading: true})
+
                                 // $('.ui.progress').progress({total: 100, percent: data.progress});
                             }
-                            console.log(data)
+                            console.log(data, data.status === 200)
                             //Выключается приложение
                             //быстро заменяется файл и включает приложение
                         })
@@ -145,7 +156,7 @@ class AuthComponent extends Component {
         return (
             <div className="auth-component">
                 <p style={ versionStyle }>Applicaiton Version {version}</p>
-                {isLoading ? <UpdateApp isLoading={isLoading}/>:null}
+                {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/>:null}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">
                         <img src="./image/logo_white.png" alt="logo"/>

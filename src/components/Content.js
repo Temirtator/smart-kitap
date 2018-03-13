@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 import Book from './Book'
@@ -12,21 +12,21 @@ import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
 import * as main_actions from '../actions/'
 
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { withRouter, Redirect } from 'react-router'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {withRouter, Redirect} from 'react-router'
 
 import BookOrientation from './BookOrientationComponent'
 import TextSettings from './TextSettingsComponent'
 import Sidebar from './Sidebar'
 
 import 'rc-progress/assets/index.css'
-import { Line } from 'rc-progress'
+import {Line} from 'rc-progress'
 
 import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../resources/language/languages.json'
 
-let book  = null, prevTextSize = null, prevStyle = null
+let book = null, prevTextSize = null, prevStyle = null
 
 //here is some terrible code
 const ShowToolTipComponent = (props) => {
@@ -298,6 +298,7 @@ class Content extends Component {
         if (e.keyCode === 13) {
             let { findTextValue } = this.refs
             if (window.find){
+
                 window.find(findTextValue.value)
             }
             else{
@@ -394,8 +395,6 @@ class Content extends Component {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
-        //console.log(top, 'pageYOffset', el[index])
-        let isVisible = 
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
             
@@ -449,16 +448,18 @@ class Content extends Component {
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         var images = book.getElementsByTagName('img')
-        for (var i = images.length - 1; i >= 0; i--) {
-            let parentNode = images[i].parentNode
-            let src = images[i].src //src link of my image
-            let newEl = document.createElement('div')
-            let srcLink = src //.substr(22, src.length) rectify image link
-            parentNode.removeChild(images[i])
-            const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
-            newEl.innerHTML = '<div className="zoom-image"></div>'
-            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
-        }
+        // for (var i = images.length - 1; i >= 0; i--) {
+        //     let parentNode = images[i].parentNode
+        //     let src = images[i].src //src link of my image
+        //     let newEl = document.createElement('div')
+        //     let srcLink = src //.substr(22, src.length) rectify image link
+        //     parentNode.removeChild(images[i])
+        //
+        //     console.log('zoom',images[i].width+'px');
+        //     const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
+        //     newEl.innerHTML = '<div className="zoom-image"></div>'
+        //     ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
+        // }
     }
 
     setIdHeader() {
@@ -615,7 +616,7 @@ class Content extends Component {
         }
         this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, pageInView) // pageInView its my last opened page
     }
-    
+
     render() {
         let {   pageInView, 
                 rect, 
@@ -648,7 +649,7 @@ class Content extends Component {
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
-                            <img src={'http://smartkitap.avsoft.kz' + img} alt="book image" />
+                            <img src={'http://smartkitap.avsoft.kz' + img} alt="book image"/>
                         </div>
                         <div className="content__header__sub__right">
                             <div className="content__header__sub__name">
@@ -673,7 +674,7 @@ class Content extends Component {
 
                 <div className={bodyClass}>
                     <div className="content__body__main__header">
-                        <BookOrientation  isInMainPage={false} />
+                        <BookOrientation isInMainPage={false}/>
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
                                 <input onKeyDown={(e) => this.findText(e)} ref="findTextValue" type="text" className="form-control form-control_search" placeholder={choosenLang['search-word']}></input>

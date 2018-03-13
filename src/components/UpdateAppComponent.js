@@ -24,12 +24,12 @@ class UpdateApp extends Component {
   }
   
   render() {
-    const { isLoading } = this.props
+    const { isLoading,progress } = this.props
 
     return  <ModalContainer>
                 {
                   isLoading ?
-                  <div ><ReactSpinner color="white" /> <p style={textStyle}>Идет обновление...</p></div> :
+                  <div ><ReactSpinner color="white" /> <p style={textStyle}>Идет обновление... {progress}%</p></div> :
                   <div></div>
                 }
             </ModalContainer>

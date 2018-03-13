@@ -23,7 +23,7 @@ class EnterKey extends Component {
             if (response.data.status === 200) {
                 window.localStorage.setItem('license_token', response.data.data.access_token)
                 this.props.callBackFunc() // i'm unlbock registration and login buttons
-                alert(response.data.msg)
+                // alert(response.data.msg)
             }
             else {
                 alert(response.data.msg)
