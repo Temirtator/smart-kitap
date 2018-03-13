@@ -13,13 +13,13 @@ import * as updateAppActions from '../actions/updateVersion'
 import {version} from '../../package.json'
 
 /*window.onbeforeunload = function () { // i need finish to write this function
-    let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
-    massive.map((value, index) => {
-        window.localStorage.removeItem(value)
-    })
-    
-    return 'Данные авторизации будут удалены, хотите закрыть?'
-}*/
+ let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
+ massive.map((value, index) => {
+ window.localStorage.removeItem(value)
+ })
+
+ return 'Данные авторизации будут удалены, хотите закрыть?'
+ }*/
 
 
 const versionStyle = {
@@ -29,7 +29,7 @@ const versionStyle = {
     padding: '15px 15px'
 }
 class AuthComponent extends Component {
-    
+
     constructor(props) {
         super(props)
 
@@ -42,9 +42,11 @@ class AuthComponent extends Component {
             enterKeyClass: 'auth-component__header__enter-key',
             registrationClass: 'auth-component__header__registration',
             loginClass: 'auth-component__header__login',
-            isLoading: false
+            isLoading: false,
+            progress:0,
         }
         this.checkAuth = this.checkAuth.bind(this)
+
     }
 
     checkAuth() {
@@ -72,10 +74,13 @@ class AuthComponent extends Component {
 
     componentWillMount() {
         let {license_token} = this.state
+        window.getMacAddress()
         this.props.updateAppActions.checkVersion(version)
             .then(response => {
+
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
+                    console.log("Checkin version", version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                         this.setState({isLoading: false})
@@ -85,19 +90,22 @@ class AuthComponent extends Component {
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
                             if (data.status === 200) {
-                                this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
+                                this.setState({isLoading: false})
                                 window.runUpdate()
+                                // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
                             } else if (data.status === 201) {//Загружается
-                                this.setState({progress: data.progress})
+                                this.setState({progress: data.progress,isLoading:true})
+
                                 // $('.ui.progress').progress({total: 100, percent: data.progress});
                             }
-                            console.log(data)
+                            console.log(data,data.status === 200)
                             //Выключается приложение
                             //быстро заменяется файл и включает приложение
                         })
                     }
 
                 } else {
+                    this.setState({isLoading: false})
                     if (license_token !== undefined && license_token !== null) { // if license toke exist
                         this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
                             .then(response => {
@@ -127,11 +135,11 @@ class AuthComponent extends Component {
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true })
+        this.setState({isLoading: true})
     }
 
     render() {
-        let {enterKey, registration, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
+        let {enterKey, registration, login,progress, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
 
 
@@ -157,7 +165,7 @@ class AuthComponent extends Component {
         return (
             <div className="auth-component">
                 <p style={ versionStyle }>Applicaiton Version {version}</p>
-                {isLoading ? <UpdateApp isLoading={isLoading}/>:null}
+                {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">
                         <img src="./image/logo_white.png" alt="logo"/>
