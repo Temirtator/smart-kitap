@@ -123,11 +123,7 @@ class AuthComponent extends Component {
                 }
             })
     }
-
-    componentDidMount() {
-        this.setState({ isLoading: true }) // just accidentally added here this method
-    }
-
+    
     render() {
         let {enterKey, registration,progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
