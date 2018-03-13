@@ -11,7 +11,7 @@ export function activation(serial_code) {
 			url: url + api + 'credentials',
 			data: {
 				serial_code: serial_code,
-				technical_computer_info: 'whfnwekjfwenfj',
+				technical_computer_info: 'temer technical_computer_info',
 				mac_address: '1C-3E-84-B4-43-39'
 			},
 			headers: {

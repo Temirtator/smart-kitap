@@ -719,15 +719,20 @@ button
 .test-component
 	width: 100%
 
-	.test-component__body
+	&__body
 		overflow-y: scroll
 		height: calc(100vh - 150px)
 		position: relative
-
+		
+		.side-test-menu
+			padding: 10px 21px 0 0 !important
+			//border: 1px solid #e4ebf1
+		
 		&__test-menu
 			width: 100%
 			height: auto
-			border: 1px solid #e4ebf1
+			border: 2px solid #e4ebf1
+			background-color: #f9fafb
 			padding: 15px 15px
 
 			p
@@ -757,8 +762,9 @@ button
 	&__video-element
 		width: 100%
 		height: auto
-		border: 1px solid #e4ebf1
+		border: 2px solid #e4ebf1
 		padding: 15px 15px
+		background-color: #f9fafb
 
 		p
 			margin: 0
@@ -940,6 +946,7 @@ button
 	float: left
 	position: relative
 	height: 100%
+	
 
 	.text-settings__text-style
 		display: flex

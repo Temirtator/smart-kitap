@@ -32,16 +32,19 @@ class AuthComponent extends Component {
     
     constructor(props) {
         super(props)
-
+        let license_token = window.localStorage.getItem('license_token')
+        let enterKeyClass = 'auth-component__header__enter-key',
+            registrationClass = 'auth-component__header__registration',
+            loginClass = 'auth-component__header__login'
         this.state = {
-            enterKey: true,
+            enterKey: license_token ? false : true,
             registration: false,
-            login: false,
+            login: license_token ? true : false,
             access_token: window.localStorage.getItem('access_token'),
-            license_token: window.localStorage.getItem('license_token'),
-            enterKeyClass: 'auth-component__header__enter-key',
-            registrationClass: 'auth-component__header__registration',
-            loginClass: 'auth-component__header__login',
+            license_token: license_token,
+            enterKeyClass: license_token ? enterKeyClass + ' disableElement' : enterKeyClass,
+            registrationClass: license_token ? registrationClass : registrationClass + ' disableElement',
+            loginClass: license_token ? loginClass : loginClass + ' disableElement',
             isLoading: false
         }
         this.checkAuth = this.checkAuth.bind(this)
@@ -96,38 +99,23 @@ class AuthComponent extends Component {
                             //быстро заменяется файл и включает приложение
                         })
                     }
-
-                } else {
-                    if (license_token !== undefined && license_token !== null) { // if license toke exist
-                        this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
-                            .then(response => {
-                                if (response.status === 200) {
-                                    this.setState(prev => {
-                                        return {
-                                            enterKeyClass: prev.enterKeyClass + ' disableElement',
-                                            enter: false,
-                                            registration: true
-                                        }
-                                    })
-                                    alert(response.msg)
-                                    this.checkAuth()
-                                }
-                            })
-                    } else {
-                        //enterKeyClass += ' disableElement'
-                        this.setState(prev => {
-                            return {
-                                registrationClass: prev.registrationClass + ' disableElement',
-                                loginClass: prev.loginClass + ' disableElement'
-                            }
-                        })
-                    }
+                } 
+            })
+            .then(() => {
+                if (license_token !== undefined && license_token !== null) { // if license toke exist
+                    this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
+                    .then(response => {
+                        if (response.status === 200) {
+                            alert(response.msg)
+                            this.checkAuth()
+                        }
+                    })
                 }
             })
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true }) // just accidentally added here this method
     }
 
     render() {

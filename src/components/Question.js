@@ -31,7 +31,8 @@ class Question extends Component {
 
         this.state = {
         	selectedValue: '',
-            rightAnswer: this.props.objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
+            rightAnswer: this.props.objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value,
+
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -41,7 +42,7 @@ class Question extends Component {
         let { objectQuestion, book_test } = this.props
         let right_answer = objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
         let isCorrect = objectQuestion.variants.filter(object => object.value === value)[0].isCorrect //is right or no
-              
+        
         let newObject = {
             order: objectQuestion.order,
             isCorrect: isCorrect,
@@ -58,15 +59,16 @@ class Question extends Component {
     }
 
     render() {
-        let { objectQuestion, index, book_test } = this.props
-        let { rightAnswer } = this.state 
+        let { objectQuestion, index } = this.props
+        let { rightAnswer, selectedValue } = this.state 
+        let { testIsFinished } = this.props.book_test 
         return (
             <div className="test-question">
     			<h3>{objectQuestion.text}</h3>
                 <Images images={objectQuestion.picture_url} />
                 <RadioGroup
 			        name={"question " + index}
-			        selectedValue={book_test.testIsFinished ? rightAnswer : this.state.selectedValue}
+			        selectedValue={ ((testIsFinished) && (rightAnswer === selectedValue)) ? rightAnswer : ((testIsFinished) ? '' : selectedValue)}
 			        onChange={(value) => this.handleChange(value)}
 			        className="test-answers"
                     >
@@ -74,12 +76,12 @@ class Question extends Component {
 				        <label key={i}>
 				          <Radio value={answer.value} />
                           <div className="check"></div> 
-				          <p>{answer.value}</p>
+				          <p style = {(!answer.isCorrect && (testIsFinished)) ? {color: 'red'} : (testIsFinished ? {color: 'green'} : {}) }>{answer.value}</p>
 				        </label>
-			        )}
+			        )}   
 			    </RadioGroup>
     		</div>
-        );
+        )
     }
 }
 

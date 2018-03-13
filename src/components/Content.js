@@ -275,19 +275,21 @@ class Content extends Component {
     increaseProgressBar() {
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
-            //readed pages on percent
-            let readedPages = Math.ceil((readedPage/pageCount)*100)
-            const percent = this.state.progressBarPercent + 1
-            if (percent >= readedPages) {
-                this.setState({ progressBarPage: readedPage })
-                clearTimeout(this.tm)
-                return;
+            if (pageCount >= readedPage) {
+                //readed pages on percent
+                let readedPages = Math.ceil((readedPage/pageCount)*100)
+                const percent = this.state.progressBarPercent + 1
+                if (percent >= readedPages) {
+                    this.setState({ progressBarPage: readedPage })
+                    clearTimeout(this.tm)
+                    return;
+                }
+                this.setState({ 
+                    progressBarPercent: percent,
+                    progressBarPage: Math.ceil((percent/100)*pageCount)
+                 })
+                this.tm = setTimeout(this.increaseProgressBar, 0)
             }
-            this.setState({ 
-                progressBarPercent: percent,
-                progressBarPage: Math.ceil((percent/100)*pageCount)
-             })
-            this.tm = setTimeout(this.increaseProgressBar, 0)
         }
     }
     
@@ -521,7 +523,7 @@ class Content extends Component {
                         img: data.cover,
                         content: content,
                         pageCount: data.page_count,
-                        readedPage: data.progress.last_opened_page_id
+                        readedPage: data.last_opened_page
                     })
                 }
                 catch(e) {

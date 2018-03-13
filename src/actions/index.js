@@ -99,7 +99,7 @@ export function setTestResults(license_token, access_token, book_id, exam_id, co
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + access_token
 			}
-		})
+		})	
 		.then(response => {
 			console.log('setTestResults', response)
 			/*dispatch({
@@ -129,6 +129,14 @@ export function setTestFinished() {
 	return dispatch => {
 		dispatch({
 			type: types.SET_TEST_FINISHED,
+		})
+	}
+}
+
+export function setTestStarted() {
+	return dispatch => {
+		dispatch({
+			type: types.SET_TEST_STARTED
 		})
 	}
 }

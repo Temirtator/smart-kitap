@@ -1184,19 +1184,22 @@ button {
 
 .test-component {
   width: 100%; }
-  .test-component .test-component__body {
+  .test-component__body {
     overflow-y: scroll;
     height: calc(100vh - 150px);
     position: relative; }
-    .test-component .test-component__body__test-menu {
+    .test-component__body .side-test-menu {
+      padding: 10px 21px 0 0 !important; }
+    .test-component__body__test-menu {
       width: 100%;
       height: auto;
-      border: 1px solid #e4ebf1;
+      border: 2px solid #e4ebf1;
+      background-color: #f9fafb;
       padding: 15px 15px; }
-      .test-component .test-component__body__test-menu p {
+      .test-component__body__test-menu p {
         margin: 0;
         cursor: pointer; }
-    .test-component .test-component__body .btn-primary {
+    .test-component__body .btn-primary {
       position: relative !important;
       left: 50% !important;
       transform: translateX(-50%) !important;
@@ -1227,8 +1230,9 @@ button {
   .video-body__content__video-element {
     width: 100%;
     height: auto;
-    border: 1px solid #e4ebf1;
-    padding: 15px 15px; }
+    border: 2px solid #e4ebf1;
+    padding: 15px 15px;
+    background-color: #f9fafb; }
     .video-body__content__video-element p {
       margin: 0;
       cursor: pointer; }
@@ -2248,7 +2252,8 @@ div.my-books__test-by-books {
     .blindMode .test-component__header .text-settings__text-style span {
       border: 1px solid #fff !important; }
   .blindMode .test-component__body__test-menu {
-    color: #fff; }
+    color: #fff;
+    background-color: #000; }
   .blindMode .test-component__body .test-question {
     background-color: #000; }
     .blindMode .test-component__body .test-question h3 {

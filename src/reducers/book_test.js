@@ -1,7 +1,8 @@
 import { 	SELECTED_QUESTION,
 			GET_TEST_QUESTIONS,
 			SET_ANSWER,
-			SET_TEST_FINISHED } from '../constants/e_reader'
+			SET_TEST_FINISHED,
+      SET_TEST_STARTED } from '../constants/e_reader'
 
 const initialState = {
   	questions: [],
@@ -24,6 +25,9 @@ export default function book_test(state = initialState, action) {
 
   	case SET_TEST_FINISHED:
   		return {...state, testIsFinished: true}
+
+    case SET_TEST_STARTED:
+      return {...state, testIsFinished: false, answers: [], questions: []}
 
     default:
       return state
