@@ -12,14 +12,14 @@ import * as updateAppActions from '../actions/updateVersion'
 
 import {version} from '../../package.json'
 
-/*window.onbeforeunload = function () { // i need finish to write this function
+window.onbeforeunload = function () { // i need finish to write this function
     let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
     massive.map((value, index) => {
         window.localStorage.removeItem(value)
     })
     
     return 'Данные авторизации будут удалены, хотите закрыть?'
-}*/
+}
 
 
 const versionStyle = {
@@ -117,7 +117,6 @@ class AuthComponent extends Component {
                     this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
                     .then(response => {
                         if (response.status === 200) {
-                            alert(response.msg)
                             this.checkAuth()
                         }
                     })
