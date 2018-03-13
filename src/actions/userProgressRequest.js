@@ -241,13 +241,10 @@ export function bookIsReaded(license_token, access_token, book_id) {
 		})
 		.then(response => {
 			console.log('setUserProgress', response)
-
-			//return response
 		})
 		.catch(error => {
 			console.log('setUserProgress', error)
 		})
-
 	}
 }
 
