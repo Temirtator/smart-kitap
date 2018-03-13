@@ -84,7 +84,7 @@ class Content extends Component {
             selectionText: '',
             quoteExist: false,
             access_token: window.localStorage.getItem('access_token'),
-            license_token: '124235asfa1k2431wasda',
+            license_token: window.localStorage.getItem('license_token'),
             book_id: null,
             book_page_id: 'null',
             name: '',
@@ -607,7 +607,7 @@ class Content extends Component {
         
         this.stopTimer(this)
         
-        let {license_token, access_token, book_id, timerCount, pageInView} = this.state
+        let {license_token, access_token, book_id, timerCount, pageInView, pageCount} = this.state
         let id = Number(book_id)
         
         if (timerCount >= 30) { // if spend time in book more than 30 sec
@@ -615,6 +615,9 @@ class Content extends Component {
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
         this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, pageInView) // pageInView its my last opened page
+        if (pageCount === pageInView) { // opened last page and book is closed, so book is finished
+            this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
+        }
     }
 
     render() {
