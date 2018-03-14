@@ -17,7 +17,7 @@ import {version} from '../../package.json'
     massive.map((value, index) => {
         window.localStorage.removeItem(value)
     })
-    
+
     return 'Данные авторизации будут удалены, хотите закрыть?'
 }*/
 
@@ -108,24 +108,24 @@ class AuthComponent extends Component {
                             //быстро заменяется файл и включает приложение
                         })
                     }
-                } else{
+                } else {
                     this.setState({isLoading: false})
                 }
             })
             .then(() => {
                 if (license_token !== undefined && license_token !== null) { // if license toke exist
                     this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
-                    .then(response => {
-                        if (response.status === 200) {
-                            this.checkAuth()
-                        }
-                    })
+                        .then(response => {
+                            if (response.status === 200) {
+                                this.checkAuth()
+                            }
+                        })
                 }
             })
     }
-    
+
     render() {
-        let {enterKey, registration,progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
+        let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
 
 
@@ -151,7 +151,7 @@ class AuthComponent extends Component {
         return (
             <div className="auth-component">
                 <p style={ versionStyle }>Applicaiton Version {version}</p>
-                {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/>:null}
+                {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">
                         <img src="./image/logo_white.png" alt="logo"/>
