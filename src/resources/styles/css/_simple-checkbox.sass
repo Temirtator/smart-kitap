@@ -1,0 +1,18 @@
+.simple-checkbox
+  visibility: hidden
+  font-size: 30px
+  cursor: pointer
+  float: right
+  color: #00646c
+  margin: 9px 6px 0 0 !important
+
+  &:before
+    content: "\2610"
+    position: relative
+    visibility: visible
+    top: -17px
+    right: 6px
+  &:checked:before
+    content: "\2611"
+    position: relative
+    color: #a3c5c8

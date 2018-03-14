@@ -573,7 +573,7 @@ class Content extends Component {
         this.checkAuth()
         this.startTimer(this)
     }
-
+    
     componentDidMount() {
         this.setState({
             book_id: window.localStorage.getItem('book_id')

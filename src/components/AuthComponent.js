@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 import * as updateAppActions from '../actions/updateVersion'
 
+
 import {version} from '../../package.json'
 
 /*window.onbeforeunload = function () { // i need finish to write this function
@@ -127,7 +128,6 @@ class AuthComponent extends Component {
     render() {
         let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
-
 
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {

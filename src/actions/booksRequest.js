@@ -164,3 +164,48 @@ export function sendBookDuration(license_token, access_token, book_id, duration)
 		})
 	}
 }
+
+export function getOrderedBooks(license_token, access_token) {
+	return dispatch => {
+		axios({
+			method: 'post',
+			url: url + api + 'book_order',
+			data: {
+				'COMP_ACCESS_TOKEN': license_token
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + access_token 
+			}
+		})
+		.then(response => {
+			console.log('getOrderedBooks', response)
+		})
+		.catch(error => {
+			console.log('getOrderedBooks', error)
+		})
+	}
+}
+
+/*export function getOrderedBooks(license_token, access_token) {
+	return dispatch => {
+		axios({
+			method: 'post',
+			url: url + api + 'book_order',
+			data: {
+				'COMP_ACCESS_TOKEN': license_token
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + access_token 
+			}
+		})
+		.then(response => {
+			console.log('getOrderedBooks', response)
+		})
+		.catch(error => {
+			console.log('getOrderedBooks', error)
+		})
+	}
+}
+*/

@@ -40,24 +40,24 @@ export function getAllUserProgress(license_token, access_token) {
 			let general_progress = [
 				   	[
 				      {	
-				      	key: book_page_count,
+				      	key: Math.round((book_page_count / (book_page_count + readed_page_count)) * 100).toFixed(2) + ' %',
 				        value: book_page_count,
 				        color: color
 				      },
 				      {
-				      	key: readed_page_count,
+				      	key: Math.round((readed_page_count / (book_page_count + readed_page_count)) * 100).toFixed(2) + ' %',
 				        value: readed_page_count,
 				        color: highlight
 				      }
 				    ],
 				    [
 				      {
-				      	key: general_correct_answ,
+				      	key: Math.round((general_correct_answ / (general_correct_answ + general_incorrect_answ)) * 100).toFixed(2) + ' %',
 				        value: general_correct_answ,
 				        color: color
 				      },
 				      {
-				      	key: general_correct_answ,
+				      	key: Math.round((general_incorrect_answ / (general_correct_answ + general_incorrect_answ)) * 100).toFixed(2) + ' %',
 				        value: general_incorrect_answ,
 				        color: highlight
 				      }
@@ -65,7 +65,7 @@ export function getAllUserProgress(license_token, access_token) {
 				    [
 				      {
 				      	value: Math.round(general_duration / 60),
-				        color: color,
+				        color: color
 				      }
 				    ]
 				]
@@ -88,25 +88,25 @@ export function getAllUserProgress(license_token, access_token) {
 			        [
 			          {
 			            value: readed_books[i].total_page,
+			            key: Math.round((readed_books[i].total_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100).toFixed(2) + ' %',
 			            color:color,
-			            key: readed_books[i].total_page
 			          },
 			          {
 			            value: readed_books[i].last_opened_page,
+			            key: Math.round((readed_books[i].last_opened_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100).toFixed(2) + ' %',
 			            color:highlight,
-			            key: readed_books[i].last_opened_page
 			          }
 			        ],
 			        [
 			          {
 			            value: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
-			            color: color,
-			            key: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count
+			            key: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
+			            color: color
 			          },
 			          {
 			            value: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
-			            color:highlight,
 			            key: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
+			            color:highlight,
 			          }
 			        ],
 			        [
