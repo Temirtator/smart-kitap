@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import {PieChart} from 'react-easy-chart'
 
 
-class PieComponent extends Component {
+class PieItemProgress extends Component {
     static propTypes = {
     	chartData: PropTypes.array.isRequired,
     	itemName: PropTypes.array.isRequired
@@ -16,7 +16,7 @@ class PieComponent extends Component {
 	            	{/*<PieChart ref="progressCanvas" data={chartData} options={chartOptions} />*/}
 	            	<PieChart
 					    labels
-					    size={200}
+					    size={100}
 					    data={chartData}
 					    styles={{
 					      '.chart_text': {
@@ -41,4 +41,4 @@ class PieComponent extends Component {
     }
 }
 
-export default PieComponent
+export default PieItemProgress

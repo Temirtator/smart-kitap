@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import React3 from 'react-three-renderer'
 import * as THREE from 'three'
@@ -7,6 +7,7 @@ import MTLLoader from './3d-modules/MTLLoader'
 import OBJLoader from './3d-modules/OBJLoader'
 MTLLoader(THREE)
 OBJLoader(THREE)
+THREE.ImageUtils.crossOrigin = ""
 
 const perspectiveCameraName = 'perspectiveCamera'
 const orthographicCameraName = 'orthographicCamera'
@@ -16,9 +17,14 @@ const perspectiveCameraRotation = new THREE.Euler(0, Math.PI, 0)
 //const textRotation = new THREE.Euler(0, 2, 0)
 
 class Model3d extends Component {
+	static propTypes = {
+		obj: PropTypes.string.isRequired,
+		mtl: PropTypes.string.isRequired
+	}
+
     constructor(props, context) {
         super(props, context)
-
+        let { obj, mtl } = props
         this.state = {
         	meshPosition: new THREE.Vector3(0, -220, 0),
 		    childPosition: new THREE.Vector3(-150, 50, -360),
@@ -28,9 +34,9 @@ class Model3d extends Component {
 		    paused: true,
 		    text: '1931-2017',
 		    color: 'black',
-		    texture: './3dmodels/grave/grave_1.jpg',
-		    obj: './3dmodels/grave/grave_1.obj',
-		    mtl: './3dmodels/grave/grave_1.mtl',
+		    //texture: './3dmodels/alien_car/aliens.jpg',
+		    obj: obj,
+		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
 		    lightIntesity: 0.6
         }
@@ -129,11 +135,13 @@ class Model3d extends Component {
 	    const onError = ( xhr ) => { console.log(xhr) }
 	    const group = this.refs.group
 	    const mtlLoader = new this.THREE.MTLLoader()
+	    mtlLoader.crossOrigin = ''
 	    return (
 	      mtlLoader.load(this.state.mtl, materials => {
 	        materials.preload()
 	        const objLoader = new this.THREE.OBJLoader()
-	        objLoader.setMaterials(materials);
+	        objLoader.setMaterials(materials)
+	        objLoader.crossOrigin = 'anonymous'
 	        objLoader.load(this.state.obj, object => {
 		        group.add(object)
 		        this.setState({object})
@@ -158,7 +166,7 @@ class Model3d extends Component {
 				new THREE.MeshPhongMaterial( { color: this.state.color, flatShading: true } ), // front
 				new THREE.MeshPhongMaterial( { color: this.state.color } ) // side
 			]
-	    fff.load('./3dmodels/grave/he_le.font.json', (font) => {
+	   /* fff.load('./3dmodels/grave/he_le.font.json', (font) => {
 	      const geo = new THREE.TextGeometry( this.state.text, {
 	    		font: font,
 	    		size: 10,
@@ -173,7 +181,7 @@ class Model3d extends Component {
 
 	      group2.add(textMesh1)
 	      this.setState({updateText: textMesh1})
-	    }, onProgress, onError)
+	    }, onProgress, onError)*/
 	}
 
 	componentDidMount() {

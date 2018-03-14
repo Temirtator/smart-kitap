@@ -71,13 +71,18 @@
       font-weight: bold;
       color: #000;
       margin: 0;
-      padding: 0 0 0 2px; }
+      padding: 0 0 0 2px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 100px;
+      max-height: 63px; }
     .books .books__book p.books__book__author {
       color: #989898;
       font-size: 12px; }
     .books .books__book .books__book__wrap {
       padding-top: 10px !important;
-      width: fit-content;
+      width: 100%;
       padding: 0; }
       .books .books__book .books__book__wrap .books__book__text__wrap {
         padding-left: 0px !important; }
@@ -385,6 +390,12 @@
   overflow: hidden;
   text-align: justify;
   font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif; }
+  .page .models_3d .model-3d {
+    width: 100% !important;
+    height: 100% !important; }
+    .page .models_3d .model-3d canvas {
+      width: 100% !important;
+      height: 100% !important; }
   .page td, .page th {
     border: 1px solid black !important;
     padding: 8px !important; }
@@ -915,7 +926,8 @@ button {
       position: relative;
       top: 37%;
       transform: translateY(-50%);
-      padding: 0 0 0 15px; }
+      padding: 0 0 0 15px;
+      line-height: 0; }
     .test-answers label input[type=radio] {
       position: absolute;
       visibility: hidden; }
@@ -949,6 +961,16 @@ button {
       color: #02d81f; }
     .test-answers label input[type=radio]:checked ~ .check::before {
       background: #02d81f; }
+    .test-answers label .right_answer {
+      border-color: #02d81f !important; }
+    .test-answers label .left_answer {
+      border-color: #ff0000 !important; }
+    .test-answers label .usual_answer {
+      border-color: #AAAAAA !important; }
+    .test-answers label .right_answer:before {
+      background: #02d81f !important; }
+    .test-answers label .left_answer:before {
+      background: #ff0000 !important; }
 
 .test-question {
   padding: 10px 20px;
@@ -999,7 +1021,7 @@ button {
 
 .content__body {
   width: calc(100vw - 300px);
-  height: calc(100vh);
+  height: 100vh;
   padding: 0 calc((100vw - 1300px)/2);
   display: block;
   float: right;
@@ -1111,7 +1133,7 @@ button {
     .new-precises .new-precise .new-precise__header {
       display: flex;
       width: 100%;
-      height: 80px;
+      height: 42px;
       padding: 5px 5px;
       border-bottom: 1px solid;
       border-color: #e6edf5;
@@ -1127,7 +1149,8 @@ button {
         position: relative; }
         .new-precises .new-precise .new-precise__header .new-precise__header__right .new-precise__header__right__first-lvl {
           display: inline-block;
-          width: 100%; }
+          width: auto;
+          float: right; }
           .new-precises .new-precise .new-precise__header .new-precise__header__right .new-precise__header__right__first-lvl h5 {
             margin: 0;
             color: #595959; }
@@ -1149,7 +1172,7 @@ button {
             margin: 0;
             color: #b3b3b3; }
     .new-precises .new-precise .new-precise__body {
-      padding: 28px 0 0 0;
+      padding: 15px 0 0 0;
       word-wrap: break-word;
       cursor: pointer; }
       .new-precises .new-precise .new-precise__body textarea {

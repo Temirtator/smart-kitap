@@ -42,16 +42,18 @@ class Question extends Component {
         let { objectQuestion, book_test } = this.props
         let right_answer = objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
         let isCorrect = objectQuestion.variants.filter(object => object.value === value)[0].isCorrect //is right or no
-        
+        let book_exam_question_id = objectQuestion.id // get id for identification, for non-repeating push answers
+
         let newObject = {
-            order: objectQuestion.order,
+            question_id: book_exam_question_id,
             isCorrect: isCorrect,
             chosen_answer: value,
             right_answer: right_answer
         }
         
-        //checking for current values
-        let elements = book_test.answers.filter(object => object.order !== newObject.order) // here i get array of objects where is no current answer
+        //compare current datas with new datas, to run away from repeating 
+        //its important comparing
+        let elements = book_test.answers.filter(object => object.question_id !== newObject.question_id) 
         elements.push(newObject)
         
         this.props.actions.setAnswer(elements)
@@ -64,19 +66,24 @@ class Question extends Component {
         let { testIsFinished } = this.props.book_test 
         return (
             <div className="test-question">
-    			<h3>{objectQuestion.text}</h3>
-                <Images images={objectQuestion.picture_url} />
+    			<h3><div dangerouslySetInnerHTML={{ __html: objectQuestion.text }} /></h3>
+                {/*<Images images={objectQuestion.picture_url} />*/}
                 <RadioGroup
 			        name={"question " + index}
-			        selectedValue={ ((testIsFinished) && (rightAnswer === selectedValue)) ? rightAnswer : ((testIsFinished) ? '' : selectedValue)}
+			        selectedValue={ selectedValue }
 			        onChange={(value) => this.handleChange(value)}
 			        className="test-answers"
                     >
 				    { objectQuestion.variants.map((answer, i) =>
 				        <label key={i}>
-				          <Radio value={answer.value} />
-                          <div className="check"></div> 
-				          <p style = {(!answer.isCorrect && (testIsFinished)) ? {color: 'red'} : (testIsFinished ? {color: 'green'} : {}) }>{answer.value}</p>
+				            <Radio value={answer.value} />
+                            <div className={ (answer.isCorrect && testIsFinished) ?
+                                            'check right_answer' : ((selectedValue === answer.value) && testIsFinished) ?
+                                            'check left_answer' : 'check' }></div> 
+                            
+                            <p style = { (answer.isCorrect && testIsFinished) ? 
+                                            {color:'green'} : ((selectedValue === answer.value) && testIsFinished) ? 
+                                            {color:'red'} : {color:'#000'} } dangerouslySetInnerHTML={{ __html: answer.value }} />
 				        </label>
 			        )}   
 			    </RadioGroup>
