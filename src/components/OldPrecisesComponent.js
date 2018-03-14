@@ -71,7 +71,8 @@ class OldPrecises extends Component {
             let precisDate = month + '/' + day + '/' + year
             let timeDiff = Math.abs(new Date(currentDate).getTime() - new Date(precisDate).getTime())
             let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
-            if (diffDays >= 1) {
+            //console.log('diffDays', diffDays)
+            if (diffDays >= 30) { // if 1 or more month then ...
                 oldPrecisesArray.push(somePrecise[i])
             }
         }

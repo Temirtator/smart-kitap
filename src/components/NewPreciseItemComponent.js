@@ -113,14 +113,14 @@ class NewPreciseItem extends Component {
         return (
          	<div className="col-sm-6 new-precise">    			
     			<div className="new-precise__header" >
-	    			<div className="new-precise__header__left">
+	    			{/*<div className="new-precise__header__left">
 	    				<img src={'http://smartkitap.avsoft.kz' + img} alt="book" />
-	    			</div>
+	    			</div>*/}
 	    			<div className="new-precise__header__right">
 	    				<div className="new-precise__header__right__first-lvl">
-	    					<div className="col-sm-10">
+	    					{/*<div className="col-sm-10">
 	    						<h5>{name}</h5>
-	    					</div>
+	    					</div>*/}
 	    					<div className="col-sm-2">
 	    						{/*<div className="precisEdit" onClick={() => this.editPrecis(index, text)}>
                                     <i className="fas fa-pencil-alt"></i>
@@ -130,9 +130,9 @@ class NewPreciseItem extends Component {
                                 </div>
 	    					</div>
 	    				</div>
-	    				<div className="new-precise__header__right__second-lvl">
+	    				{/*<div className="new-precise__header__right__second-lvl">
 	    					<p>{author}</p>
-	    				</div>
+	    				</div>*/}
 	    			</div>
 	    		</div>
                 

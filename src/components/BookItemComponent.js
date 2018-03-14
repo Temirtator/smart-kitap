@@ -60,8 +60,8 @@ class BookItem extends Component {
 				<img onClick={this.onClickHandler} src={'http://smartkitap.avsoft.kz' + img} alt="book image" />
 				<div className="books__book__wrap">
 					<div className="books__book__text__wrap col-md-10">
-						<p className="books__book__name">{name}</p>
-						<p className="books__book__author">{author}</p>
+						<p title={name} className="books__book__name">{name}</p>
+						<p title={author} className="books__book__author">{author}</p>
 					</div>
 					<input className="star" type="checkbox" title="bookmark page" onChange={this.setMyBookState} checked={this.state.isMyBook} />
 				</div>

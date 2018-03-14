@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import PieComponent from './PieComponent'
-import PieComponentDuration from './PieComponentDuration'
+import PieItemProgress from './PieItemProgressComponent'
+import PieItemDuration from './PieItemDurationComponent'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -27,15 +27,15 @@ class IReadBooks extends Component {
 						<div className="readed-books-component__body__statistics">
 							<div className="col-sm-4 readed-books-component__body__development">
 								<h4>{choosenLang['familiarization']}</h4>
-								<PieComponent itemName={[choosenLang['page']]} chartData={value.statistics[0]} />
+								<PieItemProgress itemName={[choosenLang['page']]} chartData={value.statistics[0]} />
 							</div>
 							<div className="col-sm-4 readed-books-component__body__test">
 								<h4>{choosenLang['tests']}</h4>
-								<PieComponent itemName={[choosenLang['correct'], choosenLang['incorrect']]} chartData={value.statistics[1]} />
+								<PieItemProgress itemName={[choosenLang['correct'], choosenLang['incorrect']]} chartData={value.statistics[1]} />
 							</div>
 							<div className="col-sm-4 readed-books-component__body__duration">
 								<h4>{choosenLang['duration']}</h4>
-								<PieComponentDuration itemName={[choosenLang['minute']]} chartData={value.statistics[2]} />
+								<PieItemDuration itemName={[choosenLang['minute']]} chartData={value.statistics[2]} />
 							</div>
 						</div>
 					</div>

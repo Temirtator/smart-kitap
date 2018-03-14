@@ -39,34 +39,33 @@ export function getAllUserProgress(license_token, access_token) {
 			
 			let general_progress = [
 				   	[
-				      {
+				      {	
+				      	key: book_page_count,
 				        value: book_page_count,
-				        color: color,
-				        highlight: color
+				        color: color
 				      },
 				      {
+				      	key: readed_page_count,
 				        value: readed_page_count,
-				        color: highlight,
-				        highlight: highlight
+				        color: highlight
 				      }
 				    ],
 				    [
 				      {
+				      	key: general_correct_answ,
 				        value: general_correct_answ,
-				        color: color,
-				        highlight: color
+				        color: color
 				      },
 				      {
+				      	key: general_correct_answ,
 				        value: general_incorrect_answ,
-				        color: highlight,
-				        highlight: highlight
+				        color: highlight
 				      }
 				    ],
 				    [
 				      {
-				        value: Math.round(general_duration / 60),
+				      	value: Math.round(general_duration / 60),
 				        color: color,
-				        highlight: color
 				      }
 				    ]
 				]
@@ -90,31 +89,30 @@ export function getAllUserProgress(license_token, access_token) {
 			          {
 			            value: readed_books[i].total_page,
 			            color:color,
-			            highlight: color
+			            key: readed_books[i].total_page
 			          },
 			          {
 			            value: readed_books[i].last_opened_page,
 			            color:highlight,
-			            highlight:highlight
+			            key: readed_books[i].last_opened_page
 			          }
 			        ],
 			        [
 			          {
 			            value: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
-			            color:color,
-			            highlight:color
+			            color: color,
+			            key: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count
 			          },
 			          {
 			            value: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			            color:highlight,
-			            highlight:highlight
+			            key: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			          }
 			        ],
 			        [
 			          {
 			            value: Math.round(readed_books[i].duration / 60),
-			            color:color,
-			            highlight:color
+			            color:color
 			          }
 			        ]
 			      ]
@@ -138,31 +136,30 @@ export function getAllUserProgress(license_token, access_token) {
 			          {
 			            value: opened_books[j].total_page,
 			            color:color,
-			            highlight: color
+			            key: opened_books[j].total_page
 			          },
 			          {
 			            value: opened_books[j].last_opened_page,
 			            color:highlight,
-			            highlight:highlight
+			            key: opened_books[j].last_opened_page
 			          }
 			        ],
 			        [
 			          {
 			            value: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count,
 			            color:color,
-			            highlight:color
+			            key: (correct_count === undefined || correct_count === 0) ? 1 : correct_count.correct_count
 			          },
 			          {
 			            value: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			            color:highlight,
-			            highlight:highlight
+			            key: (incorrect_count === undefined || incorrect_count === 0) ? 1 : incorrect_count.correct_count,
 			          }
 			        ],
 			        [
 			          {
 			            value: Math.round(opened_books[j].duration / 60),
-			            color:color,
-			            highlight:color
+			            color:color 
 			          }
 			        ]
 			      ]

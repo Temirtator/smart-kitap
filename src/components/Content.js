@@ -26,6 +26,8 @@ import {Line} from 'rc-progress'
 import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../resources/language/languages.json'
 
+import Model3d from './Model3d'
+
 let book = null, prevTextSize = null, prevStyle = null
 
 //here is some terrible code
@@ -62,6 +64,8 @@ const progressBarStyle =  {
     background: 'linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#009b29", endColorstr="#ea2623",GradientType=0 )' /* IE6-9 */
 }
+
+var TRange=null;
 
 class Content extends Component {
     constructor(props) {
@@ -111,6 +115,7 @@ class Content extends Component {
         this.scrollToElement = this.scrollToElement.bind(this)
         this.countOfPage = this.countOfPage.bind(this)
         this.setIdHeader = this.setIdHeader.bind(this)
+        this.parse3D = this.parse3D.bind(this)
     }
 
     checkAuth() {
@@ -297,13 +302,34 @@ class Content extends Component {
     findText(e) {
         if (e.keyCode === 13) {
             let { findTextValue } = this.refs
-            if (window.find){
-
-                window.find(findTextValue.value)
-            }
-            else{
-                alert('Your application does not support window.find() function')
-            }
+            let str = findTextValue.value
+            if (parseInt(navigator.appVersion)<4) return;
+             var strFound;
+             if (window.find) {
+              strFound=window.find(str);
+              if (!strFound) {
+               strFound=window.find(str,0,1);
+               while (window.find(str,0,1)) continue;
+              }
+             }
+             else if (navigator.appName.indexOf("Microsoft")!=-1) {
+              if (TRange!=null) {
+               TRange.collapse(false);
+               strFound=TRange.findText(str);
+               if (strFound) TRange.select();
+              }
+              if (TRange==null || strFound==0) {
+               TRange=window.document.body.createTextRange();
+               strFound=TRange.findText(str);
+               if (strFound) TRange.select();
+              }
+             }
+             else if (navigator.appName=="Opera") {
+              alert ("Opera browsers not supported, sorry...")
+              return;
+             }
+             if (!strFound) alert ("Слово '"+str+"' не был найден!")
+             return;
         }
     }
 
@@ -387,6 +413,7 @@ class Content extends Component {
 
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
+        let book = ReactDOM.findDOMNode(this.refs.book)
         let relativeEl = el[index].getBoundingClientRect()
         //let top = el[index].offsetTop
         let top = relativeEl.top + window.scrollY
@@ -395,11 +422,11 @@ class Content extends Component {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
-        let isVisible=
+        let isVisible =
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
 
-        //console.log('isVisible', isVisible, 'index', index, el[index] )
+        //console.log('book pos', book.getBoundingClientRect())
 
         return isVisible
     }
@@ -437,7 +464,7 @@ class Content extends Component {
     changeColor(colorStyle) {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let pages = book.getElementsByClassName('page')
-        for (var i = pages.length - 1; i >= 0; i--) {
+        for (let i = pages.length - 1; i >= 0; i--) {
             if (prevStyle !== null)
                 pages[i].classList.remove("page-style-" + prevStyle)
 
@@ -448,19 +475,34 @@ class Content extends Component {
 
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        var images = book.getElementsByTagName('img')
-        // for (var i = images.length - 1; i >= 0; i--) {
-        //     let parentNode = images[i].parentNode
-        //     let src = images[i].src //src link of my image
-        //     let newEl = document.createElement('div')
-        //     let srcLink = src //.substr(22, src.length) rectify image link
-        //     parentNode.removeChild(images[i])
-        //
-        //     console.log('zoom',images[i].width+'px');
-        //     const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
-        //     newEl.innerHTML = '<div className="zoom-image"></div>'
-        //     ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
-        // }
+        let images = book.getElementsByTagName('img')
+        for (var i = images.length - 1; i >= 0; i--) {
+            let parentNode = images[i].parentNode
+            let src = images[i].src //src link of my image
+            let newEl = document.createElement('div')
+            let srcLink = src //.substr(22, src.length) rectify image link
+            parentNode.removeChild(images[i])
+            
+            //console.log('zoom',images[i].width+'px');
+            const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
+            newEl.innerHTML = '<div className="zoom-image"></div>'
+            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
+        }
+    }
+
+    parse3D() {
+        let book = ReactDOM.findDOMNode(this.refs.book)
+        let models = book.getElementsByClassName('models_3d')
+
+        for (let i = 0; i <= models.length - 1; i++) {
+            let childNodes = models[i].getElementsByTagName("a")
+            let objLink = childNodes[0].getAttribute("href")
+            let mtlLink = childNodes[1].getAttribute('href')
+            models[i].innerHTML = ''
+            const my_model = <Model3d obj={objLink} mtl={mtlLink} />
+            ReactDOM.render(my_model, models[i])
+            //console.log('models', mtlLink)
+        }
     }
 
     setIdHeader() {
@@ -480,11 +522,11 @@ class Content extends Component {
         var sidebarMainMenu = $('#sidebar-menu .main-menu')
         var content = $('#static-content')
         content.find('h1').each(function(e){
-
+            
         let id = $(this).attr('id') + '-menu'
         //console.log($(this).attr('id'), 'fwefwefewfewfwef')
         let header = document.createElement("li")
-
+        
         header.setAttribute('class', 'chapter-header')
         //header.innerHTML = $(this).text()
         header.title = $(this).text()
@@ -508,7 +550,7 @@ class Content extends Component {
     tick() {
         this.setState({timerCount: (this.state.timerCount + 1)})
     }
-
+    
     startTimer() {
         clearInterval(this.timer)
         this.timer = setInterval(this.tick.bind(this), 1000)
@@ -517,7 +559,7 @@ class Content extends Component {
     stopTimer() {
         clearInterval(this.timer)
     }
-
+    
     countOfPage() {
         let divs = document.getElementsByClassName("page")
         for (let i = 0; i < divs.length; i++) {
@@ -526,7 +568,7 @@ class Content extends Component {
             $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i]);
         }
     }
-
+    
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
@@ -546,7 +588,7 @@ class Content extends Component {
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
                     window.localStorage.setItem('name', data.name)
-
+                    
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -581,7 +623,8 @@ class Content extends Component {
                     this.countOfPage()
                     this.setIdHeader()
                     this.increaseProgressBar()
-                    this.imageZoom()
+                    this.parse3D()
+                    //this.imageZoom()
                     this.sidebarFunc(this.scrollToElement)
                     /*to scroll into view*/
                     try {

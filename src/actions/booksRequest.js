@@ -19,25 +19,32 @@ export function getAllBooks(license_token, access_token) {
 		})
 		.then(response => {
 			console.log('getAllBooks', response)
+			let all_books = response.data
+			if (response.data.status === undefined) {
 
+			} else {
+				console.log('No books')
+				all_books = []
+			}
+			
 			dispatch({
 				type: types.SET_MAIN_ALL_BOOKS,
-				data: response.data
+				data: all_books
 			})
 			
 			dispatch({
 				type: types.SET_MAIN_HUMANITARIES_BOOKS,
-				data: response.data.filter(object => object.category_id === 1)
+				data: all_books.filter(object => object.category_id === 1)
 			})
 			
 			dispatch({
 				type: types.SET_MAIN_TECHNICAL_BOOKS,
-				data: response.data.filter(object => object.category_id === 2)
+				data: all_books.filter(object => object.category_id === 2)
 			})
 			
 			dispatch({
 				type: types.SET_MAIN_MEDICAL_BOOKS,
-				data: response.data.filter(object => object.category_id === 3)
+				data: all_books.filter(object => object.category_id === 3)
 			})
 		})
 		.catch(error => {

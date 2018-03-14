@@ -436,6 +436,7 @@ button
 			top: 37%
 			transform: translateY(-50%)
 			padding: 0 0 0 15px
+			line-height: 0
 
 		input[type=radio]
 			position: absolute
@@ -476,6 +477,22 @@ button
 		input[type=radio]:checked ~ .check::before
 			background: $correct-test-answer
 
+		.right_answer
+			border-color: #02d81f !important
+
+		.left_answer
+			border-color: #ff0000 !important
+
+		.usual_answer
+			border-color: #AAAAAA !important
+		
+		.right_answer:before
+			background: #02d81f !important
+
+		.left_answer:before
+			background: #ff0000 !important
+
+		
 .test-question
 	padding: 10px 20px
 	margin: 10px 10px
@@ -532,7 +549,7 @@ button
 
 .content__body
 	width: calc(100vw - 300px)
-	height: calc(100vh)
+	height: 100vh
 	padding: 0 calc((100vw - 1300px)/2)
 	display: block
 	float: right
@@ -647,7 +664,7 @@ button
 		.new-precise__header
 			display: flex
 			width: 100%
-			height: 80px
+			height: 42px
 			padding: 5px 5px
 			border-bottom: 1px solid
 			border-color: #e6edf5
@@ -667,8 +684,9 @@ button
 				
 				.new-precise__header__right__first-lvl
 					display: inline-block
-					width: 100%
-					
+					width: auto
+					float: right
+
 					h5
 						margin: 0
 						color: #595959
@@ -696,7 +714,7 @@ button
 						color: #b3b3b3
 		
 		.new-precise__body
-			padding: 28px 0 0 0
+			padding: 15px 0 0 0
 			word-wrap: break-word
 			cursor: pointer
 
