@@ -709,6 +709,7 @@ class Content extends Component {
         }
         return (
             <div className="content">
+
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
