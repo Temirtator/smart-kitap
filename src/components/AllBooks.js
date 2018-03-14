@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 import * as appStateControlActions from '../actions/appStateControl'
 
+import ReactGA from 'react-ga';
 class AllBooks extends Component {
     static propTypes = {
       all_books: PropTypes.array.isRequired,
@@ -15,6 +16,9 @@ class AllBooks extends Component {
       super(props)
 
       this.bookFilter = this.bookFilter.bind(this)
+
+        ReactGA.initialize('UA-66591915-12')
+        ReactGA.pageview('/Все книги')
     }
     
     bookFilter(book) {

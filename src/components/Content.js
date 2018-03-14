@@ -11,6 +11,7 @@ import * as booksRequest from '../actions/booksRequest'
 import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
 import * as main_actions from '../actions/'
+import ReactGA from 'react-ga';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -117,6 +118,9 @@ class Content extends Component {
         this.countOfPage = this.countOfPage.bind(this)
         this.setIdHeader = this.setIdHeader.bind(this)
         this.parse3D = this.parse3D.bind(this)
+
+        ReactGA.initialize('UA-66591915-12')
+        ReactGA.pageview('/Чтение книги')
     }
 
     checkAuth() {
@@ -580,6 +584,7 @@ class Content extends Component {
         this.setState({
             book_id: window.localStorage.getItem('book_id')
         })
+
         this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
             .then((data) => {
                 try {
@@ -590,7 +595,10 @@ class Content extends Component {
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
                     window.localStorage.setItem('name', data.name)
-
+                    ReactGA.event({
+                        category: 'Книга',
+                        action: 'Открыто книга: ' + data.name
+                    });
                     this.setState({
                         name: data.name,
                         author: data.author,

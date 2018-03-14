@@ -9,17 +9,17 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 import * as updateAppActions from '../actions/updateVersion'
-
+import ReactGA from 'react-ga';
 import {version} from '../../package.json'
 
 /*window.onbeforeunload = function () { // i need finish to write this function
-    let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
-    massive.map((value, index) => {
-        window.localStorage.removeItem(value)
-    })
+ let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
+ massive.map((value, index) => {
+ window.localStorage.removeItem(value)
+ })
 
-    return 'Данные авторизации будут удалены, хотите закрыть?'
-}*/
+ return 'Данные авторизации будут удалены, хотите закрыть?'
+ }*/
 
 
 const versionStyle = {
@@ -49,6 +49,8 @@ class AuthComponent extends Component {
             progress: 0
         }
         this.checkAuth = this.checkAuth.bind(this)
+        ReactGA.initialize('UA-66591915-12');
+        ReactGA.pageview('/Авторизация');
     }
 
     checkAuth() {
@@ -94,7 +96,12 @@ class AuthComponent extends Component {
                         console.log("It's NW.JS Project")
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
+
                             if (data.status === 200) {
+                                ReactGA.event({
+                                    category: 'Приложение',
+                                    action: 'Установление обновление'+response.data.version
+                                });
                                 this.setState({isLoading: false})
                                 window.runUpdate()
                                 // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})

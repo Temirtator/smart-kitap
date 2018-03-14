@@ -1,6 +1,6 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
-
+import ReactGA from 'react-ga';
 let url = 'http://smartkitap.avsoft.kz'
 let api = '/api/v1/'
 /*'0000-0000-0000-0003'*/
@@ -19,6 +19,10 @@ export function activation(serial_code) {
 			}
 		})
 		.then(response => {
+            ReactGA.event({
+                category: 'Приложение',
+                action: 'Проверка ключа'
+            });
 			console.log(response)
 			return response
 		})
