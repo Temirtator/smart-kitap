@@ -17,15 +17,21 @@ class Book extends Component {
         this.renderBook = this.renderBook.bind(this)
     }
 
+
     createMarkup() {
         return {__html: this.props.book}
     }
-    componentDidMount () {
-        // window.MathJax.Hub.Queue(["Typeset",MathJax.Hub, ReactDOM.findDOMNode(this)]);
-    }
 
-    componentDidUpdate () {
-        // window.MathJax.Hub.Queue(["Typeset",MathJax.Hub, ReactDOM.findDOMNode(this)]);
+    componentDidMount() {
+        setTimeout(() => {
+            let maths = document.getElementsByTagName('math');
+            for (let i = 0; i < maths.length; i++) {
+                let mathFormulat = (maths[i].innerHTML + '');
+                let generateImg = 'http://www.wiris.net/demo/editor/render?mml=' + encodeURIComponent('<math>' + mathFormulat + '</math>');
+                maths[i].innerHTML = '<img src="' + generateImg + '"/>';
+            }
+        }, 1000);
+
     }
 
     renderBook() {
