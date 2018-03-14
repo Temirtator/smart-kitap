@@ -664,13 +664,7 @@ class Content extends Component {
         }
     }
 
-    componentDidMount () {
-        // MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.querySelector('.challenge__description')]);
-    }
 
-    componentDidUpdate () {
-        // MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.querySelector('.challenge__description')]);
-    }
     render() {
         let {   pageInView,
                 rect,
