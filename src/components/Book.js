@@ -17,15 +17,21 @@ class Book extends Component {
         this.renderBook = this.renderBook.bind(this)
     }
 
-    dynamicallyLoadScript(url) {
-        var script = document.createElement('script'); // Make a script DOM node
-        script.src = url; // Set it's src to the provided URL
-
-        document.head.appendChild(script); // Add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-    }
 
     createMarkup() {
         return {__html: this.props.book}
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            let maths = document.getElementsByTagName('math');
+            for (let i = 0; i < maths.length; i++) {
+                let mathFormulat = (maths[i].innerHTML + '');
+                let generateImg = 'http://www.wiris.net/demo/editor/render?mml=' + encodeURIComponent('<math>' + mathFormulat + '</math>');
+                maths[i].innerHTML = '<img src="' + generateImg + '"/>';
+            }
+        }, 1000);
+
     }
 
     renderBook() {

@@ -11,6 +11,7 @@ import * as booksRequest from '../actions/booksRequest'
 import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
 import * as main_actions from '../actions/'
+import ReactGA from 'react-ga';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -34,7 +35,7 @@ let book = null, prevTextSize = null, prevStyle = null
 const ShowToolTipComponent = (props) => {
     let {rect, onToolTipClick} = props
     if ((typeof rect === 'object') && (rect !== null)) {
-        let centralizeLeft = (rect.left + ((rect.width)/2)+25),
+        let centralizeLeft = (rect.left + ((rect.width) / 2) + 25),
             centralizeTop = (rect.top - 25)
         return (
             <div onClick={onToolTipClick} className="quote" id="quote" style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
@@ -116,6 +117,9 @@ class Content extends Component {
         this.countOfPage = this.countOfPage.bind(this)
         this.setIdHeader = this.setIdHeader.bind(this)
         this.parse3D = this.parse3D.bind(this)
+
+        ReactGA.initialize('UA-66591915-12')
+        ReactGA.pageview('/Чтение книги')
     }
 
     checkAuth() {
@@ -196,9 +200,9 @@ class Content extends Component {
         } else if (window.getSelection && quoteExist) {
             selection = window.getSelection()
             if (selection && selection.rangeCount > 0) {
-                text  = selection.toString()
+                text = selection.toString()
                 range = selection.getRangeAt(0)
-                rect  = range.getBoundingClientRect()
+                rect = range.getBoundingClientRect()
 
                 parentEl = range.commonAncestorContainer
                 if (parentEl.nodeType != 1) {
@@ -206,15 +210,15 @@ class Content extends Component {
                 }
                 parentEl = parentEl.closest('.page')
                 let parentElId = parentEl.id
-                let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
+                let book_page_id = Number(parentElId.substr(5, parentElId.length - 1))
                 console.log('book_page_id', book_page_id)
 
                 relativePos.top = rect.top - parentPos.top,
-                relativePos.right = rect.right - parentPos.right,
-                relativePos.bottom = rect.bottom - parentPos.bottom,
-                relativePos.left = rect.left - parentPos.left,
-                relativePos.width = rect.width,
-                this.validateNewText(text, selectionText, relativePos, book_page_id)
+                    relativePos.right = rect.right - parentPos.right,
+                    relativePos.bottom = rect.bottom - parentPos.bottom,
+                    relativePos.left = rect.left - parentPos.left,
+                    relativePos.width = rect.width,
+                    this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
         }
 
@@ -235,9 +239,9 @@ class Content extends Component {
 
     // take click action on tooltip
     onToolTipClick(e) {
-        let { new_precises } = this.props.preciStore.precises
+        let {new_precises} = this.props.preciStore.precises
         let book_id = Number(this.state.book_id)
-        let { selectionText, rect, access_token, book_page_id } = this.state
+        let {selectionText, rect, access_token, book_page_id} = this.state
         let newPrecises, book_position
 
         for (var i = new_precises.length - 1; i >= 0; i--) {
@@ -588,7 +592,10 @@ class Content extends Component {
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
                     window.localStorage.setItem('name', data.name)
-
+                    ReactGA.event({
+                        category: 'Книга',
+                        action: 'Открыто книга: ' + data.name
+                    });
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -663,7 +670,6 @@ class Content extends Component {
             this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
         }
     }
-
 
     render() {
         let {   pageInView,
@@ -768,10 +774,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Content))
-
 
 
 //background: -webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%); /* Chrome10-25,Safari5.1-6 */

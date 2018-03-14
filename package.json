@@ -1,6 +1,6 @@
 {
   "name": "ebook",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "description": "",
   "main": "index.html",
   "runAsAdmin": true,
@@ -29,6 +29,7 @@
     "react-chartjs": "^1.2.0",
     "react-dom": "^15.6.1",
     "react-easy-chart": "^1.0.0",
+    "react-ga": "^2.4.1",
     "react-masonry-infinite": "^1.2.2",
     "react-medium-image-zoom": "^2.0.7",
     "react-modal-dialog": "^4.0.7",
