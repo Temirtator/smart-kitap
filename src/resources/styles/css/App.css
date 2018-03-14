@@ -73,7 +73,7 @@
       margin: 0;
       padding: 0 0 0 2px;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      /* white-space: nowrap */
       overflow: hidden;
       max-width: 100px;
       max-height: 63px; }
@@ -536,7 +536,10 @@
   font-size: 30px;
   cursor: pointer;
   float: right;
-  color: #cccc20; }
+  color: #cccc20;
+  position: absolute;
+  right: 0;
+  top: 190px; }
   .star:before {
     content: "☆";
     position: relative;
@@ -553,7 +556,10 @@
   cursor: pointer;
   float: right;
   color: #00646c;
-  margin: 9px 6px 0 0 !important; }
+  margin: 9px 6px 0 0 !important;
+  position: absolute;
+  right: 0;
+  top: 184px; }
   .simple-checkbox:before {
     content: "☐";
     position: relative;
@@ -584,6 +590,8 @@
   .books-selector .btn-default:focus {
     background: #063970 !important;
     color: #fff !important; }
+  .books-selector p {
+    color: #fff; }
   .books-selector .books__book__wrap__text {
     padding-left: 5px; }
     .books-selector .books__book__wrap__text p.books__book__name {

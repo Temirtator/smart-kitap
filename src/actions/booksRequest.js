@@ -167,19 +167,20 @@ export function sendBookDuration(license_token, access_token, book_id, duration)
 
 export function getOrderedBooks(license_token, access_token) {
 	return dispatch => {
-		axios({
+		return axios({
 			method: 'post',
 			url: url + api + 'book_order',
 			data: {
-				'COMP_ACCESS_TOKEN': license_token
+				COMP_ACCESS_TOKEN: license_token
 			},
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + access_token 
+				Authorization: 'Bearer ' + access_token 
 			}
 		})
 		.then(response => {
 			console.log('getOrderedBooks', response)
+			return response
 		})
 		.catch(error => {
 			console.log('getOrderedBooks', error)
@@ -187,25 +188,30 @@ export function getOrderedBooks(license_token, access_token) {
 	}
 }
 
-/*export function getOrderedBooks(license_token, access_token) {
+export function setBookReserve(license_token, access_token, order_ids) {
+	//console.log('order_ids', order_ids)
 	return dispatch => {
+		let data = {
+			'COMP_ACCESS_TOKEN': license_token
+		}
+		for (let i = 0; i <= order_ids.length-1; i++) {
+			data['order_ids['+ i +']'] = order_ids[i]
+		}
+		//console.log('sended body data', data)
 		axios({
 			method: 'post',
 			url: url + api + 'book_order',
-			data: {
-				'COMP_ACCESS_TOKEN': license_token
-			},
+			data: data,
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + access_token 
+				'Authorization': 'Bearer ' + access_token
 			}
 		})
 		.then(response => {
-			console.log('getOrderedBooks', response)
+			console.log('setBookReserve', response)
 		})
 		.catch(error => {
-			console.log('getOrderedBooks', error)
+			console.log('setBookReserve', error)
 		})
 	}
 }
-*/

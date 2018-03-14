@@ -11,7 +11,7 @@ import * as booksRequest from '../actions/booksRequest'
 import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
 import * as main_actions from '../actions/'
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga'
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -28,6 +28,8 @@ import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../resources/language/languages.json'
 
 import Model3d from './Model3d'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import ReactSpinner from 'react-spinjs'
 
 let book = null, prevTextSize = null, prevStyle = null
 
@@ -96,7 +98,8 @@ class Content extends Component {
             author: '',
             img: '',
             content: '',
-            timerCount: 0
+            timerCount: 0,
+            BookLoaded: true
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -584,6 +587,7 @@ class Content extends Component {
         })
             this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
             .then((data) => {
+
                 try {
                     let content = ''
                     for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
@@ -608,7 +612,7 @@ class Content extends Component {
                 catch(e) {
                     console.log('Error on loading book')
                 }
-
+                this.setState({ BookLoaded: false })
             })
             .then(() => {
                 try {
@@ -684,7 +688,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img } = this.state
+                img, BookLoaded } = this.state
         let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
@@ -700,6 +704,11 @@ class Content extends Component {
         }
         return (
             <div className="content">
+            { BookLoaded ? 
+                <ModalContainer>
+                    <ReactSpinner color='#fff' />
+                </ModalContainer> : null
+            }
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">

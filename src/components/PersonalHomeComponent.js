@@ -62,7 +62,8 @@ class PersonalHomePage extends Component {
         this.state = {
             menuSelected: 'main',
             isBookOrientation: false,
-            access_token: window.localStorage.getItem('access_token')
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token')
         }
         this.switchFunction = this.switchFunction.bind(this)
         this.findBook = this.findBook.bind(this)
