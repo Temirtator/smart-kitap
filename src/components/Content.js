@@ -482,7 +482,7 @@ class Content extends Component {
             let newEl = document.createElement('div')
             let srcLink = src //.substr(22, src.length) rectify image link
             parentNode.removeChild(images[i])
-            
+
             //console.log('zoom',images[i].width+'px');
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
@@ -522,11 +522,11 @@ class Content extends Component {
         var sidebarMainMenu = $('#sidebar-menu .main-menu')
         var content = $('#static-content')
         content.find('h1').each(function(e){
-            
+
         let id = $(this).attr('id') + '-menu'
         //console.log($(this).attr('id'), 'fwefwefewfewfwef')
         let header = document.createElement("li")
-        
+
         header.setAttribute('class', 'chapter-header')
         //header.innerHTML = $(this).text()
         header.title = $(this).text()
@@ -550,7 +550,7 @@ class Content extends Component {
     tick() {
         this.setState({timerCount: (this.state.timerCount + 1)})
     }
-    
+
     startTimer() {
         clearInterval(this.timer)
         this.timer = setInterval(this.tick.bind(this), 1000)
@@ -559,7 +559,7 @@ class Content extends Component {
     stopTimer() {
         clearInterval(this.timer)
     }
-    
+
     countOfPage() {
         let divs = document.getElementsByClassName("page")
         for (let i = 0; i < divs.length; i++) {
@@ -568,7 +568,7 @@ class Content extends Component {
             $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i]);
         }
     }
-    
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
@@ -588,7 +588,7 @@ class Content extends Component {
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
                     window.localStorage.setItem('name', data.name)
-                    
+
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -664,6 +664,13 @@ class Content extends Component {
         }
     }
 
+    componentDidMount () {
+        // MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.querySelector('.challenge__description')]);
+    }
+
+    componentDidUpdate () {
+        // MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.querySelector('.challenge__description')]);
+    }
     render() {
         let {   pageInView,
                 rect,

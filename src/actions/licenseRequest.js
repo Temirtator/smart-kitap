@@ -12,7 +12,7 @@ export function activation(serial_code) {
 			data: {
 				serial_code: serial_code,
 				technical_computer_info: 'whfnwekjfwenfj',
-				mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST'
+				mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST_2'
 			},
 			headers: {
 				'Content-Type': 'application/json'
