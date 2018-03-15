@@ -5,8 +5,16 @@ import * as precis_action from '../actions/precis'
 import { bindActionCreators } from 'redux'
 import Masonry from 'react-masonry-infinite'
 import NewPreciseItem from './NewPreciseItemComponent'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import ReactSpinner from 'react-spinjs'
 
-
+let textStyle = {
+    color: 'white',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    left: '60%'
+}
 class NewPrecises extends Component {
     constructor(props) {
         super(props)
@@ -18,7 +26,9 @@ class NewPrecises extends Component {
             name: '',
             author: '',
             img: '',
-            localStorage: window.localStorage.getItem('access_token')
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token'),
+            PrecisLoaded: true
         }
 
         this.loadMorePrecis = this.loadMorePrecis.bind(this)
@@ -70,7 +80,10 @@ class NewPrecises extends Component {
             book_id_local = book_id
         }
         
-        this.props.precisActions.getUserPrecis(this.state.localStorage, book_id_local)
+        this.props.precisActions.getUserPrecis(this.state.access_token, book_id_local)
+        .then(() => {
+            this.setState({ PrecisLoaded: false })
+        })
         this.getIndexes(Number(book_id_local))
     }
     
@@ -81,13 +94,21 @@ class NewPrecises extends Component {
    	render() {
     	let { precisesStore, appStateControl } = this.props
         let book_id = Number(this.state.book_id)
-        let { indexPrecise } = this.state
+        let { indexPrecise, PrecisLoaded } = this.state
         let { name, author, img } = this.props.precisesStore.precises
         
-        console.log('precises', precisesStore.precises.new_precises)
+        //console.log('precises', precisesStore.precises.new_precises)
         return (
-            
+              
             <div className="new-precises">
+                { PrecisLoaded ? 
+                    <ModalContainer>
+                        <div>
+                            <ReactSpinner color='#fff' />
+                            <p style={textStyle}>Загружается конспекты...</p>
+                        </div>
+                    </ModalContainer> : null
+                }
 	        	<Masonry
 		            className="masonry"
 		              

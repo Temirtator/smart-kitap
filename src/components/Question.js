@@ -40,24 +40,30 @@ class Question extends Component {
 
     handleChange(value) {
         let { objectQuestion, book_test } = this.props
-        let right_answer = objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
-        let isCorrect = objectQuestion.variants.filter(object => object.value === value)[0].isCorrect //is right or no
-        let book_exam_question_id = objectQuestion.id // get id for identification, for non-repeating push answers
+        try {
+            console.log(objectQuestion, 'objectQuestion')
+            let right_answer = objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
+            let isCorrect = objectQuestion.variants.filter(object => object.value === value)[0].isCorrect //is right or no
+            let book_exam_question_id = objectQuestion.id // get id for identification, for non-repeating push answers
 
-        let newObject = {
-            question_id: book_exam_question_id,
-            isCorrect: isCorrect,
-            chosen_answer: value,
-            right_answer: right_answer
+            let newObject = {
+                question_id: book_exam_question_id,
+                isCorrect: isCorrect,
+                chosen_answer: value,
+                right_answer: right_answer
+            }
+            
+            //compare current datas with new datas, to run away from repeating 
+            //its important comparing
+            let elements = book_test.answers.filter(object => object.question_id !== newObject.question_id) 
+            elements.push(newObject)
+            
+            this.props.actions.setAnswer(elements)
+            this.setState({ selectedValue: value })
         }
-        
-        //compare current datas with new datas, to run away from repeating 
-        //its important comparing
-        let elements = book_test.answers.filter(object => object.question_id !== newObject.question_id) 
-        elements.push(newObject)
-        
-        this.props.actions.setAnswer(elements)
-        this.setState({ selectedValue: value })
+        catch(e) {
+            console.log('Error on handleChange')
+        }
     }
 
     render() {

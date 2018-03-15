@@ -53,20 +53,15 @@ const ShowToolTipComponent = (props) => {
     }
 }
 
-const iconStyle = {
-    fontSize: '2em',
-    color: '#000',
-    float: 'left',
-    padding: '0 10px 0 0'
+
+let textStyle = {
+    color: 'white',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    left: '60%'
 }
 
-const progressBarStyle =  {
-    background: '#009b29', /* Old browsers */
-    background: '-moz-linear-gradient(top, #009b29 1%, #db8667 61%, #d8615f 78%, #ea2623 100%)', /* FF3.6-15 */
-    background: '-webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* Chrome10-25,Safari5.1-6 */
-    background: 'linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#009b29", endColorstr="#ea2623",GradientType=0 )' /* IE6-9 */
-}
 
 var TRange=null;
 
@@ -283,7 +278,7 @@ class Content extends Component {
             })
         }
     }
-    
+
     increaseProgressBar() {    
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
@@ -713,7 +708,10 @@ class Content extends Component {
             <div className="content">
             { BookLoaded ? 
                 <ModalContainer>
-                    <ReactSpinner color='#fff' />
+                    <div>
+                        <ReactSpinner color='#fff' />
+                        <p style={textStyle}>Загружается книга...</p>
+                    </div>
                 </ModalContainer> : null
             }
                 <div className={headerClass}>
