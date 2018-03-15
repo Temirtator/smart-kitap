@@ -5,7 +5,6 @@ import ImageZoom from 'react-medium-image-zoom'
 
 import MathJax from 'mathjax'
 import ReactDOM from 'react-dom'
-let Highlight = require('react-highlighter')
 
 class Book extends Component {
     static propTypes = {
@@ -37,7 +36,7 @@ class Book extends Component {
     }
 
     renderBook() {
-        return <Highlight search="Учебное" matchClass="bro"><div className="book" dangerouslySetInnerHTML={this.createMarkup()}/></Highlight>
+        return <div className="book" dangerouslySetInnerHTML={this.createMarkup()}/>
     }
 
     render() {

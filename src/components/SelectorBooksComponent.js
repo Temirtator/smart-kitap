@@ -22,8 +22,9 @@ class SelectorBooks extends Component {
 
 	handleClose = () => {
 		let {license_token, access_token, order_ids} = this.state
-		this.props.bookRequest.setBookReserve(license_token, access_token, order_ids)
 		this.setState({isShowingModal: false})
+		window.localStorage.setItem('new_computer', false)
+		this.props.bookRequest.setBookReserve(license_token, access_token, order_ids)
 	}
 
 	setBookState = (id) => {

@@ -20,8 +20,6 @@ import * as languages from '../resources/language/languages.json'
 import * as userDataRequest from '../actions/userDataRequest'
 import * as appStateActions from '../actions/appStateControl'
 
-import SelectorBooks from './SelectorBooksComponent'
-
 const MyElement = (props) => {
     let menuItem = props.menuItem
     
@@ -166,7 +164,7 @@ class PersonalHomePage extends Component {
 
         return (
             <div className="personal-home-page">
-                <SelectorBooks />
+                
             	<NavigationHeader switchFunction={this.switchFunction} />
             	<div className={bodyClass}>
                     <div className="personal-home-page__body__header">

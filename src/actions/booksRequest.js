@@ -192,15 +192,16 @@ export function setBookReserve(license_token, access_token, order_ids) {
 	//console.log('order_ids', order_ids)
 	return dispatch => {
 		let data = {
-			'COMP_ACCESS_TOKEN': license_token
+			'COMP_ACCESS_TOKEN': license_token,
+			order_ids
 		}
-		for (let i = 0; i <= order_ids.length-1; i++) {
+		/*for (let i = 0; i <= order_ids.length-1; i++) {
 			data['order_ids['+ i +']'] = order_ids[i]
-		}
-		//console.log('sended body data', data)
+		}*/
+		console.log('sended body data', data)
 		axios({
 			method: 'post',
-			url: url + api + 'book_order',
+			url: url + api + 'book_reserve',
 			data: data,
 			headers: {
 				'Content-Type': 'application/json',

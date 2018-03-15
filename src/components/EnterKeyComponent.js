@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 
-
 class EnterKey extends Component {
     static PropTypes = {
         callBackFunc: PropTypes.func
@@ -23,6 +22,7 @@ class EnterKey extends Component {
             if (response.data.status === 200) {
                 window.localStorage.setItem('license_token', response.data.data.access_token)
                 window.localStorage.setItem('new_computer', response.data.data.is_new_computer)
+
                 this.props.callBackFunc() // i'm unlbock registration and login buttons
                 // alert(response.data.msg)
             }
@@ -35,6 +35,7 @@ class EnterKey extends Component {
     render() {
         return (
             <div className="enterKey-component">
+
         		<div className="row">
 					<div className="col-md-4 email__auth">
 						<input type="text" value={this.state.key} onChange={(e) => this.setState({key: e.target.value})} className="form-control" placeholder="Ключ от программы" />
