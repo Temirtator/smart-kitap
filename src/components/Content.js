@@ -115,6 +115,7 @@ class Content extends Component {
         this.countOfPage = this.countOfPage.bind(this)
         this.setIdHeader = this.setIdHeader.bind(this)
         this.parse3D = this.parse3D.bind(this)
+        this.tablesFixer = this.tablesFixer.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -480,7 +481,7 @@ class Content extends Component {
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let images = book.getElementsByTagName('img')
-        for (var i = images.length - 1; i >= 0; i--) {
+        for (let i = images.length - 1; i >= 0; i--) {
             let parentNode = images[i].parentNode
             let src = images[i].src //src link of my image
             let newEl = document.createElement('div')
@@ -488,9 +489,17 @@ class Content extends Component {
             parentNode.removeChild(images[i])
 
             //console.log('zoom',images[i].width+'px');
-            const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image' }} />
+            const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
+        }
+    }
+
+    tablesFixer() {
+        let book = ReactDOM.findDOMNode(this.refs.book)
+        let tables = book.getElementsByTagName('table')
+        for (let i = tables.length - 1; i >= 0; i--) {
+            tables[i].style.width = "100%"
         }
     }
 
@@ -633,6 +642,7 @@ class Content extends Component {
                     this.increaseProgressBar()
                     this.parse3D()
                     this.imageZoom()
+                    this.tablesFixer()
                     this.sidebarFunc(this.scrollToElement)
                     /*to scroll into view*/
                     try {

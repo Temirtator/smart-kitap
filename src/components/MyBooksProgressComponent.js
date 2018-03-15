@@ -30,13 +30,18 @@ class MyBooksProgress extends Component {
     componentWillMount() {
     	let {license_token, access_token} = this.state
     	this.checkAuth()
-    	this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
-    	.then(general_progress => {
-    		console.log('Return from promise', general_progress)
-    		this.setState({
-    			books_progress: general_progress
-    		})
-    	})
+    	try {
+            this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
+        	.then(general_progress => {
+        		console.log('Return from promise', general_progress)
+        		this.setState({
+        			books_progress: general_progress
+        		})
+        	})
+        }
+        catch(e) {
+            console.log(e, 'error on getAllUserProgress')
+        }
     }
     
     render() {

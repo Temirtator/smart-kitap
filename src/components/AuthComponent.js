@@ -13,6 +13,8 @@ import * as updateAppActions from '../actions/updateVersion'
 import ReactGA from 'react-ga';
 import {version} from '../../package.json'
 
+import SelectorBooks from './SelectorBooksComponent'
+
 /*window.onbeforeunload = function () { // i need finish to write this function
  let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
  massive.map((value, index) => {
@@ -47,7 +49,8 @@ class AuthComponent extends Component {
             registrationClass: license_token ? registrationClass : registrationClass + ' disableElement',
             loginClass: license_token ? loginClass : loginClass + ' disableElement',
             isLoading: false,
-            progress: 0
+            progress: 0,
+            appApproved: false
         }
         this.checkAuth = this.checkAuth.bind(this)
         ReactGA.initialize('UA-66591915-12');
@@ -134,7 +137,7 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
+        let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading, appApproved} = this.state
         let element
 
         if (enterKey) {
@@ -143,7 +146,7 @@ class AuthComponent extends Component {
                     enterKeyClass: prev.enterKeyClass + ' disableElement',
                     registrationClass: 'auth-component__header__registration',
                     loginClass: 'auth-component__header__login',
-                    enterKey: false, registration: true
+                    enterKey: false, registration: true, appApproved: true
                 }
             })}/>
             enterKeyClass += " auth-component--selected"
@@ -158,6 +161,7 @@ class AuthComponent extends Component {
         }
         return (
             <div className="auth-component">
+                { appApproved ? <SelectorBooks /> : null}
                 <p style={ versionStyle }>Версия: {version}</p>
                 {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
                 <div className="auth-component__header">
