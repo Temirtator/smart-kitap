@@ -344,6 +344,7 @@ a
 				color: #aeafaf
 	
 		.content__header__sub__progress-bar
+			display: grid
 			width: 166px
 			padding: 0 0 0 10px
 
@@ -1523,6 +1524,38 @@ div.my-books__test-by-books
 
 .highcharts-root
 	width: 100% !important
+
+
+#app
+	height: 100vh
+	display: flex
+	justify-content: center
+	align-items: center
+ 	
+	> div 
+		display: flex
+		justify-content: center
+		align-items: center
+ 
+.shell
+	float: left
+	height: 20px
+	width: 128px
+	padding: 3px 10px 3px 3px
+	margin: 0 5px 0 -10px
+	
+
+.bar
+	background: linear-gradient(to right, lighten(#009b29, 10%), lighten(#dc2430, 10%))
+	height: 10px
+	width: 15px
+	border-radius: 9px
+  	
+	span
+		float: right
+		padding: 4px
+		color: #fff
+		font-size: 0.3em
 
 
 //@media (min-width: @screen-md-min)

@@ -170,7 +170,7 @@ class PersonalHomePage extends Component {
             	<NavigationHeader switchFunction={this.switchFunction} />
             	<div className={bodyClass}>
                     <div className="personal-home-page__body__header">
-                        { isBookOrientation ? <BookOrientation isInMainPage={true} menuSelected={(menuSelected) => this.setState({menuSelected})} /> : <TextSettings textColor={{display: 'none'}} /> }
+                        { isBookOrientation ? <BookOrientation isInMainPage={true} menuSelected={(menuSelected) => this.setState({menuSelected})} /> : <TextSettings textSize={{display: 'none'}} textColor={{display: 'none'}} /> }
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
                                 <input onChange={(e) => this.findBook(e)} ref="findTextValue" type="text" className="form-control form-control_search" placeholder={languages[0][language]['search-book']}></input>

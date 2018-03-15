@@ -126,28 +126,33 @@ class Model3d extends Component {
 
 	renderObjGraveObject() {
 		console.log('renderObjGraveObject')
-	    const onProgress = ( xhr ) => {
-	    	if ( xhr.lengthComputable ) {
-	    		var percentComplete = xhr.loaded / xhr.total * 100
-	    		console.log( Math.round(percentComplete, 2) + '% downloaded' )
-	    	}
-	    }
-	    const onError = ( xhr ) => { console.log(xhr) }
-	    const group = this.refs.group
-	    const mtlLoader = new this.THREE.MTLLoader()
-	    mtlLoader.crossOrigin = ''
-	    return (
-	      mtlLoader.load(this.state.mtl, materials => {
-	        materials.preload()
-	        const objLoader = new this.THREE.OBJLoader()
-	        objLoader.setMaterials(materials)
-	        objLoader.crossOrigin = 'anonymous'
-	        objLoader.load(this.state.obj, object => {
-		        group.add(object)
-		        this.setState({object})
-	        }, onProgress, onError)
-	      })
-	    )
+	    try{
+		    const onProgress = ( xhr ) => {
+		    	if ( xhr.lengthComputable ) {
+		    		var percentComplete = xhr.loaded / xhr.total * 100
+		    		console.log( Math.round(percentComplete, 2) + '% downloaded' )
+		    	}
+		    }
+		    const onError = ( xhr ) => { console.log(xhr) }
+		    const group = this.refs.group
+		    const mtlLoader = new this.THREE.MTLLoader()
+		    mtlLoader.crossOrigin = ''
+		    return (
+		      mtlLoader.load(this.state.mtl, materials => {
+		        materials.preload()
+		        const objLoader = new this.THREE.OBJLoader()
+		        objLoader.setMaterials(materials)
+		        objLoader.crossOrigin = 'anonymous'
+		        objLoader.load(this.state.obj, object => {
+			        group.add(object)
+			        this.setState({object})
+		        }, onProgress, onError)
+		      })
+		    )
+		} catch(e) {
+			console.log('error on loading 3d model')
+		}
+
 	}
 
 	renderText() {

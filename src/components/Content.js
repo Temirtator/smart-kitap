@@ -283,10 +283,12 @@ class Content extends Component {
             })
         }
     }
-
-    increaseProgressBar() {
+    
+    increaseProgressBar() {    
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
+            console.log('fwefwefwefwefwefw', pageCount, readedPage)
+            //let readedPage = 120, pageCount = 200 
             if (pageCount >= readedPage) {
                 //readed pages on percent
                 let readedPages = Math.ceil((readedPage/pageCount)*100)
@@ -635,7 +637,7 @@ class Content extends Component {
                     this.setIdHeader()
                     this.increaseProgressBar()
                     this.parse3D()
-                    //this.imageZoom()
+                    this.imageZoom()
                     this.sidebarFunc(this.scrollToElement)
                     /*to scroll into view*/
                     try {
@@ -675,6 +677,7 @@ class Content extends Component {
         }
     }
 
+    
     render() {
         let {   pageInView,
                 rect,
@@ -702,6 +705,10 @@ class Content extends Component {
             headerClass += " blackMode"
             bodyClass += " blackMode"
         }
+
+        let progressStyle = {
+          width: progressBarPercent + "%"
+        }
         return (
             <div className="content">
             { BookLoaded ? 
@@ -720,12 +727,19 @@ class Content extends Component {
                                 <p>{author}</p>
                             </div>
                             <div className="content__header__sub__progress-bar">
-                                <Line   ref="bookReadedLoader"
+                                
+                                <div ref="bookReadedLoader">
+                                    <div className="shell">
+                                      <div className="bar" style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
+                                    </div>
+                                </div>
+
+                                {/*<Line   ref="bookReadedLoader"
                                         percent={progressBarPercent}
                                         strokeWidth="4"
                                         strokeColor={color}
                                         strokeLinecap='butt'
-                                        />
+                                        />*/}
                                 <p>{progressBarPage} / {pageCount}</p>
                             </div>
                         </div>

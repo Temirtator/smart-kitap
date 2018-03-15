@@ -103,7 +103,7 @@ class PersonSettings extends Component {
         else {
             this.setState({ isNameVerified: true })
             
-            if ( surname.trim() == '' ) { // next step of validation
+            if ( surname.trim() === '' ) { // next step of validation
                 this.setState({ isSurnameVerified: false })
             }
             else {

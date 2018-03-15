@@ -898,6 +898,7 @@ a {
         font-size: 10px;
         color: #aeafaf; }
     .content__header__sub .content__header__sub__right .content__header__sub__progress-bar {
+      display: grid;
       width: 166px;
       padding: 0 0 0 10px; }
 
@@ -1965,6 +1966,34 @@ div.my-books__test-by-books {
 
 .highcharts-root {
   width: 100% !important; }
+
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #app > div {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+
+.shell {
+  float: left;
+  height: 20px;
+  width: 128px;
+  padding: 3px 10px 3px 3px;
+  margin: 0 5px 0 -10px; }
+
+.bar {
+  background: linear-gradient(to right, #00ce36, #e3505a);
+  height: 10px;
+  width: 15px;
+  border-radius: 9px; }
+  .bar span {
+    float: right;
+    padding: 4px;
+    color: #fff;
+    font-size: 0.3em; }
 
 .blackMode {
   background-color: #2a2e35 !important;
