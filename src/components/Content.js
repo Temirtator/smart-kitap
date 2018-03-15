@@ -11,7 +11,7 @@ import * as booksRequest from '../actions/booksRequest'
 import * as precis_action from '../actions/precis'
 import * as appStateControlActions from '../actions/appStateControl'
 import * as main_actions from '../actions/'
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga'
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -28,6 +28,8 @@ import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../resources/language/languages.json'
 
 import Model3d from './Model3d'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import ReactSpinner from 'react-spinjs'
 
 let book = null, prevTextSize = null, prevStyle = null
 
@@ -51,20 +53,15 @@ const ShowToolTipComponent = (props) => {
     }
 }
 
-const iconStyle = {
-    fontSize: '2em',
-    color: '#000',
-    float: 'left',
-    padding: '0 10px 0 0'
+
+let textStyle = {
+    color: 'white',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    left: '60%'
 }
 
-const progressBarStyle =  {
-    background: '#009b29', /* Old browsers */
-    background: '-moz-linear-gradient(top, #009b29 1%, #db8667 61%, #d8615f 78%, #ea2623 100%)', /* FF3.6-15 */
-    background: '-webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* Chrome10-25,Safari5.1-6 */
-    background: 'linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%)', /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#009b29", endColorstr="#ea2623",GradientType=0 )' /* IE6-9 */
-}
 
 var TRange=null;
 
@@ -96,7 +93,8 @@ class Content extends Component {
             author: '',
             img: '',
             content: '',
-            timerCount: 0
+            timerCount: 0,
+            BookLoaded: true
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -281,9 +279,11 @@ class Content extends Component {
         }
     }
 
-    increaseProgressBar() {
+    increaseProgressBar() {    
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
+            console.log('fwefwefwefwefwefw', pageCount, readedPage)
+            //let readedPage = 120, pageCount = 200 
             if (pageCount >= readedPage) {
                 //readed pages on percent
                 let readedPages = Math.ceil((readedPage/pageCount)*100)
@@ -577,13 +577,14 @@ class Content extends Component {
         this.checkAuth()
         this.startTimer(this)
     }
-
+    
     componentDidMount() {
         this.setState({
             book_id: window.localStorage.getItem('book_id')
         })
             this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
             .then((data) => {
+
                 try {
                     let content = ''
                     for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
@@ -608,7 +609,7 @@ class Content extends Component {
                 catch(e) {
                     console.log('Error on loading book')
                 }
-
+                this.setState({ BookLoaded: false })
             })
             .then(() => {
                 try {
@@ -631,7 +632,7 @@ class Content extends Component {
                     this.setIdHeader()
                     this.increaseProgressBar()
                     this.parse3D()
-                    //this.imageZoom()
+                    this.imageZoom()
                     this.sidebarFunc(this.scrollToElement)
                     /*to scroll into view*/
                     try {
@@ -671,6 +672,7 @@ class Content extends Component {
         }
     }
 
+    
     render() {
         let {   pageInView,
                 rect,
@@ -684,7 +686,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img } = this.state
+                img, BookLoaded } = this.state
         let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
@@ -698,8 +700,20 @@ class Content extends Component {
             headerClass += " blackMode"
             bodyClass += " blackMode"
         }
+
+        let progressStyle = {
+          width: progressBarPercent + "%"
+        }
         return (
             <div className="content">
+            { BookLoaded ? 
+                <ModalContainer>
+                    <div>
+                        <ReactSpinner color='#fff' />
+                        <p style={textStyle}>Загружается книга...</p>
+                    </div>
+                </ModalContainer> : null
+            }
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
@@ -711,12 +725,19 @@ class Content extends Component {
                                 <p>{author}</p>
                             </div>
                             <div className="content__header__sub__progress-bar">
-                                <Line   ref="bookReadedLoader"
+                                
+                                <div ref="bookReadedLoader">
+                                    <div className="shell">
+                                      <div className="bar" style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
+                                    </div>
+                                </div>
+
+                                {/*<Line   ref="bookReadedLoader"
                                         percent={progressBarPercent}
                                         strokeWidth="4"
                                         strokeColor={color}
                                         strokeLinecap='butt'
-                                        />
+                                        />*/}
                                 <p>{progressBarPage} / {pageCount}</p>
                             </div>
                         </div>

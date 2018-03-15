@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as licenseRequestActions from '../actions/licenseRequest'
 import * as updateAppActions from '../actions/updateVersion'
+
 import ReactGA from 'react-ga';
 import {version} from '../../package.json'
 
@@ -134,7 +135,6 @@ class AuthComponent extends Component {
     render() {
         let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading} = this.state
         let element
-
 
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {

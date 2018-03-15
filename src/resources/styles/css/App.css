@@ -73,7 +73,7 @@
       margin: 0;
       padding: 0 0 0 2px;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      /* white-space: nowrap */
       overflow: hidden;
       max-width: 100px;
       max-height: 63px; }
@@ -244,7 +244,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent; }
 
 .react-toggle-screenreader-only {
@@ -536,7 +536,10 @@
   font-size: 30px;
   cursor: pointer;
   float: right;
-  color: #cccc20; }
+  color: #cccc20;
+  position: absolute;
+  right: 0;
+  top: 190px; }
   .star:before {
     content: "☆";
     position: relative;
@@ -546,6 +549,55 @@
   .star:checked:before {
     content: "★";
     position: relative; }
+
+.simple-checkbox {
+  visibility: hidden;
+  font-size: 30px;
+  cursor: pointer;
+  float: right;
+  color: #00646c;
+  margin: 9px 6px 0 0 !important;
+  position: absolute;
+  right: 0;
+  top: 184px; }
+  .simple-checkbox:before {
+    content: "☐";
+    position: relative;
+    visibility: visible;
+    top: -17px;
+    right: 6px; }
+  .simple-checkbox:checked:before {
+    content: "☑";
+    position: relative;
+    color: #a3c5c8; }
+
+.books-selector {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+  .books-selector .btn,
+  .books-selector .btn-default {
+    margin: 0 0 35px 44px;
+    background: #09519f;
+    color: #fff;
+    outline: none !important; }
+  .books-selector .btn:hover,
+  .books-selector .btn-default:hover,
+  .books-selector .btn:active,
+  .books-selector .btn-default:active,
+  .books-selector .btn:focus,
+  .books-selector .btn-default:focus {
+    background: #063970 !important;
+    color: #fff !important; }
+  .books-selector p {
+    color: #fff; }
+  .books-selector .books__book__wrap__text {
+    padding-left: 5px; }
+    .books-selector .books__book__wrap__text p.books__book__name {
+      color: #9ad3da; }
+  .books-selector .books::-webkit-scrollbar-thumb {
+    background-color: #9a9494 !important; }
 
 html, body {
   margin: 0;
@@ -846,6 +898,7 @@ a {
         font-size: 10px;
         color: #aeafaf; }
     .content__header__sub .content__header__sub__right .content__header__sub__progress-bar {
+      display: grid;
       width: 166px;
       padding: 0 0 0 10px; }
 
@@ -945,7 +998,7 @@ button {
       display: block;
       position: absolute;
       top: 5px;
-      left: 6px;
+      left: 5.9999999px;
       content: "";
       border-radius: 100%;
       height: 10px;
@@ -1913,6 +1966,34 @@ div.my-books__test-by-books {
 
 .highcharts-root {
   width: 100% !important; }
+
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #app > div {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+
+.shell {
+  float: left;
+  height: 20px;
+  width: 128px;
+  padding: 3px 10px 3px 3px;
+  margin: 0 5px 0 -10px; }
+
+.bar {
+  background: linear-gradient(to right, #00ce36, #e3505a);
+  height: 10px;
+  width: 15px;
+  border-radius: 9px; }
+  .bar span {
+    float: right;
+    padding: 4px;
+    color: #fff;
+    font-size: 0.3em; }
 
 .blackMode {
   background-color: #2a2e35 !important;

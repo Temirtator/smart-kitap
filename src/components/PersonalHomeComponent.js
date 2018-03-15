@@ -20,6 +20,8 @@ import * as languages from '../resources/language/languages.json'
 import * as userDataRequest from '../actions/userDataRequest'
 import * as appStateActions from '../actions/appStateControl'
 
+import SelectorBooks from './SelectorBooksComponent'
+
 const MyElement = (props) => {
     let menuItem = props.menuItem
     
@@ -60,7 +62,8 @@ class PersonalHomePage extends Component {
         this.state = {
             menuSelected: 'main',
             isBookOrientation: false,
-            access_token: window.localStorage.getItem('access_token')
+            access_token: window.localStorage.getItem('access_token'),
+            license_token: window.localStorage.getItem('license_token')
         }
         this.switchFunction = this.switchFunction.bind(this)
         this.findBook = this.findBook.bind(this)
@@ -163,10 +166,11 @@ class PersonalHomePage extends Component {
 
         return (
             <div className="personal-home-page">
+                <SelectorBooks />
             	<NavigationHeader switchFunction={this.switchFunction} />
             	<div className={bodyClass}>
                     <div className="personal-home-page__body__header">
-                        { isBookOrientation ? <BookOrientation isInMainPage={true} menuSelected={(menuSelected) => this.setState({menuSelected})} /> : <TextSettings textColor={{display: 'none'}} /> }
+                        { isBookOrientation ? <BookOrientation isInMainPage={true} menuSelected={(menuSelected) => this.setState({menuSelected})} /> : <TextSettings textSize={{display: 'none'}} textColor={{display: 'none'}} /> }
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
                                 <input onChange={(e) => this.findBook(e)} ref="findTextValue" type="text" className="form-control form-control_search" placeholder={languages[0][language]['search-book']}></input>

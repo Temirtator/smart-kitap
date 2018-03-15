@@ -22,6 +22,7 @@ class EnterKey extends Component {
         .then(response => {
             if (response.data.status === 200) {
                 window.localStorage.setItem('license_token', response.data.data.access_token)
+                window.localStorage.setItem('new_computer', response.data.data.is_new_computer)
                 this.props.callBackFunc() // i'm unlbock registration and login buttons
                 // alert(response.data.msg)
             }
