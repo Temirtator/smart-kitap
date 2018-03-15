@@ -100,7 +100,7 @@ class AuthComponent extends Component {
                             if (data.status === 200) {
                                 ReactGA.event({
                                     category: 'Приложение',
-                                    action: 'Установление обновление'+response.data.version
+                                    action: 'Установление обновление' + response.data.version
                                 });
                                 this.setState({isLoading: false})
                                 window.runUpdate()
