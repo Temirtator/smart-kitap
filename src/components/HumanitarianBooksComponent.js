@@ -19,7 +19,7 @@ class HumanitarianBooks extends Component {
 
   bookFilter(book) {
     let { searchBookText } = this.props.appStateControl
-    return (String(book.name)).match(searchBookText) || (String(book.author)).match(searchBookText)
+    return (String(book.name).toLowerCase()).match(searchBookText.toLowerCase()) || (String(book.author).toLowerCase()).match(searchBookText.toLowerCase())
   }
 
   componentDidMount() {

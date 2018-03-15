@@ -71,6 +71,7 @@ class Content extends Component {
 
         this.state = {
             pageInView: 1,
+            pageInViewId: null,
             curElement: -1,
             curElementSub: -1,
             chapters: null,
@@ -88,7 +89,7 @@ class Content extends Component {
             access_token: window.localStorage.getItem('access_token'),
             license_token: window.localStorage.getItem('license_token'),
             book_id: null,
-            book_page_id: 'null',
+            book_page_id: null,
             name: '',
             author: '',
             img: '',
@@ -283,7 +284,7 @@ class Content extends Component {
     increaseProgressBar() {    
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
-            console.log('fwefwefwefwefwefw', pageCount, readedPage)
+            //console.log('fwefwefwefwefwefw', pageCount, readedPage)
             //let readedPage = 120, pageCount = 200 
             if (pageCount >= readedPage) {
                 //readed pages on percent
@@ -308,33 +309,33 @@ class Content extends Component {
         if (e.keyCode === 13) {
             let { findTextValue } = this.refs
             let str = findTextValue.value
-            if (parseInt(navigator.appVersion)<4) return;
-             var strFound;
+            if (parseInt(navigator.appVersion)<4) return
+             var strFound
              if (window.find) {
-              strFound=window.find(str);
+              strFound=window.find(str)
               if (!strFound) {
-               strFound=window.find(str,0,1);
-               while (window.find(str,0,1)) continue;
+               strFound=window.find(str,0,1)
+               while (window.find(str,0,1)) continue
               }
              }
              else if (navigator.appName.indexOf("Microsoft")!=-1) {
               if (TRange!=null) {
-               TRange.collapse(false);
-               strFound=TRange.findText(str);
-               if (strFound) TRange.select();
+               TRange.collapse(false)
+               strFound=TRange.findText(str)
+               if (strFound) TRange.select()
               }
               if (TRange==null || strFound==0) {
-               TRange=window.document.body.createTextRange();
-               strFound=TRange.findText(str);
-               if (strFound) TRange.select();
+               TRange=window.document.body.createTextRange()
+               strFound=TRange.findText(str)
+               if (strFound) TRange.select()
               }
              }
              else if (navigator.appName=="Opera") {
               alert ("Opera browsers not supported, sorry...")
-              return;
+              return
              }
              if (!strFound) alert ("Слово '"+str+"' не был найден!")
-             return;
+             return
         }
     }
 
@@ -380,7 +381,7 @@ class Content extends Component {
                     console.log('error on deleting class from chapter')
                 }
             }
-        }
+    }
 
         //For subchapters
         for (var j = 0; j < subChapters.length; j++) {
@@ -418,7 +419,7 @@ class Content extends Component {
 
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
-        let book = ReactDOM.findDOMNode(this.refs.book)
+        //let book = ReactDOM.findDOMNode(this.refs.book)
         let relativeEl = el[index].getBoundingClientRect()
         //let top = el[index].offsetTop
         let top = relativeEl.top + window.scrollY
@@ -445,7 +446,7 @@ class Content extends Component {
             var isVisible = this.isElementInViewport(el, i)
 
             if(isVisible){
-                this.setState({ pageInView: i+1 })
+                this.setState({ pageInView: i+1, pageInViewId: el[i].id })
                 break
             } else {
                 continue
@@ -614,6 +615,7 @@ class Content extends Component {
                         pageCount: data.page_count,
                         readedPage: data.last_opened_page
                     })
+                    console.log('last opened page', data)
                 }
                 catch(e) {
                     console.log('Error on loading book')
@@ -669,19 +671,22 @@ class Content extends Component {
 
         this.stopTimer(this)
 
-        let {license_token, access_token, book_id, timerCount, pageInView, pageCount} = this.state
+        let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount} = this.state
         let id = Number(book_id)
-
         if (timerCount >= 30) { // if spend time in book more than 30 sec
             this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
-        this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, pageInView) // pageInView its my last opened page
+
+        if (pageInViewId !== null){ // if incoming value is not null
+            let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length-1))
+            this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, last_opened_page_id) // pageInView its my last opened page
+        }
+
         if (pageCount === pageInView) { // opened last page and book is closed, so book is finished
             this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
         }
     }
-
     
     render() {
         let {   pageInView,

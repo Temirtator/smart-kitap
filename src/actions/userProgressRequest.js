@@ -69,7 +69,7 @@ export function getAllUserProgress(license_token, access_token) {
 				      }
 				    ]
 				]
-
+				
 			let readed_books = progress.filter(object => object.isReaded === 1)
 			let opened_books = progress.filter(object => (object.isOpened === 1) && (object.isReaded === 0))
 			

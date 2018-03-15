@@ -6,6 +6,7 @@ import ImageZoom from 'react-medium-image-zoom'
 import MathJax from 'mathjax'
 import ReactDOM from 'react-dom'
 
+
 class Book extends Component {
     static propTypes = {
         book: PropTypes.string.isRequired
@@ -32,9 +33,8 @@ class Book extends Component {
                 maths[i].innerHTML = '<img src="' + generateImg + '"/>'
             }
         }, 1000)
-
     }
-
+    
     renderBook() {
         return <div className="book" dangerouslySetInnerHTML={this.createMarkup()}/>
     }

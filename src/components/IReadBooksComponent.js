@@ -27,7 +27,7 @@ class IReadBooks extends Component {
 						<div className="readed-books-component__body__statistics">
 							<div className="col-sm-4 readed-books-component__body__development">
 								<h4>{choosenLang['familiarization']}</h4>
-								<PieItemProgress itemName={[choosenLang['page']]} chartData={value.statistics[0]} />
+								<PieItemProgress itemName={[choosenLang['all_pages'], choosenLang['readed_pages']]} chartData={value.statistics[0]} />
 							</div>
 							<div className="col-sm-4 readed-books-component__body__test">
 								<h4>{choosenLang['tests']}</h4>

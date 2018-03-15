@@ -157,20 +157,26 @@ class Model3d extends Component {
 
 	renderText() {
 		console.log('renderText')
-	    const onProgress = ( xhr ) => {
-	    	if ( xhr.lengthComputable ) {
-	    		var percentComplete = xhr.loaded / xhr.total * 100;
-	    		console.log( Math.round(percentComplete, 2) + '% font' )
-	    	}
-	    };
-	    const onError = ( xhr ) => { console.log(xhr) };
+		try {
+			const onProgress = ( xhr ) => {
+		    	if ( xhr.lengthComputable ) {
+		    		var percentComplete = xhr.loaded / xhr.total * 100;
+		    		console.log( Math.round(percentComplete, 2) + '% font' )
+		    	}
+		    };
+		    const onError = ( xhr ) => { console.log(xhr) };
 
-	    const group2 = this.refs.group2
-	    const fff = new THREE.FontLoader()
-	    const materials = [
-				new THREE.MeshPhongMaterial( { color: this.state.color, flatShading: true } ), // front
-				new THREE.MeshPhongMaterial( { color: this.state.color } ) // side
-			]
+		    const group2 = this.refs.group2
+		    const fff = new THREE.FontLoader()
+		    const materials = [
+					new THREE.MeshPhongMaterial( { color: this.state.color, flatShading: true } ), // front
+					new THREE.MeshPhongMaterial( { color: this.state.color } ) // side
+				]
+		}
+		catch(e) {
+			
+		}
+		    
 	   /* fff.load('./3dmodels/grave/he_le.font.json', (font) => {
 	      const geo = new THREE.TextGeometry( this.state.text, {
 	    		font: font,

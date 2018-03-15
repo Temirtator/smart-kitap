@@ -56,7 +56,7 @@ class MyBooksProgress extends Component {
             	<div className="my-books__statistics">
 	            	<div className="col-sm-4 my-books__development">
 	            		<h4>{choosenLang['familiarization']}</h4>
-	            		<PieComponent itemName={[choosenLang['page']]} chartData={books_progress[0]} />
+	            		<PieComponent itemName={[choosenLang['all_pages'], choosenLang['readed_pages']]} chartData={books_progress[0]} />
 	            	</div>
 	            	<div className="col-sm-4 my-books__test">
 	            		<h4>{choosenLang['tests']}</h4>
