@@ -94,6 +94,7 @@ class AuthComponent extends Component {
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                     } else {
+                        this.setState({isLoading: true})
                         console.log("It's NW.JS Project")
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
