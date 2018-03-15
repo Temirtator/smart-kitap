@@ -194,7 +194,7 @@ class AuthComponent extends Component {
                         <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Support</span>
                     </div>
                     <div className="row av-site">
-                        <span className="av-site">Avsoft.kz</span>
+                        <span className="av-site">Smart Kitap</span>
                     </div>
                     <div className="row">
                         <span className="av-number">+7 777 777 77 77</span>
