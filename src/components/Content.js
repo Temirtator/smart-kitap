@@ -21,8 +21,6 @@ import BookOrientation from './BookOrientationComponent'
 import TextSettings from './TextSettingsComponent'
 import Sidebar from './Sidebar'
 
-import 'rc-progress/assets/index.css'
-import {Line} from 'rc-progress'
 
 import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../resources/language/languages.json'

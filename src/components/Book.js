@@ -1,11 +1,4 @@
 import React, {Component, PropTypes} from 'react'
-import Model3d from './Model3d'
-import $ from 'jquery'
-import ImageZoom from 'react-medium-image-zoom'
-
-import MathJax from 'mathjax'
-import ReactDOM from 'react-dom'
-
 
 class Book extends Component {
     static propTypes = {
