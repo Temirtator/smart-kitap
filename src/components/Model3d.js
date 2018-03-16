@@ -21,7 +21,7 @@ class Model3d extends Component {
 		obj: PropTypes.string.isRequired,
 		mtl: PropTypes.string.isRequired
 	}
-	
+
     constructor(props, context) {
         super(props, context)
         let { obj, mtl } = props
@@ -44,7 +44,7 @@ class Model3d extends Component {
 
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
 	    this.renderText = this.renderText.bind(this)
-	    
+
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
 	    this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0)
 	    this.groundRepeat = new THREE.Vector2(25, 25)
@@ -58,7 +58,7 @@ class Model3d extends Component {
 	    this._onAnimate = this._onAnimate.bind(this)
     }
 
-    
+
 	loadAndRenderObject() {
 		console.log('loadAndRenderObject')
 	    try{
@@ -128,17 +128,17 @@ class Model3d extends Component {
 		    controls.dynamicDampingFactor = 0.3
 
 		    this.controls = controls
+            this.renderText()
+            this.loadAndRenderObject()
 
-		    controls.addEventListener('change', () => {
-	          this.setState({
-		        mainCameraPosition: this.refs.mainCamera.position,
-		      })
-			})
-		    
-		    this.renderText()
-		    this.loadAndRenderObject()
+        controls.addEventListener('change', () => {
+            if (this.refs.mainCamera !== undefined){
+                this.setState({
+                    mainCameraPosition: this.refs.mainCamera.position,
+                })
+            }
+        })
 
-		    this.forceUpdate()
 	}
 
 	componentWillUnmount() {
