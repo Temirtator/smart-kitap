@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 import React3 from 'react-three-renderer'
 import * as THREE from 'three'
 import TrackballControls from './3d-modules/TrackballControls'
@@ -21,7 +22,7 @@ class Model3d extends Component {
 		obj: PropTypes.string.isRequired,
 		mtl: PropTypes.string.isRequired
 	}
-
+	
     constructor(props, context) {
         super(props, context)
         let { obj, mtl } = props
@@ -38,15 +39,12 @@ class Model3d extends Component {
 		    obj: obj,
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
-		    lightIntesity: 0.6
+		    lightIntesity: 0.6,
+		    show3D: false
         }
 
-        //this.handleText = this.handleText.bind(this)
-	    //this.handleColor = this.handleColor.bind(this)
-	    //this.updateGraveObject = this.updateGraveObject.bind(this)
-	    this.renderObjGraveObject = this.renderObjGraveObject.bind(this)
+        this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
 	    this.renderText = this.renderText.bind(this)
-	    //this.loadObjGrave = this.loadObjGrave.bind(this)
 	    
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
 	    this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0)
@@ -54,78 +52,15 @@ class Model3d extends Component {
 	    this.THREE = THREE
 	    this.lightPosition = new THREE.Vector3(5, 2, 2)
 	    this.lightTarget = new THREE.Vector3(0, 0, 0)
+
+	    this.render3DModel = this.render3DModel.bind(this)
+	    this.show3DModal = this.show3DModal.bind(this)
+	    this._onAnimate = this._onAnimate.bind(this)
     }
 
-    /*handleText(event) {
-    	console.log('handleText')
-	    this.setState({text: event.target.value})
-	    this.refs.group2.remove(this.state.updateText)
-	    this.renderText()
-	}*/
-
-	/*changeTexture(t) {
-	    this.setState({texture: t});
-	    this.updateGraveObject();
-	}*/
-
-	/*updateGraveObject() {
-	    const group = this.refs.group
-	    const object = this.state.object
-	    const loader = new THREE.TextureLoader()
-	    const texture = loader.load(this.state.texture)
-	    object.traverse( ( child ) => {
-		    if ( child instanceof THREE.Mesh ) {
-		       	child.material.map = texture
-		    }
-	    } );
-	    group.add(object)
-	    this.setState({object})
-	}*/
-
-	/*changeGrave(g) {
-		console.log('changeGrave')
-	    switch (g) {
-	      case 'grave.obj':
-	        this.setState({
-	          mtl: '3dmodels/Grave_3.mtl',
-	          mainCameraPosition: new THREE.Vector3(682, -40, 1600),
-	          orthographicCameraRotation: new THREE.Euler(0, 3.60, 0),
-	          obj: '3dmodels/' + g,
-	        })
-	        break;
-	      case 'grave_1.obj':
-	        this.setState({
-	          mtl: '3dmodels/grave_1.mtl',
-	          mainCameraPosition: new THREE.Vector3(-15, 20, 1270),
-	          orthographicCameraRotation: new THREE.Euler(0, 12.2, 0),
-	          obj: '3dmodels/' + g,
-	        })
-	        break;
-	      case 'model.obj':
-	      default:
-	        this.setState({
-	          mtl: '3dmodels/model.mtl',
-	          graveScale: new THREE.Vector3(500, 500, 500),
-	          meshPosition: new THREE.Vector3(0, 550, 0),
-	          mainCameraPosition: new THREE.Vector3(530, 100, 150),
-	          lightIntesity: 0.25,
-	          obj: '3dmodels/' + g,
-	        })
-	        break
-	    }
-
-	    this.refs.group.remove(this.state.object);
-	    return this.renderObjGraveObject();
-	}*/
-
-	/*loadObjGrave() {
-		console.log('loadObjGrave')
-	    this.refs.group.remove(this.state.object);
-	    this.renderObjGraveObject();
-	}*/
-
-	renderObjGraveObject() {
-		console.log('renderObjGraveObject')
+    
+	loadAndRenderObject() {
+		console.log('loadAndRenderObject')
 	    try{
 		    const onProgress = ( xhr ) => {
 		    	if ( xhr.lengthComputable ) {
@@ -163,7 +98,7 @@ class Model3d extends Component {
 		    		var percentComplete = xhr.loaded / xhr.total * 100;
 		    		console.log( Math.round(percentComplete, 2) + '% font' )
 		    	}
-		    };
+		    }
 		    const onError = ( xhr ) => { console.log(xhr) };
 
 		    const group2 = this.refs.group2
@@ -174,50 +109,38 @@ class Model3d extends Component {
 				]
 		}
 		catch(e) {
-			
+			console.log('Error log on renderText nethod', e)
 		}
-		    
-	   /* fff.load('./3dmodels/grave/he_le.font.json', (font) => {
-	      const geo = new THREE.TextGeometry( this.state.text, {
-	    		font: font,
-	    		size: 10,
-	    		height: 4,
-	    		curveSegments: 1,
-	    		bevelEnabled: false,
-	    		bevelThickness: 1,
-	    		bevelSize: 1,
-	    		bevelSegments: 2
-	    	} )
-	      const textMesh1 = new THREE.Mesh( geo, materials )
-
-	      group2.add(textMesh1)
-	      this.setState({updateText: textMesh1})
-	    }, onProgress, onError)*/
 	}
 
 	componentDidMount() {
-	    const controls = new TrackballControls(this.refs.mainCamera,
-	      ReactDOM.findDOMNode(this.refs.react3))
+	    try {
+	    	const controls = new TrackballControls(this.refs.mainCamera,
+	      	ReactDOM.findDOMNode(this.refs.react3))
 
-	    controls.rotateSpeed = 1.0
-	    controls.zoomSpeed = 1.2
-	    controls.panSpeed = 0.8
+		    controls.rotateSpeed = 1.0
+		    controls.zoomSpeed = 1.2
+		    controls.panSpeed = 0.8
 
-	    controls.noZoom = false
-	    controls.noPan = false
+		    controls.noZoom = false
+		    controls.noPan = false
 
-	    controls.staticMoving = true
-	    controls.dynamicDampingFactor = 0.3
+		    controls.staticMoving = true
+		    controls.dynamicDampingFactor = 0.3
 
-	    controls.addEventListener('change', () => {
-	      this.setState({
-	        mainCameraPosition: this.refs.mainCamera.position,
-	      });
-	    });
+		    controls.addEventListener('change', () => {
+		      this.setState({
+		        mainCameraPosition: this.refs.mainCamera.position,
+		      })
+		    })
 
-	    this.controls = controls
-	    this.renderText()
-	    this.renderObjGraveObject()
+		    this.controls = controls
+		    this.renderText()
+		    this.loadAndRenderObject()
+	    }
+	    catch(e) {
+	    	console.log('Error on 3d models didMount')
+	    }
 	}
 
 	componentWillUnmount() {
@@ -232,62 +155,49 @@ class Model3d extends Component {
 	    this.controls.update()
 	}
 
-	/*generate2D() {
-	    const canvas = document.createElement('canvas')
-	    const context = canvas.getContext('2d')
+	close3DModal = () => {
+		this.setState({show3D: false})
+	}
 
-	    context.font = 'Bold 60px David'
-	    context.fillStyle = this.state.color
-	    context.fillText(this.state.text, 0, 50)
-		
-	    const texture = new THREE.Texture(canvas, {transparent: true, opacity: 0.9, alpha: true})
-	    texture.needsUpdate = true
+	show3DModal = () => {
+		this.setState({ show3D: true }, () => {
+			let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
+			let model_3d = ReactDOM.findDOMNode(this.refs.react3).cloneNode()
+			modal_dialog.style.left = '50%'
+			modal_dialog.style.top = '50%'
+			console.log('modal_dialog', modal_dialog)
+			modal_dialog.appendChild(model_3d)
+		})
+	}
 
-	    return texture
-	}*/
-
-	/*handleColor(c) {
-	    this.setState({color: c})
-	    this.refs.group2.remove(this.state.updateText)
-	    this.renderText()
-	}*/
-
-    render() {
-    	const width = 500,
+	render3DModel() {
+		const width = 500,
     		  height = 300
 	    const {
 	      meshPosition,
 	      childPosition,
 	      lightIntesity,
 	      orthographicCameraRotation,
-	      r
+	      r,
+	      activeCameraName,
+	      mainCameraPosition,
+	      graveScale,
+	      textRotation
 	    } = this.state
 
 	    const aspectRatio = 0.5 * width / height
 
-	    const divStyle = {
-	      position: 'absolute',
-	      right: '20px',
-	      top: '20px',
-	    }
+		return (
 
-	    const inputStyle = {
-	      width: '500px',
-	      height: '40px',
-	      fontSize: '30px',
-	    }
-
-        return (
-        	<div className="model-3d">
-        		<React3
-			        ref="react3"
-			        width={width}
-			        height={height}
-			        antialias
-			        clearColor={'rgba(0, 0, 0, .55)'}
-			        alpha={true}
-			        onAnimate={this._onAnimate}
-			    >
+			<React3
+		        ref="react3"
+		        width={width}
+		        height={height}
+		        antialias
+		        clearColor={'rgba(0, 0, 0, .55)'}
+		        alpha={true}
+		        onAnimate={this._onAnimate}
+		    >
 		        <viewport
 		          x={0}
 		          y={0}
@@ -303,10 +213,10 @@ class Model3d extends Component {
 			            aspect={aspectRatio}
 			            near={1}
 			            far={10000}
-			            position={this.state.mainCameraPosition}
+			            position={mainCameraPosition}
 			        />
 			        <cameraHelper
-			            cameraName={this.state.activeCameraName}
+			            cameraName={activeCameraName}
 			        />
 		          	<object3D
 		            	lookAt={meshPosition}
@@ -331,7 +241,7 @@ class Model3d extends Component {
 			            />
 	          		</object3D>
 		          	<cameraHelper
-		            	cameraName={this.state.activeCameraName}
+		            	cameraName={activeCameraName}
 		          	/>
 		          	<ambientLight
 		            	color={'white'}
@@ -359,7 +269,7 @@ class Model3d extends Component {
 			        <group
 			            ref='group'
 			            position={meshPosition}
-			            scale={this.state.graveScale}
+			            scale={graveScale}
 			            castShadow
 			            receiveShadow
 			            rotation={orthographicCameraRotation}
@@ -367,14 +277,42 @@ class Model3d extends Component {
 			        <group
 			            ref='group2'
 			            position={childPosition}
-			            scale={this.state.graveScale}
+			            scale={graveScale}
 			            castShadow
 			            receiveShadow
-			            rotation={this.state.textRotation}
+			            rotation={textRotation}
 			        />
 		    	</scene>
 		    </React3>
-	    </div>
+
+		)
+	}
+
+    render() {
+
+	    const divStyle = {
+	      position: 'absolute',
+	      right: '20px',
+	      top: '20px',
+	    }
+
+	    const inputStyle = {
+	      width: '500px',
+	      height: '40px',
+	      fontSize: '30px',
+	    }
+
+        return (
+	        <div  onClick={this.show3DModal} className="model-3d">
+	    		{ this.state.show3D &&
+	                <ModalContainer>
+	                    <ModalDialog onClose={this.close3DModal}>
+	                    	
+	                    </ModalDialog>
+	                </ModalContainer>
+	            }
+	            { this.render3DModel() }
+	    	</div>
         )
     }
 }

@@ -210,12 +210,12 @@ export function bookIsOpened(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('setUserProgress', response)
+			console.log('bookIsOpened', response)
 
 			//return response
 		})
 		.catch(error => {
-			console.log('setUserProgress', error)
+			console.log('bookIsOpened', error)
 		})
 
 	}
@@ -237,10 +237,10 @@ export function bookIsReaded(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('setUserProgress', response)
+			console.log('bookIsReaded', response)
 		})
 		.catch(error => {
-			console.log('setUserProgress', error)
+			console.log('bookIsReaded', error)
 		})
 	}
 }

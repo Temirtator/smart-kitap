@@ -289,7 +289,7 @@ class Content extends Component {
             if (pageCount >= readedPage) {
                 //readed pages on percent
                 let readedPages = Math.ceil((readedPage/pageCount)*100)
-                const percent = this.state.progressBarPercent + 1
+                const percent = this.state.progressBarPercent + 5
                 if (percent >= readedPages) {
                     this.setState({ progressBarPage: readedPage })
                     clearTimeout(this.tm)
@@ -513,7 +513,8 @@ class Content extends Component {
             let objLink = childNodes[0].getAttribute("href")
             let mtlLink = childNodes[1].getAttribute('href')
             models[i].innerHTML = ''
-            const my_model = <Model3d obj={objLink} mtl={mtlLink} />
+            const my_model = <Model3d   obj={objLink} 
+                                        mtl={mtlLink} />
             ReactDOM.render(my_model, models[i])
             //console.log('models', mtlLink)
         }
@@ -640,7 +641,7 @@ class Content extends Component {
                     book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
                     //window.oncontextmenu = this.cancelDefaultMenu
                     this.countOfPage()
-                    this.setIdHeader()
+                    this.setIdHeader() 
                     this.increaseProgressBar()
                     this.parse3D()
                     this.imageZoom()
@@ -671,19 +672,18 @@ class Content extends Component {
 
         this.stopTimer(this)
 
-        let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount} = this.state
+        let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount, readedPage} = this.state
         let id = Number(book_id)
         if (timerCount >= 30) { // if spend time in book more than 30 sec
             this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
 
-        if (pageInViewId !== null){ // if incoming value is not null
-            let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length-1))
+        if (pageInViewId !== null && pageInView > readedPage){ // if incoming value is not null
+            let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length - 1))
             this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, last_opened_page_id) // pageInView its my last opened page
         }
-
-        if (pageCount === pageInView) { // opened last page and book is closed, so book is finished
+        if (pageCount <= pageInView) { // opened last page and book is closed, so book is finished
             this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
         }
     }
@@ -701,7 +701,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img, BookLoaded } = this.state
+                img, BookLoaded, show3D } = this.state
         let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
@@ -721,14 +721,15 @@ class Content extends Component {
         }
         return (
             <div className="content">
-            { BookLoaded ? 
+            { BookLoaded &&
                 <ModalContainer>
                     <div>
                         <ReactSpinner color='#fff' />
                         <p style={textStyle}>Загружается книга...</p>
                     </div>
-                </ModalContainer> : null
-            }
+                </ModalContainer>
+            }   
+            
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
