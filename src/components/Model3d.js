@@ -40,7 +40,8 @@ class Model3d extends Component {
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
 		    lightIntesity: 0.6,
-		    show3D: false
+		    show3D: false,
+		    parentCanvas: null
         }
 
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
@@ -156,12 +157,18 @@ class Model3d extends Component {
 
 	close3DModal = () => {
 		this.setState({show3D: false})
+		let parent = this.state.parentCanvas
+		let model_3d = ReactDOM.findDOMNode(this.refs.react3)
+		parent.appendChild(model_3d)
 	}
 
 	show3DModal = () => {
 		this.setState({ show3D: true }, () => {
 			let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
 			let model_3d = ReactDOM.findDOMNode(this.refs.react3)
+			this.setState({
+				parentCanvas: model_3d.parentNode
+			})
 			modal_dialog.style.left = '50%'
 			modal_dialog.style.top = '50%'
 			console.log('modal_dialog', modal_dialog)
@@ -185,8 +192,7 @@ class Model3d extends Component {
 	    } = this.state
 
 	    const aspectRatio = 0.5 * width / height
-	    console.log('controls', this.controls)
-		return (
+	    return (
 			<React3
 		        ref="react3"
 		        width={width}
@@ -304,7 +310,6 @@ class Model3d extends Component {
 	    		{ this.state.show3D &&
 	                <ModalContainer>
 	                    <ModalDialog onClose={this.close3DModal}>
-
 	                    </ModalDialog>
 	                </ModalContainer>
 	            }
