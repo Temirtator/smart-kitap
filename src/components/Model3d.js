@@ -162,7 +162,7 @@ class Model3d extends Component {
 	show3DModal = () => {
 		this.setState({ show3D: true }, () => {
 			let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
-			let model_3d = ReactDOM.findDOMNode(this.refs.react3).cloneNode()
+			let model_3d = ReactDOM.findDOMNode(this.refs.react3)
 			modal_dialog.style.left = '50%'
 			modal_dialog.style.top = '50%'
 			console.log('modal_dialog', modal_dialog)
