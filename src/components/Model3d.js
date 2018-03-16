@@ -22,7 +22,7 @@ class Model3d extends Component {
 		obj: PropTypes.string.isRequired,
 		mtl: PropTypes.string.isRequired
 	}
-	
+
     constructor(props, context) {
         super(props, context)
         let { obj, mtl } = props
@@ -45,7 +45,7 @@ class Model3d extends Component {
 
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
 	    this.renderText = this.renderText.bind(this)
-	    
+
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
 	    this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0)
 	    this.groundRepeat = new THREE.Vector2(25, 25)
@@ -58,7 +58,7 @@ class Model3d extends Component {
 	    this._onAnimate = this._onAnimate.bind(this)
     }
 
-    
+
 	loadAndRenderObject() {
 		console.log('loadAndRenderObject')
 	    try{
@@ -128,21 +128,18 @@ class Model3d extends Component {
 		    controls.dynamicDampingFactor = 0.3
 
 		    this.controls = controls
+            this.renderText()
+            this.loadAndRenderObject()
 
-		    
-		    setTimeout(() => {
-		    	this.renderText()
-		    	this.loadAndRenderObject()
-		    	controls.addEventListener('change', () => {
-			      if (this.refs.mainCamera !== undefined){
-				      this.setState({
-				        mainCameraPosition: this.refs.mainCamera.position,
-				      })
-				  }
-			    })
-		    }, 500)
-		    this.forceUpdate()
-	    
+        this.forceUpdate()
+        controls.addEventListener('change', () => {
+            if (this.refs.mainCamera !== undefined){
+                this.setState({
+                    mainCameraPosition: this.refs.mainCamera.position,
+                })
+            }
+        })
+
 	}
 
 	componentWillUnmount() {
@@ -163,12 +160,12 @@ class Model3d extends Component {
 
 	show3DModal = () => {
 		this.setState({ show3D: true }, () => {
-			/*let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
+			let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
 			let model_3d = ReactDOM.findDOMNode(this.refs.react3)
 			modal_dialog.style.left = '50%'
 			modal_dialog.style.top = '50%'
 			console.log('modal_dialog', modal_dialog)
-			modal_dialog.appendChild(model_3d)*/
+			modal_dialog.appendChild(model_3d)
 		})
 	}
 
@@ -307,7 +304,7 @@ class Model3d extends Component {
 	    		{ this.state.show3D &&
 	                <ModalContainer>
 	                    <ModalDialog onClose={this.close3DModal}>
-	            			{ this.render3DModel() }			        	
+
 	                    </ModalDialog>
 	                </ModalContainer>
 	            }

@@ -8,7 +8,6 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <script src='/assets/MathJax.js'></script>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <!--
@@ -55,10 +54,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js" type="text/javascript"
         charset="utf-8"></script>
 <script src="updater.js"></script>
-<script>
-    window.newTypeset = function newTypeset() {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-</script>
 </body>
 </html>
