@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 import React3 from 'react-three-renderer'
 import * as THREE from 'three'
 import TrackballControls from './3d-modules/TrackballControls'
@@ -40,8 +39,7 @@ class Model3d extends Component {
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
 		    lightIntesity: 0.6,
-		    show3D: false,
-		    parentCanvas: null
+		    show3D: false
         }
 
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
@@ -56,6 +54,7 @@ class Model3d extends Component {
 
 	    this.render3DModel = this.render3DModel.bind(this)
 	    this.show3DModal = this.show3DModal.bind(this)
+	    this.hide3DModal = this.hide3DModal.bind(this)
 	    this._onAnimate = this._onAnimate.bind(this)
     }
 
@@ -132,7 +131,6 @@ class Model3d extends Component {
             this.renderText()
             this.loadAndRenderObject()
 
-        this.forceUpdate()
         controls.addEventListener('change', () => {
             if (this.refs.mainCamera !== undefined){
                 this.setState({
@@ -153,27 +151,6 @@ class Model3d extends Component {
 
 	_onAnimate = () => {
 	    this.controls.update()
-	}
-
-	close3DModal = () => {
-		this.setState({show3D: false})
-		let parent = this.state.parentCanvas
-		let model_3d = ReactDOM.findDOMNode(this.refs.react3)
-		parent.appendChild(model_3d)
-	}
-
-	show3DModal = () => {
-		this.setState({ show3D: true }, () => {
-			let modal_dialog = document.getElementsByClassName('narcissus_17w311v')[0]
-			let model_3d = ReactDOM.findDOMNode(this.refs.react3)
-			this.setState({
-				parentCanvas: model_3d.parentNode
-			})
-			modal_dialog.style.left = '50%'
-			modal_dialog.style.top = '50%'
-			console.log('modal_dialog', modal_dialog)
-			modal_dialog.appendChild(model_3d)
-		})
 	}
 
 	render3DModel() {
@@ -291,6 +268,15 @@ class Model3d extends Component {
 		)
 	}
 
+	show3DModal() {
+		this.setState({ show3D: true })
+		this.refs.modelwrap.focus()
+	}
+
+	hide3DModal() {
+		this.setState({ show3D: false })	
+	}
+
     render() {
 
 	    const divStyle = {
@@ -306,14 +292,12 @@ class Model3d extends Component {
 	    }
 
         return (
-	        <div  onClick={this.show3DModal} className="model-3d">
-	    		{ this.state.show3D &&
-	                <ModalContainer>
-	                    <ModalDialog onClose={this.close3DModal}>
-	                    </ModalDialog>
-	                </ModalContainer>
-	            }
-	            { this.render3DModel() }
+	        <div  	onClick={this.show3DModal} 
+	        		tabIndex="0" 
+	        		onBlur={this.hide3DModal} 
+	        		ref="modelwrap"
+	        		className={this.state.show3D ? "model-3d zoom" : "model-3d"}>
+	            	{ this.render3DModel() }
 	    	</div>
         )
     }
