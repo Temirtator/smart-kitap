@@ -57,8 +57,7 @@ class Model3d extends Component {
 	    this.hide3DModal = this.hide3DModal.bind(this)
 	    this._onAnimate = this._onAnimate.bind(this)
     }
-
-
+    
 	loadAndRenderObject() {
 		console.log('loadAndRenderObject')
 	    try{
@@ -169,6 +168,7 @@ class Model3d extends Component {
 	    } = this.state
 
 	    const aspectRatio = 0.5 * width / height
+	    console.log('mainCameraPosition', mainCameraPosition)
 	    return (
 			<React3
 		        ref="react3"

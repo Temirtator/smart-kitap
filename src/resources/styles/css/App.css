@@ -713,7 +713,7 @@ a {
   position: relative; }
 
 .content__text {
-  padding: 5px 35px 83px 35px;
+  padding: 0 35px 0 35px;
   background: #fff;
   height: calc(100vh - 146px);
   position: relative;
@@ -2376,7 +2376,7 @@ div.my-books__test-by-books {
     .blindMode .video-component .video-body__content .video-body__description h2, .blindMode .video-component .video-body__content .video-body__description p {
       color: #fff; }
   .blindMode .video-component .video-body__content__side-video-menu p {
-    color: #fff; }
+    color: #000; }
   .blindMode .video-component .video-body__content .video-react,
   .blindMode .video-component .video-body__content .video-react-fluid {
     border: 1px solid #fff !important; }

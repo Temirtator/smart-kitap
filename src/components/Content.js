@@ -156,7 +156,7 @@ class Content extends Component {
             }
         }
     }
-
+    
     // firing when text selected on book content 
     getSelectionText() {
         let {quoteExist, selectionText} = this.state
@@ -196,7 +196,7 @@ class Content extends Component {
                     console.log('Some error on parentElId', e)
                 }
             }
-
+            
         } else if (window.getSelection && quoteExist) {
             selection = window.getSelection()
             if (selection && selection.rangeCount > 0) {
@@ -223,7 +223,7 @@ class Content extends Component {
         }
 
     }
-
+    
     // on call show tooltip by some rect position
     showToolTip() {
         if (this.state.rect !== null) {
@@ -236,7 +236,7 @@ class Content extends Component {
             quoteExist: true
         })
     }
-
+    
     // take click action on tooltip
     onToolTipClick(e) {
         let {new_precises} = this.props.preciStore.precises
@@ -280,7 +280,7 @@ class Content extends Component {
             })
         }
     }
-
+    
     increaseProgressBar() {    
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
@@ -303,47 +303,26 @@ class Content extends Component {
             }
         }
     }
-
+    
     // search text from book content
     findText(e) {
         if (e.keyCode === 13) {
             let { findTextValue } = this.refs
             let str = findTextValue.value
-            if (parseInt(navigator.appVersion)<4) return
-             var strFound
-             if (window.find) {
-              strFound=window.find(str)
-              if (!strFound) {
-               strFound=window.find(str,0,1)
-               while (window.find(str,0,1)) continue
-              }
-             }
-             else if (navigator.appName.indexOf("Microsoft")!=-1) {
-              if (TRange!=null) {
-               TRange.collapse(false)
-               strFound=TRange.findText(str)
-               if (strFound) TRange.select()
-              }
-              if (TRange==null || strFound==0) {
-               TRange=window.document.body.createTextRange()
-               strFound=TRange.findText(str)
-               if (strFound) TRange.select()
-              }
-             }
-             else if (navigator.appName=="Opera") {
-              alert ("Opera browsers not supported, sorry...")
-              return
-             }
-             if (!strFound) alert ("Слово '"+str+"' не был найден!")
-             return
+            if (window.find && window.getSelection) {
+                window.find(str)
+                var sel = window.getSelection()
+                let parentEl = sel.getRangeAt(0).commonAncestorContainer.parentNode
+                parentEl.scrollIntoView()
+            }
         }
     }
-
+    
     //this function cancel default menu on right click
     cancelDefaultMenu() {
         return false
     }
-
+    
     // sidebar chapters flashing
     // firing when scroll event happen
     chapterFlashing() {
@@ -419,7 +398,6 @@ class Content extends Component {
 
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
-        //let book = ReactDOM.findDOMNode(this.refs.book)
         let relativeEl = el[index].getBoundingClientRect()
         //let top = el[index].offsetTop
         let top = relativeEl.top + window.scrollY
@@ -428,11 +406,10 @@ class Content extends Component {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
+
         let isVisible =
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
-
-        //console.log('book pos', book.getBoundingClientRect())
 
         return isVisible
     }
@@ -527,7 +504,7 @@ class Content extends Component {
         for (var i = headers.length - 1; i >= 0; i--) {
             headers[i].setAttribute('id', 'header_'+i)
         }
-
+        
         for (var j = sub_headers.length - 1; j >= 0; j--) {
             sub_headers[j].setAttribute('id', 'sub-header_'+j)
         }
@@ -583,7 +560,7 @@ class Content extends Component {
             $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i]);
         }
     }
-
+    
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
@@ -595,7 +572,7 @@ class Content extends Component {
         })
             this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
             .then((data) => {
-
+                
                 try {
                     let content = ''
                     for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
