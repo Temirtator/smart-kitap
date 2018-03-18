@@ -1,11 +1,6 @@
 import React, {Component, PropTypes} from 'react'
-import Model3d from './Model3d'
-import $ from 'jquery'
-import ImageZoom from 'react-medium-image-zoom'
-
-import MathJax from 'mathjax'
-import ReactDOM from 'react-dom'
-
+import axios from 'axios';
+import $ from 'jquery';
 
 class Book extends Component {
     static propTypes = {
@@ -33,8 +28,18 @@ class Book extends Component {
                 maths[i].innerHTML = '<img src="' + generateImg + '"/>'
             }
         }, 1000)
+        setTimeout(() => {
+            try {
+                let script = $('.mceNonEditable').children('script');
+                for(let i=0;i<script.length;i++){
+                    window.eval(script[i].innerHTML);
+                }
+            } catch (e) {
+                console.error('HTML_ERROR', e);
+            }
+        }, 3000)
     }
-    
+
     renderBook() {
         return <div className="book" dangerouslySetInnerHTML={this.createMarkup()}/>
     }
