@@ -19,7 +19,7 @@ class BookItem extends Component {
 
 		this.state = {
 			isMyBook: this.props.isMyBook,
-			license_token: '124235asfa1k2431wasda',
+			license_token: window.localStorage.getItem('license_token'),
 			access_token: window.localStorage.getItem('access_token')
 		}
 

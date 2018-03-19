@@ -7,14 +7,13 @@ import MTLLoader from './3d-modules/MTLLoader'
 import OBJLoader from './3d-modules/OBJLoader'
 MTLLoader(THREE)
 OBJLoader(THREE)
-THREE.ImageUtils.crossOrigin = ""
+THREE.ImageUtils.crossOrigin = "*"
 
 const perspectiveCameraName = 'perspectiveCamera'
 const orthographicCameraName = 'orthographicCamera'
 const mainCameraName = 'mainCamera'
 
 const perspectiveCameraRotation = new THREE.Euler(0, Math.PI, 0)
-//const textRotation = new THREE.Euler(0, 2, 0)
 
 class Model3d extends Component {
 	static propTypes = {
@@ -32,9 +31,8 @@ class Model3d extends Component {
 		    mainCameraPosition: new THREE.Vector3(-15, 20, 1270),
 		    orthographicCameraRotation: new THREE.Euler(0, 12.55, 0),
 		    paused: true,
-		    text: '1931-2017',
 		    color: 'black',
-		    //texture: './3dmodels/alien_car/aliens.jpg',
+		    texture: './assets/bb8/body-diff-map.jpg',
 		    obj: obj,
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
@@ -43,7 +41,6 @@ class Model3d extends Component {
         }
 
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
-	    this.renderText = this.renderText.bind(this)
 
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
 	    this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0)
@@ -59,8 +56,7 @@ class Model3d extends Component {
     }
     
 	loadAndRenderObject() {
-		console.log('loadAndRenderObject')
-	    try{
+		try{
 		    const onProgress = ( xhr ) => {
 		    	if ( xhr.lengthComputable ) {
 		    		var percentComplete = xhr.loaded / xhr.total * 100
@@ -70,13 +66,15 @@ class Model3d extends Component {
 		    const onError = ( xhr ) => { console.log(xhr) }
 		    const group = this.refs.group
 		    const mtlLoader = new this.THREE.MTLLoader()
+		    //mtlLoader.setPath('./assets/bb8/')
 		    mtlLoader.crossOrigin = ''
 		    return (
 		      mtlLoader.load(this.state.mtl, materials => {
-		        materials.preload()
+		      	materials.preload()
 		        const objLoader = new this.THREE.OBJLoader()
 		        objLoader.setMaterials(materials)
-		        objLoader.crossOrigin = 'anonymous'
+		        //objLoader.setPath('./assets/bb8/')
+		        objLoader.crossOrigin = '*'
 		        objLoader.load(this.state.obj, object => {
 			        group.add(object)
 			        this.setState({object})
@@ -86,49 +84,24 @@ class Model3d extends Component {
 		} catch(e) {
 			console.log('error on loading 3d model')
 		}
-
-	}
-
-	renderText() {
-		console.log('renderText')
-		try {
-			const onProgress = ( xhr ) => {
-		    	if ( xhr.lengthComputable ) {
-		    		var percentComplete = xhr.loaded / xhr.total * 100;
-		    		console.log( Math.round(percentComplete, 2) + '% font' )
-		    	}
-		    }
-		    const onError = ( xhr ) => { console.log(xhr) };
-
-		    const group2 = this.refs.group2
-		    const fff = new THREE.FontLoader()
-		    const materials = [
-					new THREE.MeshPhongMaterial( { color: this.state.color, flatShading: true } ), // front
-					new THREE.MeshPhongMaterial( { color: this.state.color } ) // side
-				]
-		}
-		catch(e) {
-			console.log('Error log on renderText nethod', e)
-		}
 	}
 
 	componentDidMount() {
-	    	const controls = new TrackballControls(this.refs.mainCamera,
-	      	ReactDOM.findDOMNode(this.refs.react3))
+    	const controls = new TrackballControls(this.refs.mainCamera,
+      	ReactDOM.findDOMNode(this.refs.react3))
 
-		    controls.rotateSpeed = 1.0
-		    controls.zoomSpeed = 1.2
-		    controls.panSpeed = 0.8
+	    controls.rotateSpeed = 1.0
+	    controls.zoomSpeed = 1.2
+	    controls.panSpeed = 0.8
 
-		    controls.noZoom = false
-		    controls.noPan = false
+	    controls.noZoom = false
+	    controls.noPan = false
 
-		    controls.staticMoving = true
-		    controls.dynamicDampingFactor = 0.3
+	    controls.staticMoving = true
+	    controls.dynamicDampingFactor = 0.3
 
-		    this.controls = controls
-            this.renderText()
-            this.loadAndRenderObject()
+	    this.controls = controls
+        this.loadAndRenderObject()
 
         controls.addEventListener('change', () => {
             if (this.refs.mainCamera !== undefined){
@@ -137,7 +110,6 @@ class Model3d extends Component {
                 })
             }
         })
-
 	}
 
 	componentWillUnmount() {
@@ -168,7 +140,6 @@ class Model3d extends Component {
 	    } = this.state
 
 	    const aspectRatio = 0.5 * width / height
-	    console.log('mainCameraPosition', mainCameraPosition)
 	    return (
 			<React3
 		        ref="react3"
@@ -230,20 +201,20 @@ class Model3d extends Component {
 			        <directionalLight
 			            color={'#f3f0ea'}
 			            intensity={lightIntesity}
-
+			            
 			            castShadow
-
+			            
 			            shadowMapWidth={1024}
 			            shadowMapHeight={1024}
-
+			            
 			            shadowCameraLeft={120}
 			            shadowCameraRight={-20}
 			            shadowCameraTop={120}
 			            shadowCameraBottom={-20}
-
+			            
 			            shadowCameraFar={3 * 20}
 			            shadowCameraNear={20}
-
+			            
 			            position={this.lightPosition}
 			            lookAt={this.lightTarget}
 			        />
@@ -268,17 +239,20 @@ class Model3d extends Component {
 		)
 	}
 
-	show3DModal() {
+	show3DModal(e) {
 		this.setState({ show3D: true })
-		this.refs.modelwrap.focus()
+		console.log('show3DModal')
 	}
 
-	hide3DModal() {
-		this.setState({ show3D: false })	
+	hide3DModal(e) {
+		e.persist()
+		e.cancelBubble = true
+		e.stopPropagation()
+		this.setState({ show3D: false })
+		console.log('hide3DModal')
 	}
 
     render() {
-
 	    const divStyle = {
 	      position: 'absolute',
 	      right: '20px',
@@ -292,13 +266,16 @@ class Model3d extends Component {
 	    }
 
         return (
-	        <div  	onClick={this.show3DModal} 
-	        		tabIndex="0" 
-	        		onBlur={this.hide3DModal} 
-	        		ref="modelwrap"
-	        		className={this.state.show3D ? "model-3d zoom" : "model-3d"}>
-	            	{ this.render3DModel() }
-	    	</div>
+        	<div className="zoom_wrap">
+		        <div  	ref="modelwrap"
+		        		onClick={this.show3DModal}
+		        		className={this.state.show3D ? "model-3d zoom" : "model-3d"}>
+		        		<div onClick={this.hide3DModal}>
+		        			<i className="fas fa-times" />
+		        		</div>
+		        		{ this.render3DModel() }
+		    	</div>
+		    </div>
         )
     }
 }

@@ -13,7 +13,7 @@ let textStyle = {
     position: 'absolute',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    left: '60%'
+    left: 'calc(50vw + 125px)'
 }
 class NewPrecises extends Component {
     constructor(props) {
@@ -79,8 +79,8 @@ class NewPrecises extends Component {
             })
             book_id_local = book_id
         }
-        
-        this.props.precisActions.getUserPrecis(this.state.access_token, book_id_local)
+        let { license_token, access_token } = this.state
+        this.props.precisActions.getUserPrecis(license_token, access_token, book_id_local)
         .then(() => {
             this.setState({ PrecisLoaded: false })
         })

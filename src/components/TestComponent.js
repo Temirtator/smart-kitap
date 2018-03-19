@@ -16,7 +16,7 @@ class TestComponent extends Component {
         
         this.state = {
           access_token: window.localStorage.getItem('access_token'),
-          license_token: '124235asfa1k2431wasda',
+          license_token: window.localStorage.getItem('license_token'),
           book_id: window.localStorage.getItem('book_id'),
           exam_id: null,
           tests: [],

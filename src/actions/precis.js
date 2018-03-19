@@ -51,14 +51,16 @@ export function getUserOldPrecis(someArray) {
 }
 
 //most ugly function i ever wrote maybe
-export function getUserPrecis(token, book_id) {
+export function getUserPrecis(license_token, access_token, book_id) {
 	return dispatch => {
 		return axios({
 			method: 'get',
 			url: url + api + 'precis',
-			data: {},
+			data: {
+				COMP_ACCESS_TOKEN: license_token
+			},
 			headers: {
-				'Authorization': 'Bearer ' + token
+				'Authorization': 'Bearer ' + access_token
 			}
 		})
 		.then(response => {
@@ -90,7 +92,7 @@ export function getUserPrecis(token, book_id) {
 					break
 				}
 			}*/
-
+			
 			dispatch({
 				type: types.CHANGE_NEW_PRECIS,
 				newPrecis: object

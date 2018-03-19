@@ -17,7 +17,7 @@
 			width: 127px
 			height: 177px
 		
-		p.books__book__name, p.books__book__author
+		p.books__book__name
 			width: fit-content
 			font-weight: bold
 			color: #000
@@ -29,15 +29,20 @@
 			max-width: 100px
 			max-height: 63px
 			
-			
 		p.books__book__author
 			color: #989898
 			font-size: 12px
+			text-overflow: ellipsis
+			white-space: nowrap
+			overflow: hidden
+			max-width: 100px
+			max-height: 63px
 			
 		.books__book__wrap
 			padding-top: 10px !important
 			width: 100%
 			padding: 0
+			height: 100px
 
 			.books__book__text__wrap
 				padding-left: 0px !important

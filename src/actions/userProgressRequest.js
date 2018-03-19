@@ -2,13 +2,13 @@ import * as types from '../constants/e_reader'
 import axios from 'axios'
 
 let url = 'http://smartkitap.avsoft.kz'
-let api = '/api/v1/'
+let api = '/api/v1/', api2 = '/api/v2/'
 
 export function getAllUserProgress(license_token, access_token) {
 	return dispatch => {
 		return axios({
-			method: 'get',
-			url: url+api+'user/progress',
+			method: 'post',
+			url: url + api2 + 'user/progress',
 			data: {
 				'COMP_ACCESS_TOKEN': license_token
 			},

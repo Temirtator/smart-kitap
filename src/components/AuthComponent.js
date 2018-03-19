@@ -24,7 +24,6 @@ import SelectorBooks from './SelectorBooksComponent'
  return 'Данные авторизации будут удалены, хотите закрыть?'
  }*/
 
-
 const versionStyle = {
     position: 'absolute',
     zIndex: '5000',
@@ -128,8 +127,18 @@ class AuthComponent extends Component {
                 if (license_token !== undefined && license_token !== null) { // if license toke exist
                     this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
                         .then(response => {
-                            if (response.status === 200) {
-                                this.checkAuth()
+                            try {
+                                console.log('Auth check', response)
+                                if (response.status === 200) {
+                                    this.checkAuth()
+                                }
+                                else if (response.status === 401) {
+                                    alert(response.msg)
+                                    window.localStorage.clear()
+                                }
+                            }
+                            catch (e) {
+                                console.log('Error on check status')
                             }
                         })
                 }
@@ -137,9 +146,18 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {enterKey, registration, progress, login, license_token, enterKeyClass, registrationClass, loginClass, isLoading, appApproved} = this.state
+        let {   enterKey, 
+                registration, 
+                progress, 
+                login, 
+                license_token, 
+                enterKeyClass, 
+                registrationClass, 
+                loginClass, 
+                isLoading, 
+                appApproved} = this.state
+        
         let element
-
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
                 return {
@@ -188,7 +206,7 @@ class AuthComponent extends Component {
                         { element }
                     </div>
                 </div>
-
+                
                 <div className="container av-support auth-av-support">
                     <div className="row">
                         <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Support</span>

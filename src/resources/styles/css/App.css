@@ -66,7 +66,7 @@
     .books .books__book img {
       width: 127px;
       height: 177px; }
-    .books .books__book p.books__book__name, .books .books__book p.books__book__author {
+    .books .books__book p.books__book__name {
       width: fit-content;
       font-weight: bold;
       color: #000;
@@ -79,11 +79,17 @@
       max-height: 63px; }
     .books .books__book p.books__book__author {
       color: #989898;
-      font-size: 12px; }
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 100px;
+      max-height: 63px; }
     .books .books__book .books__book__wrap {
       padding-top: 10px !important;
       width: 100%;
-      padding: 0; }
+      padding: 0;
+      height: 100px; }
       .books .books__book .books__book__wrap .books__book__text__wrap {
         padding-left: 0px !important; }
 
@@ -392,8 +398,10 @@
   .page .models_3d {
     border: 1px solid; }
     .page .models_3d .model-3d {
-      width: auto !important;
-      height: auto !important; }
+      width: auto;
+      height: auto; }
+      .page .models_3d .model-3d svg {
+        display: none; }
       .page .models_3d .model-3d canvas {
         width: 100% !important;
         height: 100% !important; }
@@ -890,7 +898,8 @@ a {
       width: 75px; }
   .content__header__sub .content__header__sub__right {
     display: inline-block;
-    float: left; }
+    float: left;
+    width: 100%; }
     .content__header__sub .content__header__sub__right .content__header__sub__name {
       float: left;
       padding: 0 0 0 10px; }
@@ -902,8 +911,8 @@ a {
         color: #aeafaf; }
     .content__header__sub .content__header__sub__right .content__header__sub__progress-bar {
       display: grid;
-      width: 166px;
-      padding: 0 0 0 10px; }
+      width: 100%;
+      padding: 4px 0 0 10px; }
 
 .content__header__sub1 {
   width: auto;
@@ -1330,7 +1339,7 @@ button {
     .video-body__content__video-element p {
       margin: 0;
       cursor: pointer; }
-  .video-body__content__side-video-menu {
+  .video-body__content__side-video-menuf {
     padding: 30px 14px 0 0; }
 
 .video-body__content::-webkit-scrollbar-track {
@@ -1981,9 +1990,8 @@ div.my-books__test-by-books {
 .shell {
   float: left;
   height: 20px;
-  width: 128px;
-  padding: 3px 10px 3px 3px;
-  margin: 0 5px 0 -10px; }
+  width: 100%;
+  padding: 3px 10px 3px 3px; }
 
 .bar {
   background: linear-gradient(to right, #00ce36, #e3505a);
@@ -1997,8 +2005,8 @@ div.my-books__test-by-books {
     font-size: 0.3em; }
 
 .zoom {
-  width: 600px;
-  height: 600px;
+  width: 95vh !important;
+  height: 90vh !important;
   background: white;
   position: fixed;
   z-index: 100;
@@ -2008,6 +2016,16 @@ div.my-books__test-by-books {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
+  .zoom svg {
+    display: block !important;
+    position: absolute !important;
+    right: 0 !important;
+    margin: 10px 10px !important;
+    font-size: 30px;
+    cursor: pointer; }
+  .zoom canvas {
+    width: 100% !important;
+    height: 100% !important; }
 
 .blackMode {
   background-color: #2a2e35 !important;

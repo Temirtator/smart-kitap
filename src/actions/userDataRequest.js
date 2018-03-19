@@ -8,7 +8,7 @@ export function getUserInfo(token) {
 	return dispatch => {
 		axios({
 			method: 'post',
-			url: url+api+'user/me',
+			url: url + api + 'user/me',
 			data: {},
 			headers: {
 				'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export function getUserInfo(token) {
 			}
 		})
 		.then(response => {
-			console.log(response)
+			console.log(response, 'getUserData')
 			dispatch({
 				type: types.SET_USER_DATA,
 				data: response.data

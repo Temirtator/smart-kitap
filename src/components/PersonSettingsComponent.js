@@ -27,7 +27,7 @@ class PersonSettings extends Component {
         	app_lang: language,
         	app_theme: theme,
         	access_token: window.localStorage.getItem('access_token'),
-        	license_token: '124235asfa1k2431wasda',
+        	license_token: window.localStorage.getItem('license_token'),
         	isPasswRepeated: true,
             isNameVerified: true,
             isSurnameVerified: true

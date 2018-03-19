@@ -46,7 +46,8 @@
       "russian": "Русский",
       "kazakh": "Казахский",
       "dark-theme": "Темная",
-      "white-theme": "Белая"
+      "white-theme": "Белая",
+      "reset": "Сбросить"
   },
   {
       "main": "Main",
@@ -94,7 +95,8 @@
       "russian": "Russian",
       "kazakh": "Kazakh",
       "dark-theme": "Dark",
-      "white-theme": "White"
+      "white-theme": "White",
+      "reset": "Reset"
   },
   {
       "main": "Басты бет",
@@ -142,6 +144,7 @@
       "russian": "Орыс тілі",
       "kazakh": "Қазақ тілі",
       "dark-theme": "Қара",
-      "white-theme": "Ақшыл"
+      "white-theme": "Ақшыл",
+      "reset": "Қалпына келтіру"
   }
 ]

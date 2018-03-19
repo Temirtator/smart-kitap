@@ -95,7 +95,6 @@ class OldPrecises extends Component {
             book_id_local = book_id
         }
         
-        //this.props.precisActions.getUserPrecis(this.state.localStorage, book_id_local)
         this.getIndexes(Number(book_id_local))
     }
 

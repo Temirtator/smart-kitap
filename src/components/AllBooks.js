@@ -35,14 +35,14 @@ class AllBooks extends Component {
         let filteredBooks = this.props.all_books.filter(this.bookFilter)
         return (
             <div className="books">
-              { filteredBooks.map((value, i) => 
-                <BookItem   img={value.cover} 
-                            name={String(value.name)}
-                            author={String(value.author)}
-                            isMyBook={this.props.isMyBook ? true : value.isFavourite} //value.isFavourite
-                            key={i}
-                            book_id={Number(value.id)} />
-              )}
+                  { filteredBooks.map((value, i) => 
+                    <BookItem   img={value.cover} 
+                                name={String(value.name)}
+                                author={String(value.author)}
+                                isMyBook={this.props.isMyBook ? true : value.isFavourite} //value.isFavourite
+                                key={i}
+                                book_id={Number(value.id)} />
+                  )}
             </div>
         )
     }

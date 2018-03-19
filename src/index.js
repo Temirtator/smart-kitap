@@ -16,6 +16,7 @@ import PrecisComponent from './components/PrecisComponent'
 import AuthComponent from './components/AuthComponent'
 import PersonalHomePage from './components/PersonalHomeComponent'
 import MyBooksProgress from './components/MyBooksProgressComponent'
+import Model3dExp from './components/Model3d_Exp'
 
 import registerServiceWorker from './registerServiceWorker'
 
@@ -34,7 +35,7 @@ render(
           <Route path="/book" component={App} /> {/*this is my container*/}
           <Route path="/main-personal-page" component={PersonalHomePage} />
           <Route path="/my-books" component={MyBooksProgress} />
-          {/*<Route path="/page" component={Page} />*/}
+          <Route path="/experiment3d" component={Model3dExp} />
         </Switch>  
       </Router>
   	</Provider>,

@@ -2,13 +2,13 @@ import * as types from '../constants/e_reader'
 import axios from 'axios'
 
 let url = 'http://smartkitap.avsoft.kz'
-let api = '/api/v1/'
+let api = '/api/v1/', api2 = '/api/v2/' 
 
 export function getAllBooks(license_token, access_token) {
 	return dispatch => {
 		axios({
 			method: 'post',
-			url: url+api+'book',
+			url: url + api + 'book',
 			data: {
 				'COMP_ACCESS_TOKEN': license_token 
 			},
@@ -53,12 +53,14 @@ export function getAllBooks(license_token, access_token) {
 	}
 }
 
-export function getBookById(access_token, book_id) {
+export function getBookById(license_token, access_token, book_id) {
 	return dispatch => {
 		return axios({
 			method: 'get',
-			url: url+api+'book/' + book_id,
-			data: {},
+			url: url + api + 'book/' + book_id,
+			data: {
+				'COMP_ACCESS_TOKEN': license_token
+			},
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + access_token
@@ -77,8 +79,8 @@ export function getBookById(access_token, book_id) {
 export function getAllMyBooks(license_token, access_token) {
 	return dispatch => {
 		axios({
-			method: 'get',
-			url: url+api+'user/favourite',
+			method: 'post',
+			url: url + api2 + 'user/favourite',
 			data: {
 				'COMP_ACCESS_TOKEN': license_token
 			},
@@ -148,7 +150,7 @@ export function sendBookDuration(license_token, access_token, book_id, duration)
 			method: 'post',
 			url: url + api + 'user/book_duration',
 			data: {
-				//'COMP_ACCESS_TOKEN': license_token,
+				'COMP_ACCESS_TOKEN': license_token,
 				'book_id': book_id,
 				'duration': Number(duration)
 			},
@@ -198,7 +200,7 @@ export function setBookReserve(license_token, access_token, order_ids) {
 		/*for (let i = 0; i <= order_ids.length-1; i++) {
 			data['order_ids['+ i +']'] = order_ids[i]
 		}*/
-		console.log('sended body data', data)
+		//console.log('sended body data', data)
 		axios({
 			method: 'post',
 			url: url + api + 'book_reserve',

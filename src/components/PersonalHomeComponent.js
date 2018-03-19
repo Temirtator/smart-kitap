@@ -99,12 +99,18 @@ class PersonalHomePage extends Component {
     }
     
     switchFunction(key) {
-        if (key == 'quit') {
+        if (key === 'quit') {
             let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
             massive.map((value, index) => {
                 window.localStorage.removeItem(value)
             })
             this.props.history.push('/')
+        }
+
+        if (key === 'reset') {
+            window.localStorage.clear()
+            window.location.reload()
+            return -1
         }
 
         var components = [
@@ -161,7 +167,6 @@ class PersonalHomePage extends Component {
             bodyClass += " blackMode"
             bodyMainClass += " blackMode"
         }
-
         return (
             <div className="personal-home-page">
                 

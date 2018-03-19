@@ -6,8 +6,8 @@ let textStyle = {
     color: 'white',
     position: 'absolute',
     top: '50%',
-    transform: 'translate(-50%, -51%)',
-    left: '56%'
+    transform: 'translate(-50%, -50%)',
+    left: 'calc(50vw + 100px)'
 }
 
 let backgroundStyle = {

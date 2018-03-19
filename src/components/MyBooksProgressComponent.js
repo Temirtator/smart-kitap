@@ -14,10 +14,10 @@ class MyBooksProgress extends Component {
         
 		this.state = {
 			access_token: window.localStorage.getItem('access_token'),
-			license_token: '124235asfa1k2431wasda',
+			license_token: window.localStorage.getItem('license_token'),
 			books_progress: []
 		}
-
+        
 		this.checkAuth = this.checkAuth.bind(this)
 	}
     
@@ -33,7 +33,7 @@ class MyBooksProgress extends Component {
     	try {
             this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
         	.then(general_progress => {
-        		console.log('Return from promise', general_progress)
+        		//console.log('Return from promise', general_progress)
         		this.setState({
         			books_progress: general_progress
         		})
@@ -45,13 +45,14 @@ class MyBooksProgress extends Component {
     }
     
     render() {
-    	let { books_progress } = this.state
-    	console.log('Render method books_progress', books_progress)
+    	let { books_progress } = this.state /* books_progress variable may sometimes undefined or null, this is bug*/
+        //TODO: need debugging here
+    	//console.log('Render method books_progress', books_progress)
     	let { language } = this.props.appStateControl.user_settings
     	let choosenLang = languages[0][language]
         
     	return (
-    		<div>
+    		<div style={{margin:'0 auto', width: 'inherit'}}>
     		{books_progress.length > 0 ? <div className="my-books">
             	<div className="my-books__statistics">
 	            	<div className="col-sm-4 my-books__development">

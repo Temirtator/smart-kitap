@@ -57,7 +57,7 @@ let textStyle = {
     position: 'absolute',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    left: '60%'
+    left: 'calc(50vw + 100px)'
 }
 
 
@@ -565,78 +565,79 @@ class Content extends Component {
     }
     
     componentDidMount() {
+        let { license_token, access_token } = this.state
         this.setState({
             book_id: window.localStorage.getItem('book_id')
         })
-            this.props.booksRequestActions.getBookById(this.state.access_token, window.localStorage.getItem('book_id'))
-            .then((data) => {
-                
-                try {
-                    let content = ''
-                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                        content += data.book_page[i].content
-                    }
-                    window.localStorage.setItem('img', data.cover)
-                    window.localStorage.setItem('author', data.author)
-                    window.localStorage.setItem('name', data.name)
-                    ReactGA.event({
-                        category: 'Книга',
-                        action: 'Открыто книга: ' + data.name
-                    });
-                    this.setState({
-                        name: data.name,
-                        author: data.author,
-                        img: data.cover,
-                        content: content,
-                        pageCount: data.page_count,
-                        readedPage: data.last_opened_page
-                    })
-                    console.log('last opened page', data)
+        this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+        .then((data) => {
+            
+            try {
+                let content = ''
+                for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
+                    content += data.book_page[i].content
                 }
-                catch(e) {
-                    console.log('Error on loading book')
-                }
-                this.setState({ BookLoaded: false })
-            })
-            .then(() => {
-                try {
-                    let {statiContent, sidebar_place} = this.refs
-                    console.log('sidebar_place', sidebar_place)
-                    // here i get an array of elements
-                    this.setState({
-                        chapters: statiContent.getElementsByTagName('h1'),
-                        subChapters: statiContent.getElementsByTagName('h2'),
-                        sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
-                        sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
-                    })
+                window.localStorage.setItem('img', data.cover)
+                window.localStorage.setItem('author', data.author)
+                window.localStorage.setItem('name', data.name)
+                ReactGA.event({
+                    category: 'Книга',
+                    action: 'Открыто книга: ' + data.name
+                });
+                this.setState({
+                    name: data.name,
+                    author: data.author,
+                    img: data.cover,
+                    content: content,
+                    pageCount: data.page_count,
+                    readedPage: data.last_opened_page
+                })
+                console.log('last opened page', data)
+            }
+            catch(e) {
+                console.log('Error on loading book')
+            }
+            this.setState({ BookLoaded: false })
+        })
+        .then(() => {
+            try {
+                let {statiContent, sidebar_place} = this.refs
+                console.log('sidebar_place', sidebar_place)
+                // here i get an array of elements
+                this.setState({
+                    chapters: statiContent.getElementsByTagName('h1'),
+                    subChapters: statiContent.getElementsByTagName('h2'),
+                    sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
+                    sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
+                })
 
-                    statiContent.addEventListener('scroll', this.pageInViewport)
-                    statiContent.addEventListener('scroll', this.chapterFlashing)
-                    book = statiContent.getElementsByClassName('book')[0]
-                    book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                    //window.oncontextmenu = this.cancelDefaultMenu
-                    this.countOfPage()
-                    this.setIdHeader() 
-                    this.increaseProgressBar()
-                    this.parse3D()
-                    this.imageZoom()
-                    this.tablesFixer()
-                    this.sidebarFunc(this.scrollToElement)
-                    /*to scroll into view*/
-                    try {
-                        let { book_page_id } = this.props.appStateControl
-                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
-                        element.scrollIntoView()
-                        this.props.appStateControlActions.setBookScrollPos(0)
-                    }
-                    catch(e) {
-                        console.log('Error on scrolling by precise', e)
-                    }
+                statiContent.addEventListener('scroll', this.pageInViewport)
+                statiContent.addEventListener('scroll', this.chapterFlashing)
+                book = statiContent.getElementsByClassName('book')[0]
+                book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
+                //window.oncontextmenu = this.cancelDefaultMenu
+                this.countOfPage()
+                this.setIdHeader() 
+                this.increaseProgressBar()
+                this.parse3D()
+                this.imageZoom()
+                this.tablesFixer()
+                this.sidebarFunc(this.scrollToElement)
+                /*to scroll into view*/
+                try {
+                    let { book_page_id } = this.props.appStateControl
+                    let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                    element.scrollIntoView()
+                    this.props.appStateControlActions.setBookScrollPos(0)
                 }
                 catch(e) {
-                    console.log('Error on loading book too')
+                    console.log('Error on scrolling by precise', e)
                 }
-            })
+            }
+            catch(e) {
+                console.log('Error on loading book too')
+            }
+        })
 
     }
 

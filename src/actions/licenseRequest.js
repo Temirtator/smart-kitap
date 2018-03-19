@@ -22,13 +22,12 @@ export function activation(serial_code) {
             ReactGA.event({
                 category: 'Приложение',
                 action: 'Проверка ключа'
-            });
+            })
 			console.log(response)
 			return response
 		})
 		.catch(error => {
 			console.log(error)
-
 		})
 	}
 }

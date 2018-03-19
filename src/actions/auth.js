@@ -18,12 +18,7 @@ export function login(email, password) {
 			}
 		})
 		.then(response => {
-			console.log(response)
-			/*let token = response.data.token
-			dispatch({
-				type: types.SET_USER_TOKEN,
-				token: token	
-			})*/
+			console.log("Login", response)
 			return response
 		})
 		.catch(error => {
@@ -36,7 +31,7 @@ export function forgotPassword(email) {
 	return dispatch => {
 		return axios({
 			method: 'post',
-			url: url+api+'user/recovery',
+			url: url + api + 'user/recovery',
 			data: {
 				email: email,
 			},
@@ -109,6 +104,7 @@ export function	editUserInfo(license_token, access_token, name, surname) {
 			method: 'post',
 			url: url + api + 'user',
 			data: {
+				COMP_ACCESS_TOKEN: license_token,
 				first_name: name,
 				last_name: surname
 			},
