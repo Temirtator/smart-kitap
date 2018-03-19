@@ -57,9 +57,10 @@ class AuthComponent extends Component {
     }
 
     checkAuth() {
-        if (this.state.access_token) {
-            this.props.history.push('/main-personal-page')
-        }
+        //TODO:: Перед пушем выключай его. А то перед клиентом бесить
+        // if (this.state.access_token) {
+        //     this.props.history.push('/main-personal-page')
+        // }
     }
 
     authType(key) {
@@ -86,18 +87,18 @@ class AuthComponent extends Component {
                 window.getMacAddress()
             }
         } catch (e) {
-            console.log("IS NOT NW JS");
+            console.log('IS NOT NW JS');
         }
         this.props.updateAppActions.checkVersion(version)
             .then(response => {
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
-                    console.log("Checkin version", version, response.data.version)
+                    console.log('Checkin version', version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                     } else {
                         this.setState({isLoading: true})
-                        console.log("It's NW.JS Project")
+                        console.log('It's NW.JS Project')
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
 
