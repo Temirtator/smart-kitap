@@ -54,6 +54,7 @@ class AuthComponent extends Component {
         this.checkAuth = this.checkAuth.bind(this)
         ReactGA.initialize('UA-66591915-12');
         ReactGA.pageview('/Авторизация');
+
     }
 
     checkAuth() {
@@ -85,6 +86,7 @@ class AuthComponent extends Component {
         try {
             if (window.getMacAddress !== undefined) {
                 window.getMacAddress()
+                window.getSystemInfo()
             }
         } catch (e) {
             console.log('IS NOT NW JS');
@@ -98,7 +100,7 @@ class AuthComponent extends Component {
                         console.log('Is not NW.JS project')
                     } else {
                         this.setState({isLoading: true})
-                        console.log('It's NW.JS Project')
+                        console.log('It"s NW.JS Project')
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
 
@@ -136,6 +138,7 @@ class AuthComponent extends Component {
                                 else if (response.status === 401) {
                                     alert(response.msg)
                                     window.localStorage.clear()
+                                    window.location.reload()
                                 }
                             }
                             catch (e) {
@@ -147,17 +150,19 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {   enterKey, 
-                registration, 
-                progress, 
-                login, 
-                license_token, 
-                enterKeyClass, 
-                registrationClass, 
-                loginClass, 
-                isLoading, 
-                appApproved} = this.state
-        
+        let {
+            enterKey,
+            registration,
+            progress,
+            login,
+            license_token,
+            enterKeyClass,
+            registrationClass,
+            loginClass,
+            isLoading,
+            appApproved
+        } = this.state
+
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
@@ -207,7 +212,7 @@ class AuthComponent extends Component {
                         { element }
                     </div>
                 </div>
-                
+
                 <div className="container av-support auth-av-support">
                     <div className="row">
                         <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Support</span>

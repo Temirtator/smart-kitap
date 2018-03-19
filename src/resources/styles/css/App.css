@@ -414,15 +414,15 @@
     border: 1px solid #aaa;
     border-collapse: collapse; }
   .page h1 {
-    font-size: 32; }
+    font-size: 18pt !important; }
   .page h2 {
-    font-size: 24; }
+    font-size: 16pt !important; }
   .page h3 {
-    font-size: 18; }
+    font-size: 14pt; }
   .page h4 {
-    font-size: 13; }
+    font-size: 14pt; }
   .page h5 {
-    font-size: 10; }
+    font-size: 14pt; }
   .page h1, .page h2, .page h3, .page h4, .page h5 {
     text-align: center;
     font-weight: bold; }
@@ -431,14 +431,14 @@
   .page h3 {
     font-weight: bold; }
   .page p {
-    font-size: 16px;
+    font-size: 14pt;
     margin: 0; }
     .page p span.floatRight {
       float: right; }
     .page p span.bold-text {
       font-weight: bold; }
   .page ul li {
-    font-size: 14; }
+    font-size: 14pt; }
   .page img {
     margin: 15px 15px; }
   .page__publishing-house {
@@ -482,49 +482,49 @@
         padding: 0 20px; }
 
 .page-1x h1 {
-  font-size: 32px !important; }
+  font-size: 18ptpx !important; }
 .page-1x h2 {
-  font-size: 24px !important; }
+  font-size: 16ptpx !important; }
 .page-1x h3 {
-  font-size: 18px !important; }
+  font-size: 14ptpx !important; }
 .page-1x h4 {
-  font-size: 13px !important; }
+  font-size: 14ptpx !important; }
 .page-1x h5 {
-  font-size: 10px !important; }
+  font-size: 14ptpx !important; }
 .page-1x p {
-  font-size: 16px !important; }
+  font-size: 14ptpx !important; }
 .page-1x ul li {
-  font-size: 14px !important; }
+  font-size: 14ptpx !important; }
 
 .page-2x h1 {
-  font-size: 41.6px !important; }
+  font-size: 23.4ptpx !important; }
 .page-2x h2 {
-  font-size: 31.2px !important; }
+  font-size: 20.8ptpx !important; }
 .page-2x h3 {
-  font-size: 23.4px !important; }
+  font-size: 18.2ptpx !important; }
 .page-2x h4 {
-  font-size: 16.9px !important; }
+  font-size: 18.2ptpx !important; }
 .page-2x h5 {
-  font-size: 13px !important; }
+  font-size: 18.2ptpx !important; }
 .page-2x p {
-  font-size: 20.8px !important; }
+  font-size: 18.2ptpx !important; }
 .page-2x ul li {
-  font-size: 18.2px !important; }
+  font-size: 18.2ptpx !important; }
 
 .page-3x h1 {
-  font-size: 51.2px !important; }
+  font-size: 28.8ptpx !important; }
 .page-3x h2 {
-  font-size: 38.4px !important; }
+  font-size: 25.6ptpx !important; }
 .page-3x h3 {
-  font-size: 28.8px !important; }
+  font-size: 22.4ptpx !important; }
 .page-3x h4 {
-  font-size: 20.8px !important; }
+  font-size: 22.4ptpx !important; }
 .page-3x h5 {
-  font-size: 16px !important; }
+  font-size: 22.4ptpx !important; }
 .page-3x p {
-  font-size: 25.6px !important; }
+  font-size: 22.4ptpx !important; }
 .page-3x ul li {
-  font-size: 22.4px !important; }
+  font-size: 22.4ptpx !important; }
 
 .page-style-a {
   background-color: #fff !important; }

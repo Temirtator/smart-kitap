@@ -4,10 +4,27 @@ window.getMacAddress = function () {
 
     function puts(error, stdout, stderr) {
         window.serial_number = stdout;
-        console.log("SERIAL", window.serial_number)
+        console.log('SERIAL', window.serial_number)
     }
 
-    exec("wmic CPU get ProcessorId", puts);
+    exec('chcp 65001 | wmic CPU get ProcessorId', puts);
+};
+window.getSystemInfo = function () {
+    var sys = require('util')
+    var exec = require('child_process').exec;
+
+    function puts(error, stdout, stderr) {
+        window.system_info = stdout;
+        console.log('SYSTEMINFO', window.system_info)
+    }
+
+    exec('chcp 65001 | systeminfo', puts);
+    function puts2(error, stdout, stderr) {
+        window.wan_interface = stdout;
+        console.log('WAN INTERFACE', window.wan_interface)
+    }
+
+    exec('chcp 65001 | ipconfig /all', puts2);
 };
 window.isReactJS = function () {
     try {
