@@ -54,12 +54,14 @@ class AuthComponent extends Component {
         this.checkAuth = this.checkAuth.bind(this)
         ReactGA.initialize('UA-66591915-12');
         ReactGA.pageview('/Авторизация');
+
     }
 
     checkAuth() {
-        if (this.state.access_token) {
-            this.props.history.push('/main-personal-page')
-        }
+        //TODO:: Перед пушем выключай его. А то перед клиентом бесить
+        // if (this.state.access_token) {
+        //     this.props.history.push('/main-personal-page')
+        // }
     }
 
     authType(key) {
@@ -84,20 +86,21 @@ class AuthComponent extends Component {
         try {
             if (window.getMacAddress !== undefined) {
                 window.getMacAddress()
+                window.getSystemInfo()
             }
         } catch (e) {
-            console.log("IS NOT NW JS");
+            console.log('IS NOT NW JS');
         }
         this.props.updateAppActions.checkVersion(version)
             .then(response => {
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
-                    console.log("Checkin version", version, response.data.version)
+                    console.log('Checkin version', version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                     } else {
                         this.setState({isLoading: true})
-                        console.log("It's NW.JS Project")
+                        console.log('It"s NW.JS Project')
                         window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
                             //Сохраняет
 
@@ -147,17 +150,19 @@ class AuthComponent extends Component {
     }
 
     render() {
-        let {   enterKey, 
-                registration, 
-                progress, 
-                login, 
-                license_token, 
-                enterKeyClass, 
-                registrationClass, 
-                loginClass, 
-                isLoading, 
-                appApproved} = this.state
-        
+        let {
+            enterKey,
+            registration,
+            progress,
+            login,
+            license_token,
+            enterKeyClass,
+            registrationClass,
+            loginClass,
+            isLoading,
+            appApproved
+        } = this.state
+
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
@@ -207,7 +212,7 @@ class AuthComponent extends Component {
                         { element }
                     </div>
                 </div>
-                
+
                 <div className="container av-support auth-av-support">
                     <div className="row">
                         <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Support</span>

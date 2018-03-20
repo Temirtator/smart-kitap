@@ -1,28 +1,47 @@
-window.getMacAddress=function(){
+window.getMacAddress = function () {
     var sys = require('util')
     var exec = require('child_process').exec;
+
     function puts(error, stdout, stderr) {
-        window.serial_number=stdout;
-        console.log("SERIAL",window.serial_number)
+        window.serial_number = stdout;
+        console.log('SERIAL', window.serial_number)
     }
-    exec("wmic CPU get ProcessorId", puts);
+
+    exec('chcp 65001 | wmic CPU get ProcessorId', puts);
 };
-window.isReactJS=function(){
-    try{
+window.getSystemInfo = function () {
+    var sys = require('util')
+    var exec = require('child_process').exec;
+
+    function puts(error, stdout, stderr) {
+        window.system_info = stdout;
+        console.log('SYSTEMINFO', window.system_info)
+    }
+
+    exec('chcp 65001 | systeminfo', puts);
+    function puts2(error, stdout, stderr) {
+        window.wan_interface = stdout;
+        console.log('WAN INTERFACE', window.wan_interface)
+    }
+
+    exec('chcp 65001 | ipconfig /all', puts2);
+};
+window.isReactJS = function () {
+    try {
         const path = require('path');
         return false;
-    }catch(e){
+    } catch (e) {
         return true;
     }
 };
 window.loadUpdateFromURL = function (fileUrl, callback) {
-    try{
+    try {
         const path = require('path');
         console.log(path.dirname(process.execPath));
         var fs = require('fs');
         fs.mkdir(path.dirname(process.execPath) + '/update');
         window.downloadFile(fileUrl, path.dirname(process.execPath) + '/update/', 'SmartKitap.exe', callback);
-    }catch(e){
+    } catch (e) {
 
     }
 }
@@ -76,19 +95,24 @@ window.downloadFile = function (url, dir, filename, callback) {
         res.on('data', data => {
             chunk += data;
             callback({status: 201, progress: parseInt(((chunk.length / len) * 100)), total: len});
-
+        }).on('error', function (err) {
+            throw new Error(err)
+        }).on('end', function () {
+            fs.writeFile(location, chunk, {encoding: 'binary'}, (err) => {
+                if (err) throw new Error(err);
+                callback ? callback({status: 200}) : ''
+            })
         })
-            .on('error', function (err) {
-                throw new Error(err)
-            })
-            .on('end', function () {
-                fs.writeFile(location, chunk, {encoding: 'binary'}, (err) => {
-                    if (err) throw new Error(err);
-                    callback ? callback({status: 200}) : ""
-                })
-            })
     })
 }
+function maximize() {
+    try {
+        require('nw.gui').Window.get().maximize()
+    } catch (e) {
+        console.error(e);
+    }
+}
+maximize();
 // downloadFile('http://185.100.67.187/setup/update_v1.5.11.exe', '/update', 'Docex.exe', function (callback) {
 //     console.log(callback);
 // });
