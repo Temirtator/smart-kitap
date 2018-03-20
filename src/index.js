@@ -9,14 +9,13 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import './resources/styles/css/index.css'
 
 import App from './containers/App'
-import TestComponent from './components/TestComponent'
-import VideoComponent from './components/VideoComponent'
-import InstrumentComponent from './components/InstrumentComponent'
-import PrecisComponent from './components/PrecisComponent'
-import AuthComponent from './components/AuthComponent'
-import PersonalHomePage from './components/PersonalHomeComponent'
-import MyBooksProgress from './components/MyBooksProgressComponent'
-import Model3dExp from './components/Model3d_Exp'
+import TestComponent from './components/TestComponents/TestComponent'
+import VideoComponent from './components/VideoComponents/VideoComponent'
+import PrecisComponent from './components/PrecisComponents/PrecisComponent'
+import AuthComponent from './components/AuthorizationComponents/AuthComponent'
+import PersonalHomePage from './components/MainMenuComponents/PersonalHomeComponent'
+import MyBooksProgress from './components/ProgressComponents/MyBooksProgressComponent'
+import Model3dExp from './components/3d-components/Model3d_Exp'
 
 import registerServiceWorker from './registerServiceWorker'
 
@@ -30,7 +29,6 @@ render(
           <Route exact path="/" component={AuthComponent} />
           <Route path="/test" component={TestComponent} />
           <Route path="/video" component={VideoComponent} />
-          <Route path="/instruments" component={InstrumentComponent} />
           <Route path="/precis" component={PrecisComponent} />
           <Route path="/book" component={App} /> {/*this is my container*/}
           <Route path="/main-personal-page" component={PersonalHomePage} />
