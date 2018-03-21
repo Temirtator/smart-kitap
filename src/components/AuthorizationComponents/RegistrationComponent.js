@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as authActions from '../../actions/auth'
-
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class Registration extends Component {
     constructor(props) {
@@ -19,18 +19,23 @@ class Registration extends Component {
     }
     
     registration() {
-    	let { name, surname, email, password, repeat_password } = this.state
-    	let access_token = '124235asfa1k2431wasda'
-    	if ((password !== repeat_password) && (password.trim() !== '')) {
-    		this.setState({ isPasswRepeated: false })
-    	}
-    	else {
-    		this.setState({ isPasswRepeated: true })
-    		this.props.authActions.registration(name, surname, email, password, access_token)
-    		.then(response => {
-    			alert(response.data.msg)
-    		})
-    	} 
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let { name, surname, email, password, repeat_password } = this.state
+            let access_token = '124235asfa1k2431wasda'
+            if ((password !== repeat_password) && (password.trim() !== '')) {
+                this.setState({ isPasswRepeated: false })
+            }
+            else {
+                this.setState({ isPasswRepeated: true })
+                this.props.authActions.registration(name, surname, email, password, access_token)
+                .then(response => {
+                    alert(response.data.msg)
+                })
+            }  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        }) 
     }
     
     render() {
@@ -76,6 +81,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    authActions: bindActionCreators(authActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch),
 })
 
 export default connect(

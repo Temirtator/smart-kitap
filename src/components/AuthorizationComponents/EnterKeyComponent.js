@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../../actions/licenseRequest'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class EnterKey extends Component {
     static PropTypes = {
@@ -17,21 +18,26 @@ class EnterKey extends Component {
     }
 
     enterKey() {
-        this.props.licenseRequestActions.activation(this.state.key)
-        .then(response => {
-            if (response.data.status === 200) {
-                window.localStorage.setItem('license_token', response.data.data.access_token)
-                window.localStorage.setItem('new_computer', response.data.data.is_new_computer)
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            this.props.licenseRequestActions.activation(this.state.key)
+            .then(response => {
+                if (response.data.status === 200) {
+                    window.localStorage.setItem('license_token', response.data.data.access_token)
+                    window.localStorage.setItem('new_computer', response.data.data.is_new_computer)
 
-                this.props.callBackFunc() // i'm unlbock registration and login buttons
-                // alert(response.data.msg)
-            }
-            else {
-                alert(response.data.msg)
-            }
+                    this.props.callBackFunc() // i'm unlbock registration and login buttons
+                    // alert(response.data.msg)
+                }
+                else {
+                    alert(response.data.msg)
+                }
+            })  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
     }
-
+    
     render() {
         return (
             <div className="enterKey-component">
@@ -54,7 +60,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch)
+   licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

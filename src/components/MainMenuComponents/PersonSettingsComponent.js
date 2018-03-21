@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as appStateControlAction from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import * as authActions from '../../actions/auth'
 import * as languages from '../../resources/language/languages.json'
 
@@ -47,7 +48,12 @@ class PersonSettings extends Component {
     }
 
     componentWillMount() {
-        this.checkAuth()
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            this.checkAuth()  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединениеауауцауц')
+        })
     }
 
     changeAppLang(value) {
@@ -94,33 +100,36 @@ class PersonSettings extends Component {
     } // so i must change it by myself, but in the sameway, save it on localState
 
     handleUserSettingsChange() {
-    	let { name, surname, password, repeat_password, access_token, license_token } = this.state
-        
-        //validation of name and surname
-        if (name.trim() === '') {
-            this.setState({ isNameVerified: false })
-        }
-        else {
-            this.setState({ isNameVerified: true })
-            
-            if ( surname.trim() === '' ) { // next step of validation
-                this.setState({ isSurnameVerified: false })
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let { name, surname, password, repeat_password, access_token, license_token } = this.state
+            //validation of name and surname
+            if (name.trim() === '') {
+                this.setState({ isNameVerified: false })
             }
             else {
-                this.setState({ isSurnameVerified: true }) // here we can be sure, that verification is passed, so we can save settings
-                // validation of password
-                if ((password !== repeat_password) || (password.trim() === '') || (password.length < 6)) {
-                    this.setState({ isPasswRepeated: false }) // flashed by red color
+                this.setState({ isNameVerified: true })
+                
+                if ( surname.trim() === '' ) { // next step of validation
+                    this.setState({ isSurnameVerified: false })
                 }
-                else { // 'password' is defalt naming for form of writing password
-                    this.setState({ isPasswRepeated: true })
-                    this.props.authActions.editPassword(license_token, access_token, password)
-                    this.props.authActions.editUserInfo(license_token, access_token, name, surname)
-                    alert('Настройки изменены')
+                else {
+                    this.setState({ isSurnameVerified: true }) // here we can be sure, that verification is passed, so we can save settings
+                    // validation of password
+                    if ((password !== repeat_password) || (password.trim() === '') || (password.length < 6)) {
+                        this.setState({ isPasswRepeated: false }) // flashed by red color
+                    }
+                    else { // 'password' is defalt naming for form of writing password
+                        this.setState({ isPasswRepeated: true })
+                        this.props.authActions.editPassword(license_token, access_token, password)
+                        this.props.authActions.editUserInfo(license_token, access_token, name, surname)
+                        alert('Настройки изменены')
+                    }
                 }
             }
-        }
-        
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     render() {
@@ -227,7 +236,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    appStateControlAction: bindActionCreators(appStateControlAction, dispatch),
-   authActions: bindActionCreators(authActions, dispatch)
+   authActions: bindActionCreators(authActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

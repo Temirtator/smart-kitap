@@ -280,4 +280,4 @@ class Model3d extends Component {
     }
 }
 
-export default Model3d;
+export default Model3d

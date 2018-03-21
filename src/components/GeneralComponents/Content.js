@@ -10,6 +10,7 @@ import * as userProgressRequest from '../../actions/userProgressRequest'
 import * as booksRequest from '../../actions/booksRequest'
 import * as precis_action from '../../actions/precis'
 import * as appStateControlActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import * as main_actions from '../../actions/'
 import ReactGA from 'react-ga'
 
@@ -175,7 +176,7 @@ class Content extends Component {
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode;
                 }
-                console.log('parentEl', parentEl)
+                //console.log('parentEl', parentEl)
                 parentEl = parentEl.closest('.page')
                 try{
                     let parentElId = parentEl.id // cannot read property id of null
@@ -236,46 +237,51 @@ class Content extends Component {
     
     // take click action on tooltip
     onToolTipClick(e) {
-        let {new_precises} = this.props.preciStore.precises
-        let book_id = Number(this.state.book_id)
-        let {selectionText, rect, access_token, book_page_id} = this.state
-        let newPrecises, book_position
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let {new_precises} = this.props.preciStore.precises
+            let book_id = Number(this.state.book_id)
+            let {selectionText, rect, access_token, book_page_id} = this.state
+            let newPrecises, book_position
 
-        for (var i = new_precises.length - 1; i >= 0; i--) {
-            //console.log(new_precises[i].book_id, '===', book_id)
-            if (Number(new_precises[i].book_id) === book_id) {
-                newPrecises = new_precises[i].precise //array of objects
-                book_position = i
-                break
+            for (var i = new_precises.length - 1; i >= 0; i--) {
+                //console.log(new_precises[i].book_id, '===', book_id)
+                if (Number(new_precises[i].book_id) === book_id) {
+                    newPrecises = new_precises[i].precise //array of objects
+                    book_position = i
+                    break
+                }
             }
-        }
-        let newObject = {
-            precis: selectionText,
-            yPos: rect.top
-        }
-        this.props.precisActions.addBookPrecis(access_token, book_id, book_page_id, selectionText)
-        // it means there is no any precises for this book
-        if (newPrecises === undefined) {
-            newPrecises = { // creating empty new precise
-                book_id: book_id,
-                precise: []
+            let newObject = {
+                precis: selectionText,
+                yPos: rect.top
+            }
+            this.props.precisActions.addBookPrecis(access_token, book_id, book_page_id, selectionText)
+            // it means there is no any precises for this book
+            if (newPrecises === undefined) {
+                newPrecises = { // creating empty new precise
+                    book_id: book_id,
+                    precise: []
+                }
+
+                newPrecises.precise.push(newObject)
+                this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
+                book_position = new_precises.length - 1
+            }
+            else {
+                newPrecises.push(newObject)
+                this.props.precisActions.changeNewPrecis(book_position, newPrecises)
             }
 
-            newPrecises.precise.push(newObject)
-            this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
-            book_position = new_precises.length - 1
-        }
-        else {
-            newPrecises.push(newObject)
-            this.props.precisActions.changeNewPrecis(book_position, newPrecises)
-        }
-
-        if (this.state.rect !== null) {
-            this.setState({
-                quoteExist: false,
-                rect: null
-            })
-        }
+            if (this.state.rect !== null) {
+                this.setState({
+                    quoteExist: false,
+                    rect: null
+                })
+            }
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     increaseProgressBar() {    
@@ -566,91 +572,95 @@ class Content extends Component {
     
     componentWillMount() {
         this.checkAuth()
-        this.startTimer(this)
+        this.startTimer(this)  
     }
     
     componentDidMount() {
-        let { license_token, access_token } = this.state
-        this.setState({
-            book_id: window.localStorage.getItem('book_id')
-        })
-        this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
-        .then((data) => {
-            
-            try {
-                let content = ''
-                for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                    content += data.book_page[i].content
-                }
-                window.localStorage.setItem('img', data.cover)
-                window.localStorage.setItem('author', data.author)
-                window.localStorage.setItem('name', data.name)
-                ReactGA.event({
-                    category: 'Книга',
-                    action: 'Открыто книга: ' + data.name
-                });
-                this.setState({
-                    name: data.name,
-                    author: data.author,
-                    img: data.cover,
-                    content: content,
-                    pageCount: data.page_count,
-                    readedPage: data.last_opened_page
-                })
-                console.log('last opened page', data)
-            }
-            catch(e) {
-                console.log('Error on loading book')
-            }
-            this.setState({ BookLoaded: false })
-        })
-        .then(() => {
-            try {
-                let {statiContent, sidebar_place} = this.refs
-                console.log('sidebar_place', sidebar_place)
-                // here i get an array of elements
-                this.setState({
-                    chapters: statiContent.getElementsByTagName('h1'),
-                    subChapters: statiContent.getElementsByTagName('h2'),
-                    sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
-                    sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
-                })
-
-                statiContent.addEventListener('scroll', this.pageInViewport)
-                statiContent.addEventListener('scroll', this.chapterFlashing)
-                book = statiContent.getElementsByClassName('book')[0]
-                book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                //window.oncontextmenu = this.cancelDefaultMenu
-                this.countOfPage()
-                this.setIdHeader() 
-                this.increaseProgressBar()
-                this.parse3D()
-                this.imageZoom()
-                this.tablesFixer()
-                this.sidebarFunc(this.scrollToElement)
-                /*to scroll into view*/
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let { license_token, access_token } = this.state
+            this.setState({
+                book_id: window.localStorage.getItem('book_id')
+            })
+            this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+            .then((data) => {
+                
                 try {
-                    let { book_page_id } = this.props.appStateControl
-                    let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
-                    element.scrollIntoView()
-                    this.props.appStateControlActions.setBookScrollPos(0)
+                    let content = ''
+                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
+                        content += data.book_page[i].content
+                    }
+                    window.localStorage.setItem('img', data.cover)
+                    window.localStorage.setItem('author', data.author)
+                    window.localStorage.setItem('name', data.name)
+                    ReactGA.event({
+                        category: 'Книга',
+                        action: 'Открыто книга: ' + data.name
+                    });
+                    this.setState({
+                        name: data.name,
+                        author: data.author,
+                        img: data.cover,
+                        content: content,
+                        pageCount: data.page_count,
+                        readedPage: data.last_opened_page
+                    })
+                    console.log('last opened page', data)
                 }
                 catch(e) {
-                    console.log('Error on scrolling by precise', e)
+                    console.log('Error on loading book')
                 }
-            }
-            catch(e) {
-                console.log('Error on loading book too')
-            }
-        })
+                this.setState({ BookLoaded: false })
+            })
+            .then(() => {
+                try {
+                    let {statiContent, sidebar_place} = this.refs
+                    console.log('sidebar_place', sidebar_place)
+                    // here i get an array of elements
+                    this.setState({
+                        chapters: statiContent.getElementsByTagName('h1'),
+                        subChapters: statiContent.getElementsByTagName('h2'),
+                        sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
+                        sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
+                    })
 
+                    statiContent.addEventListener('scroll', this.pageInViewport)
+                    statiContent.addEventListener('scroll', this.chapterFlashing)
+                    book = statiContent.getElementsByClassName('book')[0]
+                    book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
+                    //window.oncontextmenu = this.cancelDefaultMenu
+                    this.countOfPage()
+                    this.setIdHeader() 
+                    this.increaseProgressBar()
+                    this.parse3D()
+                    this.imageZoom()
+                    this.tablesFixer()
+                    this.sidebarFunc(this.scrollToElement)
+                    /*to scroll into view*/
+                    try {
+                        let { book_page_id } = this.props.appStateControl
+                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                        element.scrollIntoView()
+                        this.props.appStateControlActions.setBookScrollPos(0)
+                    }
+                    catch(e) {
+                        console.log('Error on scrolling by precise', e)
+                    }
+                }
+                catch(e) {
+                    console.log('Error on loading book too')
+                }
+            })
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
         //window.oncontextmenu = this.cancelDefaultMenu
-
+        
         this.stopTimer(this)
 
         let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount, readedPage} = this.state
@@ -659,14 +669,14 @@ class Content extends Component {
             this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
-
+        //console.log(pageInViewId, 'pageInViewId', 'readedPage', readedPage)
         if (pageInViewId !== null && pageInView > readedPage){ // if incoming value is not null
             let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length - 1))
             this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, last_opened_page_id) // pageInView its my last opened page
         }
         if (pageCount <= pageInView) { // opened last page and book is closed, so book is finished
             this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
-        }
+        } 
     }
     
     render() {
@@ -728,13 +738,6 @@ class Content extends Component {
                                       <div className="bar" style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
                                     </div>
                                 </div>
-
-                                {/*<Line   ref="bookReadedLoader"
-                                        percent={progressBarPercent}
-                                        strokeWidth="4"
-                                        strokeColor={color}
-                                        strokeLinecap='butt'
-                                        />*/}
                                 <p>{progressBarPage} / {pageCount}</p>
                             </div>
                         </div>
@@ -772,7 +775,7 @@ class Content extends Component {
                 {/* <p className="fixed-page-show">стр. {pageInView}</p>*/}
 
             </div>
-        );
+        )
     }
 }
 
@@ -788,7 +791,8 @@ const mapDispatchToProps = dispatch => ({
     precisActions: bindActionCreators(precis_action, dispatch),
     booksRequestActions: bindActionCreators(booksRequest, dispatch),
     main_actions: bindActionCreators(main_actions, dispatch),
-    appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
+    appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

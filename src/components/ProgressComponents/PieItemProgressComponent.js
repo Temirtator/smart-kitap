@@ -7,7 +7,7 @@ class PieItemProgress extends Component {
     	chartData: PropTypes.array.isRequired,
     	itemName: PropTypes.array.isRequired
     }
-
+    
     render() {
     	let { chartData, itemName } = this.props
     	return (

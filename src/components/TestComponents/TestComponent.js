@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as Actions from '../../actions'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import { bindActionCreators } from 'redux'
 import Question from './Question'
 import TextSettings from '../GeneralComponents/TextSettingsComponent'
@@ -28,15 +29,21 @@ class TestComponent extends Component {
     }
     
     openTest(exam_id) {
-      this.props.actions.setTestStarted()
-      let {license_token, access_token, book_id} = this.state
-      this.props.actions.getTestQuestions(license_token, access_token, book_id, exam_id)
-      .then(response => {
-          this.setState({test_state: true, exam_id: exam_id})
+      this.props.checkConnectivity.onlineCheck().then(() => {
+        this.props.actions.setTestStarted()
+        let {license_token, access_token, book_id} = this.state
+        this.props.actions.getTestQuestions(license_token, access_token, book_id, exam_id)
+        .then(response => {
+            this.setState({test_state: true, exam_id: exam_id})
+        })
+      })
+      .catch(() => {
+        alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
       })
     }
     
     sendTestResults() {
+      this.props.checkConnectivity.onlineCheck().then(() => {
         let { book_test } = this.props
         if (book_test.questions.length === book_test.answers.length){
           let { access_token, license_token, book_id, exam_id } = this.state
@@ -49,24 +56,30 @@ class TestComponent extends Component {
           })
           this.props.actions.setTestFinished()
           this.props.actions.setTestResults(license_token, access_token, Number(book_id), exam_id, correct_answers, incorrect_answers)
-        /*this.setState({
-          test_state: false
-        })*/
-      }
-      else {
-        alert('Вам необходимо ответить на все вопросы')
-      }
+        }
+        else {
+          alert('Вам необходимо ответить на все вопросы')
+        }
+      })
+      .catch(() => {
+        alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+      })
     }
 
     handleClose = () => this.setState({isShowingModal: false})
 
     componentWillMount() {
-      let {access_token, license_token, book_id} = this.state
-      this.props.actions.getAllExamByBookId(license_token, access_token, book_id)
-      .then(data => {
-        this.setState({
-          tests: data
+      this.props.checkConnectivity.onlineCheck().then(() => {
+        let {access_token, license_token, book_id} = this.state
+        this.props.actions.getAllExamByBookId(license_token, access_token, book_id)
+        .then(data => {
+          this.setState({
+            tests: data
+          })
         })
+      })
+      .catch(() => {
+        alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
       })
     }
 
@@ -89,15 +102,14 @@ class TestComponent extends Component {
                                       <p>Неправильных: {incorrect}</p>
                                     </ModalDialog>
                                   </ModalContainer> }
-                  <div className="col-md-8">
+                  <div className="col-sm-8">
                     { (test_state && questions.length > 0) ? questions.map((object, index) =>
                          <Question objectQuestion={object} key={index} index={index} />
                     ) : null}                  
-                    { (test_state && questions.length > 0) ? <button onClick={this.sendTestResults} type="submit" 
-                                                                                                    className="btn btn-primary">Завершить тест</button> : null}
+                    { (test_state && questions.length > 0) ? <button onClick={this.sendTestResults} type="submit"                                                                                                     className="btn btn-primary">Завершить тест</button> : null}
                   </div>
 
-                  <div className="col-md-4 side-test-menu">
+                  <div className="col-sm-4 side-test-menu">
                     { tests.map((value, index) => 
                       <div className="test-component__body__test-menu" key={index}>
                         <p onClick={() => this.openTest(value.id)}>{value.title}</p>
@@ -116,6 +128,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    actions: bindActionCreators(Actions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

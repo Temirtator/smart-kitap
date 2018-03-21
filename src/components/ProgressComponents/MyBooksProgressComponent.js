@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 
 import * as userProgressRequestActions from '../../actions/userProgressRequest'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class MyBooksProgress extends Component {
 	constructor(props) {
@@ -28,20 +29,25 @@ class MyBooksProgress extends Component {
     }
     
     componentWillMount() {
-    	let {license_token, access_token} = this.state
-    	this.checkAuth()
-    	try {
-            this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
-        	.then(general_progress => {
-        		//console.log('Return from promise', general_progress)
-        		this.setState({
-        			books_progress: general_progress
-        		})
-        	})
-        }
-        catch(e) {
-            console.log(e, 'error on getAllUserProgress')
-        }
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let {license_token, access_token} = this.state
+            this.checkAuth()
+            try {
+                this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
+                .then(general_progress => {
+                    //console.log('Return from promise', general_progress)
+                    this.setState({
+                        books_progress: general_progress
+                    })
+                })
+            }
+            catch(e) {
+                console.log(e, 'error on getAllUserProgress')
+            }  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     render() {
@@ -88,6 +94,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    userProgressRequestActions: bindActionCreators(userProgressRequestActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

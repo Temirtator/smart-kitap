@@ -250,7 +250,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent; }
 
 .react-toggle-screenreader-only {
@@ -495,6 +495,8 @@
   font-size: 14ptpx !important; }
 .page-1x ul li {
   font-size: 14ptpx !important; }
+.page-1x span {
+  font-size: medium !important; }
 
 .page-2x h1 {
   font-size: 23.4ptpx !important; }
@@ -510,6 +512,8 @@
   font-size: 18.2ptpx !important; }
 .page-2x ul li {
   font-size: 18.2ptpx !important; }
+.page-2x span {
+  font-size: large !important; }
 
 .page-3x h1 {
   font-size: 28.8ptpx !important; }
@@ -525,6 +529,8 @@
   font-size: 22.4ptpx !important; }
 .page-3x ul li {
   font-size: 22.4ptpx !important; }
+.page-3x span {
+  font-size: larger !important; }
 
 .page-style-a {
   background-color: #fff !important; }
@@ -723,6 +729,7 @@ a {
 .content__text {
   padding: 0 35px 0 35px;
   background: #fff;
+  width: 100%;
   height: calc(100vh - 146px);
   position: relative;
   overflow-y: scroll; }
@@ -943,6 +950,7 @@ a {
     border-color: #e5ecf4; }
 
 .imaginary_container {
+  width: 100% !important;
   padding: 12px 0;
   float: right !important; }
 
@@ -1010,7 +1018,7 @@ button {
       display: block;
       position: absolute;
       top: 5px;
-      left: 6px;
+      left: 5.9999999px;
       content: "";
       border-radius: 100%;
       height: 10px;
@@ -1063,6 +1071,8 @@ button {
   min-height: calc(100vh - 95px); }
 
 .personal-home-page__body__header {
+  display: grid;
+  grid-template-columns: 70% 30%;
   width: 100%;
   height: 90px; }
 
@@ -1339,7 +1349,7 @@ button {
     .video-body__content__video-element p {
       margin: 0;
       cursor: pointer; }
-  .video-body__content__side-video-menuf {
+  .video-body__content__side-video-menu {
     padding: 30px 14px 0 0; }
 
 .video-body__content::-webkit-scrollbar-track {
@@ -1518,12 +1528,10 @@ button {
   display: -webkit-inline-box;
   float: left;
   position: relative;
-  height: 100%; }
+  height: -webkit-fill-available; }
   .text-settings .text-settings__text-style {
     display: flex;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
     padding: 26px 0;
     margin: 0 15px; }
     .text-settings .text-settings__text-style span {
@@ -1549,8 +1557,6 @@ button {
       color: #333022; }
   .text-settings .text-settings__blind-mode {
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
     padding: 32px 0;
     margin: 0 15px; }
@@ -1561,8 +1567,6 @@ button {
 
 .text-settings__text-size {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
   cursor: pointer;
   padding: 26px 0;
   margin: 0 10px 0 20px; }
@@ -1713,6 +1717,9 @@ div.my-books__test-by-books {
   .my-books__tab-test .react-tabs__tab-list {
     margin: 0; }
 
+.react-tabs__tab-list {
+  height: inherit; }
+
 .readed-books-component {
   padding: 20px 10px; }
 
@@ -1852,7 +1859,14 @@ div.my-books__test-by-books {
     transform: translateY(-50%);
     color: #fff; }
 
+@media (min-width: 800px) and (max-width: 900px) {
+  .content__body__main__header__menu {
+    margin-left: 13px !important; } }
 @media (min-width: 800px) and (max-width: 1300px) {
+  .content__body__main__header {
+    display: grid;
+    grid-template-columns: 70% 30%; }
+
   .content__body {
     padding: 0 24px !important;
     width: calc(100vw - 200px); }
@@ -1865,12 +1879,12 @@ div.my-books__test-by-books {
     font-size: 12px !important; }
 
   .content__body__main__header__menu {
-    margin-left: 35px !important;
+    margin-left: 35px;
     padding: 16px 0 !important; }
     .content__body__main__header__menu .header__menu__conspect,
     .content__body__main__header__menu .header__menu__video,
     .content__body__main__header__menu .header__menu__test {
-      padding: 13px 10px !important; }
+      padding: 13px 0px !important; }
       .content__body__main__header__menu .header__menu__conspect p,
       .content__body__main__header__menu .header__menu__video p,
       .content__body__main__header__menu .header__menu__test p {
@@ -2042,7 +2056,10 @@ div.my-books__test-by-books {
     background-color: #2a2e35 !important; }
   .blackMode ul.dropdown-menu {
     width: 102% !important;
-    left: -2px !important; }
+    left: -2px !important;
+    background-color: #2a2e35 !important; }
+    .blackMode ul.dropdown-menu li {
+      background-color: #2a2e35 !important; }
   .blackMode .content__body__precises h5, .blackMode .content__body__precises p, .blackMode .content__body__precises a, .blackMode .content__body__precises li, .blackMode .content__body__precises span,
   .blackMode .content__header__sub h5,
   .blackMode .content__header__sub p,
@@ -2274,6 +2291,9 @@ div.my-books__test-by-books {
 /* #626468 */
 .blindMode {
   background-color: #000 !important; }
+  .blindMode img, .blindMode svg, .blindMode g, .blindMode path, .blindMode div.round, .blindMode div.bar {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); }
   .blindMode .form-group input.form-control {
     color: #000 !important; }
   .blindMode .content__body__precises h5, .blindMode .content__body__precises p, .blindMode .content__body__precises a, .blindMode .content__body__precises li, .blindMode .content__body__precises span,
@@ -2310,8 +2330,14 @@ div.my-books__test-by-books {
     color: #fff !important; }
   .blindMode .content__body__precises .text-settings__text-style span {
     border: 1px solid #fff !important; }
-  .blindMode li:hover {
+  .blindMode .content__header__sub1 li:hover {
     background-color: #000 !important; }
+  .blindMode li.chapter-header p:hover {
+    background-color: #000 !important;
+    border-color: #fff !important; }
+  .blindMode ul.sub-menu li {
+    background-color: #000;
+    border-color: #fff !important; }
   .blindMode .react-tabs .react__tablist__wrap {
     background-color: #000; }
     .blindMode .react-tabs .react__tablist__wrap ul.react-tabs__tab-list li.react-tabs__tab--selected {

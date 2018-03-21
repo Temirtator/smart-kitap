@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as precis_action from '../../actions/precis'
 import * as appStateControlActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import { withRouter } from 'react-router'
 
 class OldPreciseItem extends Component {
     static propTypes = {
-         text: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
         index: PropTypes.number.isRequired,
         book_id: PropTypes.number.isRequired,
         precis_id: PropTypes.number.isRequired
@@ -43,40 +44,55 @@ class OldPreciseItem extends Component {
     }
     
     savePrecis(id, text) {
-    	if (text.length === 0) {
-	      	//this.props.deleteTodo(id);
-	    } else {
-	    	let { precises } = this.props.precisesStore
-	        let oldPrecises, book_position
-	        for (var i = precises.old_precises.length - 1; i >= 0; i--) {
-	            if (precises.old_precises[i].book_id === this.props.book_id) {
-	                oldPrecises = precises.old_precises[i].precise //array of object
-	                book_position = i
-	                break
-	            }
-	        }
-            oldPrecises[id].precis = text
-	        this.props.precisActions.changeOldPrecis(book_position, oldPrecises)
-	    }
-        this.setState({
-            editing: false
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            if (text.length === 0) {
+            //this.props.deleteTodo(id);
+            } else {
+                let { precises } = this.props.precisesStore
+                let oldPrecises, book_position
+                for (var i = precises.old_precises.length - 1; i >= 0; i--) {
+                    if (precises.old_precises[i].book_id === this.props.book_id) {
+                        oldPrecises = precises.old_precises[i].precise //array of object
+                        book_position = i
+                        break
+                    }
+                }
+                oldPrecises[id].precis = text
+                this.props.precisActions.changeOldPrecis(book_position, oldPrecises)
+            }
+            this.setState({
+                editing: false
+            })   
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
     }
     
     //for clearing precises
     clearPrecis(index, precis_id) {
-        let { precises } = this.props.precisesStore
-        let { access_token, license_token } = this.state
-        
-        let oldPrecises = precises.old_precises //array of object
-        oldPrecises.splice(index, 1)
-        this.props.precisActions.changeOldPrecis(oldPrecises)
-        this.props.precisActions.clearBookPrecis(access_token, license_token, precis_id)
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let { precises } = this.props.precisesStore
+            let { access_token, license_token } = this.state
+            
+            let oldPrecises = precises.old_precises //array of object
+            oldPrecises.splice(index, 1)
+            this.props.precisActions.changeOldPrecis(oldPrecises)
+            this.props.precisActions.clearBookPrecis(access_token, license_token, precis_id)  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     scrollToPrecis(book_page_id) {
-        this.props.appStateControlActions.setBookScrollPos(book_page_id) 
-        this.props.history.goBack()
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            this.props.appStateControlActions.setBookScrollPos(book_page_id) 
+            this.props.history.goBack()
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     renderForm() {
@@ -143,7 +159,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    precisActions: bindActionCreators(precis_action, dispatch),
-   appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
+   appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

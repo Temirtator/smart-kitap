@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../../../resources/language/languages.json'
 import * as appStateControlActions from '../../../actions/appStateControl'
 import * as booksRequest from '../../../actions/booksRequest'
+import * as checkConnectivity from '../../../actions/checkConnectivity'
 
 class MyBooks extends Component {
 	constructor(props) {
@@ -29,12 +30,17 @@ class MyBooks extends Component {
     }
     
 	componentWillMount() {
-		let { access_token, license_token } = this.state
-		this.checkAuth()
-		this.props.booksRequest.getAllMyBooks(license_token, access_token)
-		this.props.appStateControlActions.setBookMenu('my_books')
-		let localStorage = window.localStorage
-		localStorage.setItem('opened_book_menu', 'my_books')
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let { access_token, license_token } = this.state
+			this.checkAuth()
+			this.props.booksRequest.getAllMyBooks(license_token, access_token)
+			this.props.appStateControlActions.setBookMenu('my_books')
+			let localStorage = window.localStorage
+			localStorage.setItem('opened_book_menu', 'my_books')
+		})
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+		})
 	}
 	
 	render() {
@@ -79,7 +85,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
-	booksRequest: bindActionCreators(booksRequest, dispatch)
+	booksRequest: bindActionCreators(booksRequest, dispatch),
+	checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

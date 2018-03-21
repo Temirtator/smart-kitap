@@ -1,5 +1,6 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
+import * as checkConnectivity from './checkConnectivity'
 
 let url = 'http://smartkitap.avsoft.kz'
 let api = '/api/v1/'
@@ -8,7 +9,7 @@ export function login(email, password) {
 	return dispatch => {
 		return axios({
 			method: 'post',
-			url: url+api+'user/login',
+			url: url + api + 'user/login',
 			data: {
 				email: email,
 				password: password

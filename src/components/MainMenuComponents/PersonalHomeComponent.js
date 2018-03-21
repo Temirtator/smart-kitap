@@ -19,6 +19,7 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 import * as userDataRequest from '../../actions/userDataRequest'
 import * as appStateActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 const MyElement = (props) => {
     let menuItem = props.menuItem
@@ -71,6 +72,7 @@ class PersonalHomePage extends Component {
 
     checkAuth() {
         let { access_token } = this.state
+        console.log('checkAuth')
         if (!access_token) { // if access token isnt exist
             this.props.history.push('/')
         }
@@ -104,7 +106,7 @@ class PersonalHomePage extends Component {
             massive.map((value, index) => {
                 window.localStorage.removeItem(value)
             })
-            this.props.history.push('/')
+            window.location.reload()
         }
 
         if (key === 'reset') {
@@ -144,7 +146,7 @@ class PersonalHomePage extends Component {
             }
         } catch(e) {
             console.log("Cannot read property 'menuSelected' of undefined")
-        }
+        }  
     }
 
     // search text from book content
@@ -196,7 +198,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     userDataRequest: bindActionCreators(userDataRequest, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as licenseRequestActions from '../../actions/licenseRequest'
 import * as updateAppActions from '../../actions/updateVersion'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 import ReactGA from 'react-ga';
 import {version} from '../../../package.json'
@@ -56,12 +57,12 @@ class AuthComponent extends Component {
         ReactGA.pageview('/Авторизация');
 
     }
-
+    
     checkAuth() {
         //TODO:: Перед пушем выключай его. А то перед клиентом бесить
-        // if (this.state.access_token) {
-        //     this.props.history.push('/main-personal-page')
-        // }
+        /*if (this.state.access_token) {
+             this.props.history.push('/main-personal-page')
+        }*/
     }
 
     authType(key) {
@@ -70,11 +71,11 @@ class AuthComponent extends Component {
             case 'enter-key':
                 this.setState({enterKey: true, registration: false, login: false})
                 break
-
+                
             case 'registration':
                 this.setState({enterKey: false, registration: true, login: false})
                 break
-
+                
             case 'login':
                 this.setState({enterKey: false, registration: false, login: true})
                 break
@@ -83,15 +84,8 @@ class AuthComponent extends Component {
 
     componentWillMount() {
         let {license_token} = this.state
-        try {
-            if (window.getMacAddress !== undefined) {
-                window.getMacAddress()
-                window.getSystemInfo()
-            }
-        } catch (e) {
-            console.log('IS NOT NW JS');
-        }
-        this.props.updateAppActions.checkVersion(version)
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            this.props.updateAppActions.checkVersion(version)
             .then(response => {
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
@@ -147,6 +141,17 @@ class AuthComponent extends Component {
                         })
                 }
             })
+        }).catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
+        try {
+            if (window.getMacAddress !== undefined) {
+                window.getMacAddress()
+                window.getSystemInfo()
+            }
+        } catch (e) {
+            console.log('IS NOT NW JS');
+        }
     }
 
     render() {
@@ -235,6 +240,7 @@ const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => ({
     licenseRequestActions: bindActionCreators(licenseRequestActions, dispatch),
     updateAppActions: bindActionCreators(updateAppActions, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-
 class About extends Component {
-
     constructor(props) {
         super(props)
 
         this.state = {
             access_token: window.localStorage.getItem('access_token')
         }
-
         this.checkAuth = this.checkAuth.bind(this)
     }
 

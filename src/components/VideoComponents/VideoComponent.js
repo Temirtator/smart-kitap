@@ -8,14 +8,9 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import * as bookVideoRequest from '../../actions/bookVideoRequest'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 import ReactGA from 'react-ga';
-/*const iconStyle = {
- fontSize: '2em',
- color: '#fff',
- float: 'left',
- padding: '0 10px 0 0'
- }*/
 
 class VideoComponent extends Component {
     constructor(props) {
@@ -37,11 +32,16 @@ class VideoComponent extends Component {
     }
 
     componentWillMount() {
-        let {license_token, access_token, book_id} = this.state
-        this.props.bookVideoRequestActions.getVideoLectures(license_token, access_token, book_id)
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let {license_token, access_token, book_id} = this.state
+            this.props.bookVideoRequestActions.getVideoLectures(license_token, access_token, book_id)
             .then(response => {
-
-            })
+                console.log('getVideoLectures', response)
+            })  
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
 
     loadVideoLectures(title, description, cover, videoSrc) {
@@ -65,13 +65,13 @@ class VideoComponent extends Component {
                                       blindMode={{padding: '13px 0'}}/>
                     </div>
                     <div className="video-body__content">
-                        <div className="col-md-8">
+                        <div className="col-sm-8">
                             { bookVideoState.length >= 1 ?
                                 <VideoLecture title={title} description={description} cover={cover}
                                               videoSrc={videoSrc}/> : null
                             }
                         </div>
-                        <div className="col-md-4 video-body__content__side-video-menu">
+                        <div className="col-sm-4 video-body__content__side-video-menu">
                             { bookVideoState.map((value, index) =>
                                 <div className="video-body__content__video-element" key={index}>
                                     <p key={index}
@@ -93,7 +93,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    bookVideoRequestActions: bindActionCreators(bookVideoRequest, dispatch)
+    bookVideoRequestActions: bindActionCreators(bookVideoRequest, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(
