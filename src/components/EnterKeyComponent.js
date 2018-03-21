@@ -22,6 +22,7 @@ class EnterKey extends Component {
             if (response.data.status === 200) {
                 window.localStorage.setItem('license_token', response.data.data.access_token)
                 window.localStorage.setItem('new_computer', response.data.data.is_new_computer)
+                window.localStorage.setItem('license_id', response.data.data.history.id)
 
                 this.props.callBackFunc() // i'm unlbock registration and login buttons
                 // alert(response.data.msg)
@@ -50,7 +51,7 @@ class EnterKey extends Component {
 }
 
 const mapStateToProps = state => ({
-   
+
 })
 
 const mapDispatchToProps = dispatch => ({

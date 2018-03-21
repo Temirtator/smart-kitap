@@ -35,6 +35,7 @@ class AuthComponent extends Component {
     constructor(props) {
         super(props)
         let license_token = window.localStorage.getItem('license_token')
+        let license_id = window.localStorage.getItem('license_id')
         let enterKeyClass = 'auth-component__header__enter-key',
             registrationClass = 'auth-component__header__registration',
             loginClass = 'auth-component__header__login'
@@ -49,7 +50,8 @@ class AuthComponent extends Component {
             loginClass: license_token ? loginClass : loginClass + ' disableElement',
             isLoading: false,
             progress: 0,
-            appApproved: false
+            appApproved: false,
+            license_id: license_id !== null ? license_id : '',
         }
         this.checkAuth = this.checkAuth.bind(this)
         ReactGA.initialize('UA-66591915-12');
