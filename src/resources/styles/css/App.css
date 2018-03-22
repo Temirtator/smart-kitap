@@ -1104,7 +1104,9 @@ button {
     border: 1px solid #e6edf5;
     margin: 0 auto; }
   .content__body .content__body__main__header {
-    height: 90px; }
+    height: 90px;
+    display: grid;
+    grid-template-columns: 70% 30%; }
 
 .book-orientation-component {
   display: inline-block; }
@@ -2291,6 +2293,10 @@ div.my-books__test-by-books {
 /* #626468 */
 .blindMode {
   background-color: #000 !important; }
+  .blindMode .flash-on-viewport {
+    background-color: #6c6f76; }
+    .blindMode .flash-on-viewport p {
+      border-color: #fff; }
   .blindMode img, .blindMode svg, .blindMode g, .blindMode path, .blindMode div.round, .blindMode div.bar {
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%); }

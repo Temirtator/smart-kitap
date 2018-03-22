@@ -364,7 +364,7 @@ class Content extends Component {
                 }
             }
         }
-
+        
         //For subchapters
         for (var j = 0; j < subChapters.length; j++) {
             var isVisible1 = this.isElementInViewport(subChapters, j)
@@ -655,7 +655,7 @@ class Content extends Component {
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
     }
-
+    
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
@@ -765,7 +765,7 @@ class Content extends Component {
                                             changeTextSize={(textSize) => this.changeTextSize(textSize)}
                                             changeColor={(colorType) => this.changeColor(colorType)} />
                         </div>
-
+                        
                         <div ref="statiContent" id="static-content" className="content__text">
                             <ShowToolTipComponent onToolTipClick={this.onToolTipClick} rect={rect} />
                             <Book ref="book" book={content} />
