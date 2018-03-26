@@ -13,25 +13,46 @@ class Registration extends Component {
         	email: '',
         	password: '',
         	repeat_password: '',
-        	isPasswRepeated: true
+        	isPasswRepeated: true,
+            license_token: window.localStorage.getItem('license_token')
         }
         this.registration = this.registration.bind(this)
     }
     
+    validateEmail(email) {
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    validateNameSurname(name, surname) {
+        if (name.length >= 2 && surname.length >= 2) {
+            return true
+        }
+        return false
+    }
+
     registration() {
         this.props.checkConnectivity.onlineCheck().then(() => {
-            let { name, surname, email, password, repeat_password } = this.state
-            let access_token = '124235asfa1k2431wasda'
-            if ((password !== repeat_password) && (password.trim() !== '')) {
-                this.setState({ isPasswRepeated: false })
+            let { name, surname, email, password, repeat_password, license_token } = this.state
+            if (this.validateNameSurname(name, surname)) { // validate name surname
+                if (this.validateEmail(email)) { // validation of email
+                    if ((password !== repeat_password) && (password.trim() !== '')) { // validate password
+                        this.setState({ isPasswRepeated: false })
+                    }
+                    else {
+                        this.setState({ isPasswRepeated: true })
+                        this.props.authActions.registration(name, surname, email, password, this.state.license_token)
+                        .then(response => {
+                            alert(response.data.msg)
+                        })
+                    }
+                } else {
+                    alert('Пожалуйста, напишите валидный email')
+                }
+            } else {
+                alert('Пожалуйста, заполните поля имени и фамилии')
             }
-            else {
-                this.setState({ isPasswRepeated: true })
-                this.props.authActions.registration(name, surname, email, password, access_token)
-                .then(response => {
-                    alert(response.data.msg)
-                })
-            }  
+
         })
         .catch(() => {
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')

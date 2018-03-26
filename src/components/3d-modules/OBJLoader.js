@@ -1,9 +1,8 @@
 /* eslint-disable */
-module.exports = function (THREE) {
   /**
  * @author mrdoob / http://mrdoob.com/
  */
-
+module.exports = function (THREE) {
 THREE.OBJLoader = ( function () {
 
 	// o object_name | g group_name
@@ -638,7 +637,7 @@ THREE.OBJLoader = ( function () {
 				var mesh;
 
 				if ( createdMaterials.length > 1 ) {
-
+					
 					for ( var mi = 0, miLen = materials.length; mi < miLen ; mi++ ) {
 
 						var sourceMaterial = materials[ mi ];
@@ -654,7 +653,7 @@ THREE.OBJLoader = ( function () {
 				}
 
 				mesh.name = object.name;
-
+				
 				container.add( mesh );
 
 			}

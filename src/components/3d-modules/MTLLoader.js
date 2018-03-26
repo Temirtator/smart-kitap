@@ -1,11 +1,10 @@
 /* eslint-disable */
-module.exports = function (THREE) {
   /**
  * Loads a Wavefront .mtl file specifying materials
  *
  * @author angelxuanchang
  */
-
+module.exports = function (THREE) {
 THREE.MTLLoader = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;

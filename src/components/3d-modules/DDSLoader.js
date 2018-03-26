@@ -1,7 +1,6 @@
 /*
  * @author mrdoob / http://mrdoob.com/
  */
-
 module.exports = function (THREE) {
 THREE.DDSLoader = function () {
 

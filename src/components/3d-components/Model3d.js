@@ -22,7 +22,7 @@ class Model3d extends Component {
 		obj: PropTypes.string.isRequired,
 		mtl: PropTypes.string.isRequired
 	}
-
+	
     constructor(props, context) {
         super(props, context)
         let { obj, mtl } = props
@@ -34,7 +34,6 @@ class Model3d extends Component {
 		    orthographicCameraRotation: new THREE.Euler(0, 12.55, 0),
 		    paused: true,
 		    color: 'black',
-		    texture: './assets/bb8/body-diff-map.jpg',
 		    obj: obj,
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
@@ -197,7 +196,7 @@ class Model3d extends Component {
 		            	cameraName={activeCameraName}
 		          	/>
 		          	<ambientLight
-		            	color={'white'}
+		            	color={'0xcccccc'}
 		          	/>
 			        <directionalLight
 			            color={'#f3f0ea'}

@@ -60,7 +60,7 @@ export function registration(first_name, last_name, email, password, license_tok
 				last_name: last_name,
 				email: email,
 				password: password,
-				COMP_ACCESS_TOKEN: '124235asfa1k2431wasda' // here some bug
+				COMP_ACCESS_TOKEN: license_token // here some bug
 			},
 			headers: {
 				'Content-Type': 'application/json'

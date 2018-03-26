@@ -6,8 +6,8 @@ class Model3dExp extends Component {
         return (
     		<div style={{border: '1px solid'}}>
     			<Model3d 
-    				obj='./assets/male02/male02.obj' 
-    				mtl='./assets/male02/male02.mtl' />
+    				obj='./assets/models3d/bb8/bb8.obj' 
+    				mtl='./assets/models3d/bb8/bb8.mtl' />
     		</div>        
         )
     }
