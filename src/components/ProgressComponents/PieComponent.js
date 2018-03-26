@@ -20,7 +20,13 @@ class PieComponent extends Component {
 					    styles={{
 					      '.chart_text': {
 					        fontSize: '1em',
-					        fill: '#fff'
+					        fill: '#fff' 
+					      },
+					      '.pie-chart-label': {
+					      	'text-anchor': 'end'
+					      },
+					      '.pie-chart-label:nth-child(2)': {
+					      	'text-anchor': 'inherit'
 					      }
 					    }}
 					  />
