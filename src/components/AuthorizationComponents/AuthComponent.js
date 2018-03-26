@@ -29,6 +29,15 @@ const versionStyle = {
     position: 'absolute',
     zIndex: '5000',
     color: 'white',
+    fontSize: '9pt',
+    padding: '15px 15px'
+}
+const versionStyle2 = {
+    position: 'absolute',
+    zIndex: '5000',
+    color: 'white',
+    top: 20,
+    fontSize: '9pt',
     padding: '15px 15px'
 }
 class AuthComponent extends Component {
@@ -36,6 +45,7 @@ class AuthComponent extends Component {
     constructor(props) {
         super(props)
         let license_token = window.localStorage.getItem('license_token')
+        let license_id = window.localStorage.getItem('license_id')
         let enterKeyClass = 'auth-component__header__enter-key',
             registrationClass = 'auth-component__header__registration',
             loginClass = 'auth-component__header__login'
@@ -50,7 +60,8 @@ class AuthComponent extends Component {
             loginClass: license_token ? loginClass : loginClass + ' disableElement',
             isLoading: false,
             progress: 0,
-            appApproved: false
+            appApproved: false,
+            license_id: license_id !== null ? license_id : '',
         }
         this.checkAuth = this.checkAuth.bind(this)
         ReactGA.initialize('UA-66591915-12');
@@ -95,7 +106,7 @@ class AuthComponent extends Component {
                     } else {
                         this.setState({isLoading: true})
                         console.log('It"s NW.JS Project')
-                        window.loadUpdateFromURL("http://smartkitap.avsoft.kz/" + response.data.path_file, (data) => {
+                        window.loadUpdateFromURL('http://smartkitap.avsoft.kz/' + response.data.path_file, (data) => {
                             //Сохраняет
 
                             if (data.status === 200) {
@@ -126,6 +137,9 @@ class AuthComponent extends Component {
                         .then(response => {
                             try {
                                 console.log('Auth check', response)
+                                //Сохраняет данные о лицензий
+                                this.setState({license_id: response.data.id})
+                                window.localStorage.setItem('license_id', response.data.id)
                                 if (response.status === 200) {
                                     this.checkAuth()
                                 }
@@ -165,33 +179,39 @@ class AuthComponent extends Component {
             registrationClass,
             loginClass,
             isLoading,
-            appApproved
+            appApproved,
+            license_id
         } = this.state
 
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
+                console.log('license_id', window.localStorage.getItem('license_id'));
+                this.setState({license_id: window.localStorage.getItem('license_id')});
                 return {
                     enterKeyClass: prev.enterKeyClass + ' disableElement',
                     registrationClass: 'auth-component__header__registration',
                     loginClass: 'auth-component__header__login',
+
                     enterKey: false, registration: true, appApproved: true
                 }
             })}/>
-            enterKeyClass += " auth-component--selected"
+            enterKeyClass += ' auth-component--selected'
         }
         else if (registration) {
             element = <Registration />
-            registrationClass += " auth-component--selected"
+            registrationClass += ' auth-component--selected'
         }
         else if (Login) {
             element = <Login />
-            loginClass += " auth-component--selected"
+            loginClass += ' auth-component--selected'
         }
         return (
             <div className="auth-component">
                 { appApproved ? <SelectorBooks /> : null}
                 <p style={ versionStyle }>Версия: {version}</p>
+                {license_id !== '' &&
+                <p style={ versionStyle2 }>Лицензия: {license_id}</p>}
                 {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">

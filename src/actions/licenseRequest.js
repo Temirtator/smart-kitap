@@ -11,8 +11,8 @@ export function activation(serial_code) {
 			url: url + api + 'credentials',
 			data: {
 				serial_code: serial_code,
-				technical_computer_info: window.system_info!==undefined?window.system_info+window.wan_interface: 'whfnwekjfwenfj',
-				mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST_2'
+				technical_computer_info: window.system_info!==undefined?window.system_info+window.wan_interface: 'TEST',
+				mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST_16'
 			},
 			headers: {
 				'Content-Type': 'application/json'
