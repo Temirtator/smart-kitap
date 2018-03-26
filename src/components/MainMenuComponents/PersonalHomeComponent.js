@@ -19,6 +19,7 @@ import {bindActionCreators} from 'redux'
 import * as languages from '../../resources/language/languages.json'
 import * as userDataRequest from '../../actions/userDataRequest'
 import * as appStateActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 const MyElement = (props) => {
     let menuItem = props.menuItem
@@ -70,7 +71,7 @@ class PersonalHomePage extends Component {
     }
 
     checkAuth() {
-        let {access_token} = this.state
+        let { access_token } = this.state
         if (!access_token) { // if access token isnt exist
             this.props.history.push('/')
         }
@@ -104,7 +105,7 @@ class PersonalHomePage extends Component {
             massive.map((value, index) => {
                 window.localStorage.removeItem(value)
             })
-            this.props.history.push('/')
+            window.location.reload()
         }
 
         if (key === 'reset') {
@@ -146,8 +147,8 @@ class PersonalHomePage extends Component {
                 this.isBookOrientation(menuSelected)
             }
         } catch (e) {
-            console.log("Cannot read property 'menuSelected' of undefined")
-        }
+            console.log('Cannot read property "menuSelected" of undefined')
+        }  
     }
 
     // search text from book content
@@ -160,15 +161,15 @@ class PersonalHomePage extends Component {
         let {language} = this.props.appStateControl.user_settings
         let {blindMode} = this.props.appStateControl
         let {isTurnOn, theme} = this.props.appStateControl.theme_settings
-        let bodyClass = "personal-home-page__body"
-        let bodyMainClass = "personal-home-page__body__main"
+        let bodyClass = 'personal-home-page__body'
+        let bodyMainClass = 'personal-home-page__body__main'
         if (blindMode) {
-            bodyClass += " blindMode"
-            bodyMainClass += " blindMode"
+            bodyClass += ' blindMode'
+            bodyMainClass += ' blindMode'
         }
         else if (isTurnOn && (theme === 1)) {
-            bodyClass += " blackMode"
-            bodyMainClass += " blackMode"
+            bodyClass += ' blackMode'
+            bodyMainClass += ' blackMode'
         }
         return (
             <div className="personal-home-page">
@@ -203,7 +204,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     userDataRequest: bindActionCreators(userDataRequest, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

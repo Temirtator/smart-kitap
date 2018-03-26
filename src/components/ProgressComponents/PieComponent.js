@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import {PieChart} from 'react-easy-chart'
 
-
 class PieComponent extends Component {
     static propTypes = {
     	chartData: PropTypes.array.isRequired,
     	itemName: PropTypes.array.isRequired
     }
-
+    
     render() {
     	let { chartData, itemName } = this.props
     	return (

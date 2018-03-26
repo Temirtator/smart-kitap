@@ -61,7 +61,7 @@ class NewPrecises extends Component {
         }
         this.setState({
             indexPrecise
-        })  
+        })   
     }
     
     componentWillMount() {
@@ -81,14 +81,10 @@ class NewPrecises extends Component {
         }
         let { license_token, access_token } = this.state
         this.props.precisActions.getUserPrecis(license_token, access_token, book_id_local)
-        .then(() => {
+        .then((error) => {
             this.setState({ PrecisLoaded: false })
         })
-        this.getIndexes(Number(book_id_local))
-    }
-    
-    componentDidMount() {
-        
+        this.getIndexes(Number(book_id_local))  
     }
     
    	render() {
@@ -97,7 +93,7 @@ class NewPrecises extends Component {
         let { indexPrecise, PrecisLoaded } = this.state
         let { name, author, img } = this.props.precisesStore.precises
         
-        //console.log('precises', precisesStore.precises.new_precises)
+        console.log('precises', precisesStore.precises.new_precises)
         return (
               
             <div className="new-precises">
@@ -128,9 +124,9 @@ class NewPrecises extends Component {
 		            {
 		            	precisesStore.precises.new_precises[indexPrecise].precise.map((object, i) => 
 		            		<NewPreciseItem
-                                name={name}
+                                /*name={name}
                                 author={author}
-                                img={img}
+                                img={img}*/
                                 text={object.precis}
                                 index={i}
                                 precis_id={object.precis_id}
@@ -153,7 +149,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   precisActions: bindActionCreators(precis_action, dispatch),
+   precisActions: bindActionCreators(precis_action, dispatch)
 })
 
 export default withRouter(connect(

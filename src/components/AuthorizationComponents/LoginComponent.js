@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as authActions from '../../actions/auth'
 import { withRouter } from 'react-router'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class Login extends Component {
 	
@@ -22,29 +23,39 @@ class Login extends Component {
 	}
 	
 	login() {
-		let { email, password } = this.state
-		this.props.authActions.login(email, password)
-		.then((response) => {
-			try {
-				window.localStorage.setItem('access_token', response.data.token)
-				this.props.history.push('/main-personal-page')	
-			} catch(e) {
-				console.log('some error on login component')
-				alert('Почта или пароль являются неверными')
-			}
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let { email, password } = this.state
+			this.props.authActions.login(email, password)
+			.then((response) => {
+				try {
+					window.localStorage.setItem('access_token', response.data.token)
+					this.props.history.push('/main-personal-page')	
+				} catch(e) {
+					console.log('some error on login component')
+					alert('Почта или пароль являются неверными')
+				}
+			})
+		})
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
 		})
 	}
 
 	forgotPassword() {
-		this.props.authActions.forgotPassword(this.state.emailForgot)
-		.then(response => {
-			alert(response.data.msg)
-		})
-		this.setState(prev => {
-			return {
-				forgotPassword: !prev.forgotPassword
-			}
-		})
+			this.props.checkConnectivity.onlineCheck().then(() => {
+				this.props.authActions.forgotPassword(this.state.emailForgot)
+				.then(response => {
+					alert(response.data.msg)
+				})
+				this.setState(prev => {
+					return {
+						forgotPassword: !prev.forgotPassword
+					}
+				})
+			})
+			.catch(() => {
+				alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+			})
 	}
 	
 	renderLoginComponent() {
@@ -104,6 +115,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    authActions: bindActionCreators(authActions, dispatch),
+   checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

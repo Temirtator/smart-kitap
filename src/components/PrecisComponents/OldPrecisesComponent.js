@@ -78,7 +78,7 @@ class OldPrecises extends Component {
         }
         this.props.precisActions.getUserOldPrecis(oldPrecisesArray)
     }
-
+    
     componentWillMount() {
         let { book_id } = this.props.location.state
         let book_id_local
@@ -95,9 +95,9 @@ class OldPrecises extends Component {
             book_id_local = book_id
         }
         
-        this.getIndexes(Number(book_id_local))
+        this.getIndexes(Number(book_id_local))   
     }
-
+    
    	render() {
     	let { precisesStore, appStateControl } = this.props
         let book_id = Number(this.state.book_id)

@@ -10,6 +10,7 @@ import * as userProgressRequest from '../../actions/userProgressRequest'
 import * as booksRequest from '../../actions/booksRequest'
 import * as precis_action from '../../actions/precis'
 import * as appStateControlActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import * as main_actions from '../../actions/'
 import ReactGA from 'react-ga'
 
@@ -92,7 +93,8 @@ class Content extends Component {
             img: '',
             content: '',
             timerCount: 0,
-            BookLoaded: true
+            BookLoaded: true,
+            prevAllEl: ''
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -114,6 +116,7 @@ class Content extends Component {
         this.setIdHeader = this.setIdHeader.bind(this)
         this.parse3D = this.parse3D.bind(this)
         this.tablesFixer = this.tablesFixer.bind(this)
+        this.prevAll_h1 = this.prevAll_h1.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -175,7 +178,7 @@ class Content extends Component {
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode;
                 }
-                console.log('parentEl', parentEl)
+                //console.log('parentEl', parentEl)
                 parentEl = parentEl.closest('.page')
                 try{
                     let parentElId = parentEl.id // cannot read property id of null
@@ -236,46 +239,51 @@ class Content extends Component {
     
     // take click action on tooltip
     onToolTipClick(e) {
-        let {new_precises} = this.props.preciStore.precises
-        let book_id = Number(this.state.book_id)
-        let {selectionText, rect, access_token, book_page_id} = this.state
-        let newPrecises, book_position
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let {new_precises} = this.props.preciStore.precises
+            let book_id = Number(this.state.book_id)
+            let {selectionText, rect, access_token, book_page_id} = this.state
+            let newPrecises, book_position
 
-        for (var i = new_precises.length - 1; i >= 0; i--) {
-            //console.log(new_precises[i].book_id, '===', book_id)
-            if (Number(new_precises[i].book_id) === book_id) {
-                newPrecises = new_precises[i].precise //array of objects
-                book_position = i
-                break
+            for (var i = new_precises.length - 1; i >= 0; i--) {
+                //console.log(new_precises[i].book_id, '===', book_id)
+                if (Number(new_precises[i].book_id) === book_id) {
+                    newPrecises = new_precises[i].precise //array of objects
+                    book_position = i
+                    break
+                }
             }
-        }
-        let newObject = {
-            precis: selectionText,
-            yPos: rect.top
-        }
-        this.props.precisActions.addBookPrecis(access_token, book_id, book_page_id, selectionText)
-        // it means there is no any precises for this book
-        if (newPrecises === undefined) {
-            newPrecises = { // creating empty new precise
-                book_id: book_id,
-                precise: []
+            let newObject = {
+                precis: selectionText,
+                yPos: rect.top
+            }
+            this.props.precisActions.addBookPrecis(access_token, book_id, book_page_id, selectionText)
+            // it means there is no any precises for this book
+            if (newPrecises === undefined) {
+                newPrecises = { // creating empty new precise
+                    book_id: book_id,
+                    precise: []
+                }
+
+                newPrecises.precise.push(newObject)
+                this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
+                book_position = new_precises.length - 1
+            }
+            else {
+                newPrecises.push(newObject)
+                this.props.precisActions.changeNewPrecis(book_position, newPrecises)
             }
 
-            newPrecises.precise.push(newObject)
-            this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
-            book_position = new_precises.length - 1
-        }
-        else {
-            newPrecises.push(newObject)
-            this.props.precisActions.changeNewPrecis(book_position, newPrecises)
-        }
-
-        if (this.state.rect !== null) {
-            this.setState({
-                quoteExist: false,
-                rect: null
-            })
-        }
+            if (this.state.rect !== null) {
+                this.setState({
+                    quoteExist: false,
+                    rect: null
+                })
+            }
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
     
     increaseProgressBar() {    
@@ -358,7 +366,7 @@ class Content extends Component {
                 }
             }
         }
-
+        
         //For subchapters
         for (var j = 0; j < subChapters.length; j++) {
             var isVisible1 = this.isElementInViewport(subChapters, j)
@@ -374,7 +382,6 @@ class Content extends Component {
                     let isExistClass1 = $(sidebarSubChapters[j]).hasClass("flash-on-viewport") // check for existing subchapter
                     if (!isExistClass1) {
                         try{
-                            console.log(sidebarSubChapters, j, "fhweiuwehfibwek index index")
                             sidebarSubChapters[j].className += " flash-on-viewport"
                             this.setState({ curElementSub: j })
                         }
@@ -421,7 +428,6 @@ class Content extends Component {
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         var el = book.getElementsByClassName("page")
-        //console.log('pageInViewport', el.length)
         for (var i = 0; i < el.length; i++) { // iterate over all pages
             var isVisible = this.isElementInViewport(el, i)
 
@@ -469,10 +475,9 @@ class Content extends Component {
             let srcLink = src //.substr(22, src.length) rectify image link
             parentNode.removeChild(images[i])
 
-            //console.log('zoom',images[i].width+'px');
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
-            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
+            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild)) 
         }
     }
 
@@ -495,8 +500,7 @@ class Content extends Component {
             models[i].innerHTML = ''
             const my_model = <Model3d   obj={objLink} 
                                         mtl={mtlLink} />
-            ReactDOM.render(my_model, models[i])
-            //console.log('models', mtlLink)
+            ReactDOM.render(my_model, models[i]) // replacing operation
         }
     }
 
@@ -504,41 +508,121 @@ class Content extends Component {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
         let sub_headers = book.getElementsByTagName('h2')
-        for (var i = headers.length - 1; i >= 0; i--) {
+        for (let i = headers.length - 1; i >= 0; i--) {
             headers[i].setAttribute('id', 'header_'+i)
         }
         
-        for (var j = sub_headers.length - 1; j >= 0; j--) {
+        for (let j = sub_headers.length - 1; j >= 0; j--) {
             sub_headers[j].setAttribute('id', 'sub-header_'+j)
         }
     }
+
+    prevAll_h1(element) {
+        let result = []
+
+        while (element = element.previousElementSibling){
+            if (element.tagName === 'H1'){
+                result.push(element)
+            }
+        }
+        return result
+    }
+
+    someFunc(h2El, callback) {
+        let el_id, prevTitle1, sub_menu, liEl, element, prevHeader, prevH1
+        let result = []
+        for (let i = 0; i <= h2El.length - 1; i++) {
+            element = h2El[i] // my h2 element - subheader
+            prevHeader = this.prevAll_h1(element) // must return header of subheader - value may be {}
+            prevH1 = this.state.prevAllEl[0] // prev h1 element
+                        
+            if (prevH1 !== undefined) {
+                el_id = prevH1.getAttribute('id') + '-menu' // get id of element
+                prevTitle1 = document.getElementById(el_id) // get prevTitle1 
+                sub_menu = prevTitle1.getElementsByClassName('sub-menu')
+                liEl = document.createElement('li')
+                liEl.title = element.innerHTML
+                liEl.className = 'sub-header'
+                liEl.id = element.getAttribute('id') + "-menu"
+                liEl.innerHTML = element.textContent
+            } 
+
+            if (prevHeader.length === 0) {
+                result.push({
+                    liEl: liEl,
+                    sub_menu: sub_menu
+                })
+            } else {
+                /*if (prevH1 !== undefined) {
+                    let isExistUL = (prevTitle1.getElementsByTagName('ul').length === 0) ? false : true
+                    //console.log('isExistUL', isExistUL)
+                    if (isExistUL) {
+                        let newUL = document.createElement('ul')
+                        newUL.className = 'sub-menu'
+                        prevTitle1.appendChild(newUL)
+                        result.push({
+                            liEl: liEl,
+                            sub_menu: sub_menu
+                        })
+                    }
+                }*/
+                this.setState({
+                    prevAllEl: prevHeader
+                })
+            }
+        }
+        callback(result)
+    }
+
+    find_H1(sidebarMainMenu, content, scrollToElement) {
+        content.find('h1').each(function() {
+            let id = $(this).attr('id') + '-menu' // name of id
+            let header = document.createElement("li") // creating li element
+            header.setAttribute('class', 'chapter-header') // set class to li
+            header.title = $(this).text() // set title
+            let header_p = document.createElement("p") // creating p element
+            header_p.id = id // set id to paragraph
+            header_p.innerHTML = $(this).text() // set text to p element
+            header_p.addEventListener('click', scrollToElement, false) // set event listener
+            header.append(header_p) // appending li element to p
+            sidebarMainMenu.append(header)
+        })
+    }
+
+    find_H2(content, sidebarMainMenu, callback) {
+        content.find('h2').each(function() {
+            let element = $(this)
+            let prevAll = element.prevAll('h1')
+            let prevTitle = sidebarMainMenu.find('#' + prevAll.first().attr('id') + '-menu')
+            prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>') // check for existence
+            prevTitle.find('.sub-menu').append('<li title="' + $(this).text()
+                + '" class="sub-header" id="'
+                + $(this).attr('id')
+                + '-menu">'
+                + $(this).text() + '</li>')
+        })
+        callback()
+    }
+
     // i want to rewrite this function
     sidebarFunc(scrollToElement) {
-        var sidebarMainMenu = $('#sidebar-menu .main-menu')
-        var content = $('#static-content')
-        content.find('h1').each(function(e){
-
-        let id = $(this).attr('id') + '-menu'
-        //console.log($(this).attr('id'), 'fwefwefewfewfwef')
-        let header = document.createElement("li")
-
-        header.setAttribute('class', 'chapter-header')
-        //header.innerHTML = $(this).text()
-        header.title = $(this).text()
-        //console.log('scrollToElement', scrollToElement)
-        let header_p = document.createElement("p")
-        header_p.id = id
-        header_p.innerHTML = $(this).text()
-        header_p.addEventListener('click', scrollToElement, false)
-        header.append(header_p)
-        sidebarMainMenu.append(header)
-        })
-
-        content.find('h2').each(function() {
-            //console.log('content find header 4')
-            var prevTitle = sidebarMainMenu.find('#' + $(this).prevAll('h1').first().attr('id') + '-menu')
-            prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>')
-            prevTitle.find('.sub-menu').append('<li title="' + $(this).text() + '" class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
+        let sidebarMainMenu = $('#sidebar-menu .main-menu')
+        let content = $('#static-content')
+        this.find_H1(sidebarMainMenu, content, scrollToElement)
+        let content1 = ReactDOM.findDOMNode(this.refs.statiContent)
+        let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
+        let h2El = content1.getElementsByTagName('h2')
+        
+        this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
+            this.someFunc(h2El, (result) => { // callback
+                console.log('result', result)
+                for (var i = result.length - 1; i >= 0; i--) {
+                    let parentNode = result[i].sub_menu[0]
+                    let newEl = result[i].liEl
+                    parentNode.appendChild(newEl)
+                }
+                this.forceUpdate()
+            })
         })
     }
 
@@ -566,91 +650,95 @@ class Content extends Component {
     
     componentWillMount() {
         this.checkAuth()
-        this.startTimer(this)
+        this.startTimer(this)  
     }
     
     componentDidMount() {
-        let { license_token, access_token } = this.state
-        this.setState({
-            book_id: window.localStorage.getItem('book_id')
-        })
-        this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
-        .then((data) => {
-            
-            try {
-                let content = ''
-                for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                    content += data.book_page[i].content
-                }
-                window.localStorage.setItem('img', data.cover)
-                window.localStorage.setItem('author', data.author)
-                window.localStorage.setItem('name', data.name)
-                ReactGA.event({
-                    category: 'Книга',
-                    action: 'Открыто книга: ' + data.name
-                });
-                this.setState({
-                    name: data.name,
-                    author: data.author,
-                    img: data.cover,
-                    content: content,
-                    pageCount: data.page_count,
-                    readedPage: data.last_opened_page
-                })
-                console.log('last opened page', data)
-            }
-            catch(e) {
-                console.log('Error on loading book')
-            }
-            this.setState({ BookLoaded: false })
-        })
-        .then(() => {
-            try {
-                let {statiContent, sidebar_place} = this.refs
-                console.log('sidebar_place', sidebar_place)
-                // here i get an array of elements
-                this.setState({
-                    chapters: statiContent.getElementsByTagName('h1'),
-                    subChapters: statiContent.getElementsByTagName('h2'),
-                    sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
-                    sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
-                })
-
-                statiContent.addEventListener('scroll', this.pageInViewport)
-                statiContent.addEventListener('scroll', this.chapterFlashing)
-                book = statiContent.getElementsByClassName('book')[0]
-                book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                //window.oncontextmenu = this.cancelDefaultMenu
-                this.countOfPage()
-                this.setIdHeader() 
-                this.increaseProgressBar()
-                this.parse3D()
-                this.imageZoom()
-                this.tablesFixer()
-                this.sidebarFunc(this.scrollToElement)
-                /*to scroll into view*/
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            let { license_token, access_token } = this.state
+            this.setState({
+                book_id: window.localStorage.getItem('book_id')
+            })
+            this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+            .then((data) => {
+                
                 try {
-                    let { book_page_id } = this.props.appStateControl
-                    let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
-                    element.scrollIntoView()
-                    this.props.appStateControlActions.setBookScrollPos(0)
+                    let content = ''
+                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
+                        content += data.book_page[i].content
+                    }
+                    window.localStorage.setItem('img', data.cover)
+                    window.localStorage.setItem('author', data.author)
+                    window.localStorage.setItem('name', data.name)
+                    ReactGA.event({
+                        category: 'Книга',
+                        action: 'Открыто книга: ' + data.name
+                    });
+                    this.setState({
+                        name: data.name,
+                        author: data.author,
+                        img: data.cover,
+                        content: content,
+                        pageCount: data.page_count,
+                        readedPage: data.last_opened_page
+                    })
+                    console.log('last opened page', data)
                 }
                 catch(e) {
-                    console.log('Error on scrolling by precise', e)
+                    console.log('Error on loading book')
                 }
-            }
-            catch(e) {
-                console.log('Error on loading book too')
-            }
+                this.setState({ BookLoaded: false })
+            })
+            .then(() => {
+                try {
+                    let {statiContent, sidebar_place} = this.refs
+                    //console.log('sidebar_place', sidebar_place)
+                    // here i get an array of elements
+                    this.setState({
+                        chapters: statiContent.getElementsByTagName('h1'),
+                        subChapters: statiContent.getElementsByTagName('h2'),
+                        sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
+                        sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
+                    })
+
+                    statiContent.addEventListener('scroll', this.pageInViewport)
+                    statiContent.addEventListener('scroll', this.chapterFlashing)
+                    book = statiContent.getElementsByClassName('book')[0]
+                    book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
+                    //window.oncontextmenu = this.cancelDefaultMenu
+                    this.countOfPage()
+                    this.setIdHeader() 
+                    this.increaseProgressBar()
+                    this.parse3D()
+                    this.imageZoom()
+                    this.tablesFixer()
+                    this.sidebarFunc(this.scrollToElement)
+                    /*to scroll into view*/
+                    try {
+                        let { book_page_id } = this.props.appStateControl
+                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                        element.scrollIntoView()
+                        this.props.appStateControlActions.setBookScrollPos(0)
+                    }
+                    catch(e) {
+                        console.log('Error on scrolling by precise', e)
+                    }
+                }
+                catch(e) {
+                    console.log('Error on loading book too', e)
+                }
+            })
         })
-
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
     }
-
+    
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
         //window.oncontextmenu = this.cancelDefaultMenu
-
+        
         this.stopTimer(this)
 
         let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount, readedPage} = this.state
@@ -659,14 +747,14 @@ class Content extends Component {
             this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
             this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
         }
-
+        //console.log(pageInViewId, 'pageInViewId', 'readedPage', readedPage)
         if (pageInViewId !== null && pageInView > readedPage){ // if incoming value is not null
             let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length - 1))
             this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, last_opened_page_id) // pageInView its my last opened page
         }
         if (pageCount <= pageInView) { // opened last page and book is closed, so book is finished
             this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
-        }
+        } 
     }
     
     render() {
@@ -728,13 +816,6 @@ class Content extends Component {
                                       <div className="bar" style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
                                     </div>
                                 </div>
-
-                                {/*<Line   ref="bookReadedLoader"
-                                        percent={progressBarPercent}
-                                        strokeWidth="4"
-                                        strokeColor={color}
-                                        strokeLinecap='butt'
-                                        />*/}
                                 <p>{progressBarPage} / {pageCount}</p>
                             </div>
                         </div>
@@ -762,7 +843,7 @@ class Content extends Component {
                                             changeTextSize={(textSize) => this.changeTextSize(textSize)}
                                             changeColor={(colorType) => this.changeColor(colorType)} />
                         </div>
-
+                        
                         <div ref="statiContent" id="static-content" className="content__text">
                             <ShowToolTipComponent onToolTipClick={this.onToolTipClick} rect={rect} />
                             <Book ref="book" book={content} />
@@ -772,7 +853,7 @@ class Content extends Component {
                 {/* <p className="fixed-page-show">стр. {pageInView}</p>*/}
 
             </div>
-        );
+        )
     }
 }
 
@@ -788,7 +869,8 @@ const mapDispatchToProps = dispatch => ({
     precisActions: bindActionCreators(precis_action, dispatch),
     booksRequestActions: bindActionCreators(booksRequest, dispatch),
     main_actions: bindActionCreators(main_actions, dispatch),
-    appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
+    appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

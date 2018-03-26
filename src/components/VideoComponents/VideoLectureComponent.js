@@ -7,12 +7,7 @@ class VideoLecture extends Component {
         title: PropTypes.string,
         description: PropTypes.string,
         cover: PropTypes.string,
-        videoSrc: PropTypes.string,
-
-    }
-
-    constructor(props) {
-        super(props)
+        videoSrc: PropTypes.string
     }
 
     render() {
@@ -20,7 +15,6 @@ class VideoLecture extends Component {
         if (!videoSrc.startsWith('http')) {
             videoSrc = 'http://smartkitap.avsoft.kz' + videoSrc
         }
-
         return (
             <div>
                 <div className="video-body__content__player">

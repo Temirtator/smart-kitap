@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as appStateControlActions from '../../actions/appStateControl'
 import * as bookRequestActions from '../../actions/booksRequest'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class BookItem extends Component {
 	static propTypes = {
@@ -42,14 +43,18 @@ class BookItem extends Component {
 	}
 
 	setMyBookState(e) {
-		//let { opened_book_menu, opened_book_category } = this.props.appStateControl
-		//this.props.appStateControlActions()
+		e.persist()
 		this.setState({
 			isMyBook: e.target.checked
+		})	
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let { license_token, access_token } = this.state
+			let { book_id } = this.props
+			this.props.bookRequestActions.addToFavouriteBooks(license_token, access_token, book_id, e.target.checked)
 		})
-		let { license_token, access_token } = this.state
-		let { book_id } = this.props
-		this.props.bookRequestActions.addToFavouriteBooks(license_token, access_token, book_id, e.target.checked)
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединениеfwefwefwe')
+		})
 	}
 	
 	render() {
@@ -57,13 +62,20 @@ class BookItem extends Component {
 
         return (
             <div className="col-sm-4 books__book" >
-				<img onClick={this.onClickHandler} src={'http://smartkitap.avsoft.kz' + img} alt="book image" />
+				<img 	onClick={this.onClickHandler} src={'http://smartkitap.avsoft.kz' + img} 
+						alt="book image" />
 				<div className="books__book__wrap">
 					<div className="books__book__text__wrap col-md-10">
-						<p title={name} className="books__book__name">{name}</p>
-						<p title={author} className="books__book__author">{author}</p>
+						<p 	title={name} 
+							className="books__book__name">{name}</p>
+						<p 	title={author} 
+							className="books__book__author">{author}</p>
 					</div>
-					<input className="star" type="checkbox" title="bookmark page" onChange={this.setMyBookState} checked={this.state.isMyBook} />
+					<input 	className="star" 
+							type="checkbox" 
+							title="bookmark page" 
+							onChange={this.setMyBookState} 
+							checked={this.state.isMyBook} />
 				</div>
 			</div>
         )
@@ -76,7 +88,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
-  bookRequestActions: bindActionCreators(bookRequestActions, dispatch)
+  bookRequestActions: bindActionCreators(bookRequestActions, dispatch),
+  checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

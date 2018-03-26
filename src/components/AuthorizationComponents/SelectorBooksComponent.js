@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as bookRequest from '../../actions/booksRequest'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 
 class SelectorBooks extends Component {
 
@@ -21,10 +22,15 @@ class SelectorBooks extends Component {
 	}
 
 	handleClose = () => {
-		let {license_token, access_token, order_ids} = this.state
-		this.setState({isShowingModal: false})
-		window.localStorage.setItem('new_computer', false)
-		this.props.bookRequest.setBookReserve(license_token, access_token, order_ids)
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let {license_token, access_token, order_ids} = this.state
+			this.setState({isShowingModal: false})
+			window.localStorage.setItem('new_computer', false)
+			this.props.bookRequest.setBookReserve(license_token, access_token, order_ids)	
+		})
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+		})
 	}
 
 	setBookState = (id) => {
@@ -40,22 +46,27 @@ class SelectorBooks extends Component {
 	}
 
 	componentWillMount() {
-		let {license_token, access_token} = this.state
-		this.props.bookRequest.getOrderedBooks(license_token, access_token)
-		.then(response => {
-			try {
-				let organization = response.data.organization
-				this.setState({
-					orders: response.data.orders,
-					organization: organization.name,
-					phone_number: organization.contact_phone_number,
-					contact_email: organization.contact_email,
-					address: organization.address
-				})
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let {license_token, access_token} = this.state
+			this.props.bookRequest.getOrderedBooks(license_token, access_token)
+			.then(response => {
+				try {
+					let organization = response.data.organization
+					this.setState({
+						orders: response.data.orders,
+						organization: organization.name,
+						phone_number: organization.contact_phone_number,
+						contact_email: organization.contact_email,
+						address: organization.address
+					})
 
-			} catch(e) {
-				console.log('Some error on promise getOrderedBooks')
-			}
+				} catch(e) {
+					console.log('Some error on promise getOrderedBooks')
+				}
+			})	
+		})
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
 		})
 	}
 
@@ -116,7 +127,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    bookRequest: bindActionCreators(bookRequest, dispatch)
+    bookRequest: bindActionCreators(bookRequest, dispatch),
+    checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default connect(

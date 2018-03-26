@@ -9,20 +9,21 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 import * as booksRequest from '../../actions/booksRequest'
 import * as appStateControlActions from '../../actions/appStateControl'
+import * as checkConnectivity from '../../actions/checkConnectivity'
 import { withRouter } from 'react-router'
 
 class MainBooks extends Component {
 	constructor(props) {
 		super(props)
-
+		
 		this.state = {
 			access_token: window.localStorage.getItem('access_token'),
 			license_token: window.localStorage.getItem('license_token')
 		}
-
+		
 		this.checkAuth = this.checkAuth.bind(this)
 	}
-
+	
 	checkAuth() {
         if (!this.state.access_token) {
             this.props.history.push('/')
@@ -30,12 +31,17 @@ class MainBooks extends Component {
     }
     
 	componentWillMount() {
-		let { license_token, access_token } = this.state
-		this.checkAuth()
-		this.props.booksRequest.getAllBooks(license_token, access_token)
-		this.props.appStateControlActions.setBookMenu('main_books')
-		let localStorage = window.localStorage
-		localStorage.setItem('opened_book_menu', 'main_books')
+		this.props.checkConnectivity.onlineCheck().then(() => {
+			let { license_token, access_token } = this.state
+			this.checkAuth()
+			this.props.booksRequest.getAllBooks(license_token, access_token)
+			this.props.appStateControlActions.setBookMenu('main_books')
+			let localStorage = window.localStorage
+			localStorage.setItem('opened_book_menu', 'main_books')	
+		})
+		.catch(() => {
+			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+		})
 	}
 	
 	render() {
@@ -52,7 +58,7 @@ class MainBooks extends Component {
 						<Tab>{choosenLang['medical']}</Tab>
 					</TabList>
 				</div>
-
+				
 				<TabPanel>
 					<AllBooks all_books={all_books} isMyBook={false} />
 				</TabPanel>
@@ -80,7 +86,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	booksRequest: bindActionCreators(booksRequest, dispatch),
-	appStateControlActions: bindActionCreators(appStateControlActions, dispatch)
+	appStateControlActions: bindActionCreators(appStateControlActions, dispatch),
+	checkConnectivity: bindActionCreators(checkConnectivity, dispatch)
 })
 
 export default withRouter(connect(

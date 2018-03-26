@@ -84,5 +84,4 @@ fabric.properties
 /src/resources/styles/css/.sass-cache/
 
 # 3d models 
-/public/assets/bb8
-/public/assets/bmw850
+/public/assets/models3d/

@@ -22,17 +22,13 @@ import registerServiceWorker from './registerServiceWorker'
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(reduxThunk)))
 
 render(
-
+  
 	<Provider store={store}>
       <Router> 
         <Switch>
           <Route exact path="/" component={AuthComponent} />
-          <Route path="/test" component={TestComponent} />
-          <Route path="/video" component={VideoComponent} />
-          <Route path="/precis" component={PrecisComponent} />
           <Route path="/book" component={App} /> {/*this is my container*/}
           <Route path="/main-personal-page" component={PersonalHomePage} />
-          <Route path="/my-books" component={MyBooksProgress} />
           <Route path="/experiment3d" component={Model3dExp} />
         </Switch>  
       </Router>
@@ -40,6 +36,6 @@ render(
     
 	document.getElementById('root')
 
-);
+)
 
 registerServiceWorker();

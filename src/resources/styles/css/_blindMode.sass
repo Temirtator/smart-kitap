@@ -8,6 +8,15 @@ $white-color: #fff
 .blindMode
 	background-color: $BM-base-color !important
 	
+	.flash-on-viewport
+		background-color: #6c6f76цц
+		p
+			border-color: #fff
+
+	img, svg, g, path, div.round, div.bar
+		-webkit-filter: grayscale(100%)
+		filter: grayscale(100%)
+
 	.form-group
 		input.form-control
 			color: #000 !important
@@ -23,13 +32,25 @@ $white-color: #fff
 		h5, p, a, li, span
 			color: $white-color !important
 	
+	
 	.content__body__precises
 		.text-settings__text-style
 			span
 				border: 1px solid #fff !important
 	
-	li:hover 
-		background-color: $BM-base-color !important
+	.content__header__sub1
+		li:hover 
+			background-color: $BM-base-color !important
+	
+	li.chapter-header
+		p:hover
+			background-color: #000 !important
+			border-color: #fff !important	
+
+	ul.sub-menu
+		li
+			background-color: #000
+			border-color: #fff !important
 
 	.react-tabs
 		.react__tablist__wrap
