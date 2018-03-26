@@ -657,11 +657,7 @@ a {
       .sidebar .main-menu .chapter-header p:active, .sidebar .main-menu a p:hover,
       .sidebar .main-menu a p:active {
         text-decoration: none;
-        color: #09519f;
-        background-color: #e8e9eb;
-        border-left: 1px solid #09519f;
-        cursor: pointer;
-        padding: 0 0 0 10px; }
+        cursor: pointer; }
     .sidebar .main-menu .sub-menu {
       margin-left: 15px; }
       .sidebar .main-menu .sub-menu .sub-header {
@@ -2294,7 +2290,7 @@ div.my-books__test-by-books {
 .blindMode {
   background-color: #000 !important; }
   .blindMode .flash-on-viewport {
-    background-color: #6c6f76; }
+    background-color: #6c6f76 цц; }
     .blindMode .flash-on-viewport p {
       border-color: #fff; }
   .blindMode img, .blindMode svg, .blindMode g, .blindMode path, .blindMode div.round, .blindMode div.bar {

@@ -93,7 +93,8 @@ class Content extends Component {
             img: '',
             content: '',
             timerCount: 0,
-            BookLoaded: true
+            BookLoaded: true,
+            prevAllEl: ''
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -115,6 +116,7 @@ class Content extends Component {
         this.setIdHeader = this.setIdHeader.bind(this)
         this.parse3D = this.parse3D.bind(this)
         this.tablesFixer = this.tablesFixer.bind(this)
+        this.prevAll_h1 = this.prevAll_h1.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -380,7 +382,6 @@ class Content extends Component {
                     let isExistClass1 = $(sidebarSubChapters[j]).hasClass("flash-on-viewport") // check for existing subchapter
                     if (!isExistClass1) {
                         try{
-                            console.log(sidebarSubChapters, j, "fhweiuwehfibwek index index")
                             sidebarSubChapters[j].className += " flash-on-viewport"
                             this.setState({ curElementSub: j })
                         }
@@ -427,7 +428,6 @@ class Content extends Component {
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         var el = book.getElementsByClassName("page")
-        //console.log('pageInViewport', el.length)
         for (var i = 0; i < el.length; i++) { // iterate over all pages
             var isVisible = this.isElementInViewport(el, i)
 
@@ -475,10 +475,9 @@ class Content extends Component {
             let srcLink = src //.substr(22, src.length) rectify image link
             parentNode.removeChild(images[i])
 
-            //console.log('zoom',images[i].width+'px');
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
-            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
+            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild)) 
         }
     }
 
@@ -501,8 +500,7 @@ class Content extends Component {
             models[i].innerHTML = ''
             const my_model = <Model3d   obj={objLink} 
                                         mtl={mtlLink} />
-            ReactDOM.render(my_model, models[i])
-            //console.log('models', mtlLink)
+            ReactDOM.render(my_model, models[i]) // replacing operation
         }
     }
 
@@ -510,41 +508,121 @@ class Content extends Component {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
         let sub_headers = book.getElementsByTagName('h2')
-        for (var i = headers.length - 1; i >= 0; i--) {
+        for (let i = headers.length - 1; i >= 0; i--) {
             headers[i].setAttribute('id', 'header_'+i)
         }
         
-        for (var j = sub_headers.length - 1; j >= 0; j--) {
+        for (let j = sub_headers.length - 1; j >= 0; j--) {
             sub_headers[j].setAttribute('id', 'sub-header_'+j)
         }
     }
+
+    prevAll_h1(element) {
+        let result = []
+
+        while (element = element.previousElementSibling){
+            if (element.tagName === 'H1'){
+                result.push(element)
+            }
+        }
+        return result
+    }
+
+    someFunc(h2El, callback) {
+        let el_id, prevTitle1, sub_menu, liEl, element, prevHeader, prevH1
+        let result = []
+        for (let i = 0; i <= h2El.length - 1; i++) {
+            element = h2El[i] // my h2 element - subheader
+            prevHeader = this.prevAll_h1(element) // must return header of subheader - value may be {}
+            prevH1 = this.state.prevAllEl[0] // prev h1 element
+                        
+            if (prevH1 !== undefined) {
+                el_id = prevH1.getAttribute('id') + '-menu' // get id of element
+                prevTitle1 = document.getElementById(el_id) // get prevTitle1 
+                sub_menu = prevTitle1.getElementsByClassName('sub-menu')
+                liEl = document.createElement('li')
+                liEl.title = element.innerHTML
+                liEl.className = 'sub-header'
+                liEl.id = element.getAttribute('id') + "-menu"
+                liEl.innerHTML = element.textContent
+            } 
+
+            if (prevHeader.length === 0) {
+                result.push({
+                    liEl: liEl,
+                    sub_menu: sub_menu
+                })
+            } else {
+                /*if (prevH1 !== undefined) {
+                    let isExistUL = (prevTitle1.getElementsByTagName('ul').length === 0) ? false : true
+                    //console.log('isExistUL', isExistUL)
+                    if (isExistUL) {
+                        let newUL = document.createElement('ul')
+                        newUL.className = 'sub-menu'
+                        prevTitle1.appendChild(newUL)
+                        result.push({
+                            liEl: liEl,
+                            sub_menu: sub_menu
+                        })
+                    }
+                }*/
+                this.setState({
+                    prevAllEl: prevHeader
+                })
+            }
+        }
+        callback(result)
+    }
+
+    find_H1(sidebarMainMenu, content, scrollToElement) {
+        content.find('h1').each(function() {
+            let id = $(this).attr('id') + '-menu' // name of id
+            let header = document.createElement("li") // creating li element
+            header.setAttribute('class', 'chapter-header') // set class to li
+            header.title = $(this).text() // set title
+            let header_p = document.createElement("p") // creating p element
+            header_p.id = id // set id to paragraph
+            header_p.innerHTML = $(this).text() // set text to p element
+            header_p.addEventListener('click', scrollToElement, false) // set event listener
+            header.append(header_p) // appending li element to p
+            sidebarMainMenu.append(header)
+        })
+    }
+
+    find_H2(content, sidebarMainMenu, callback) {
+        content.find('h2').each(function() {
+            let element = $(this)
+            let prevAll = element.prevAll('h1')
+            let prevTitle = sidebarMainMenu.find('#' + prevAll.first().attr('id') + '-menu')
+            prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>') // check for existence
+            prevTitle.find('.sub-menu').append('<li title="' + $(this).text()
+                + '" class="sub-header" id="'
+                + $(this).attr('id')
+                + '-menu">'
+                + $(this).text() + '</li>')
+        })
+        callback()
+    }
+
     // i want to rewrite this function
     sidebarFunc(scrollToElement) {
-        var sidebarMainMenu = $('#sidebar-menu .main-menu')
-        var content = $('#static-content')
-        content.find('h1').each(function(e){
-
-        let id = $(this).attr('id') + '-menu'
-        //console.log($(this).attr('id'), 'fwefwefewfewfwef')
-        let header = document.createElement("li")
-
-        header.setAttribute('class', 'chapter-header')
-        //header.innerHTML = $(this).text()
-        header.title = $(this).text()
-        //console.log('scrollToElement', scrollToElement)
-        let header_p = document.createElement("p")
-        header_p.id = id
-        header_p.innerHTML = $(this).text()
-        header_p.addEventListener('click', scrollToElement, false)
-        header.append(header_p)
-        sidebarMainMenu.append(header)
-        })
-
-        content.find('h2').each(function() {
-            //console.log('content find header 4')
-            var prevTitle = sidebarMainMenu.find('#' + $(this).prevAll('h1').first().attr('id') + '-menu')
-            prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>')
-            prevTitle.find('.sub-menu').append('<li title="' + $(this).text() + '" class="sub-header" id="'+ $(this).attr('id') + '-menu">' + $(this).text() + '</li>')
+        let sidebarMainMenu = $('#sidebar-menu .main-menu')
+        let content = $('#static-content')
+        this.find_H1(sidebarMainMenu, content, scrollToElement)
+        let content1 = ReactDOM.findDOMNode(this.refs.statiContent)
+        let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
+        let h2El = content1.getElementsByTagName('h2')
+        
+        this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
+            this.someFunc(h2El, (result) => { // callback
+                console.log('result', result)
+                for (var i = result.length - 1; i >= 0; i--) {
+                    let parentNode = result[i].sub_menu[0]
+                    let newEl = result[i].liEl
+                    parentNode.appendChild(newEl)
+                }
+                this.forceUpdate()
+            })
         })
     }
 
@@ -614,7 +692,7 @@ class Content extends Component {
             .then(() => {
                 try {
                     let {statiContent, sidebar_place} = this.refs
-                    console.log('sidebar_place', sidebar_place)
+                    //console.log('sidebar_place', sidebar_place)
                     // here i get an array of elements
                     this.setState({
                         chapters: statiContent.getElementsByTagName('h1'),
@@ -647,7 +725,7 @@ class Content extends Component {
                     }
                 }
                 catch(e) {
-                    console.log('Error on loading book too')
+                    console.log('Error on loading book too', e)
                 }
             })
         })

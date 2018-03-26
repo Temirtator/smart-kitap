@@ -18,13 +18,9 @@ class Sidebar extends Component {
     render() {
         return (
             <div ref="sidebar" id="sidebar-menu" className={this.props.appStateControl.blindMode ? "sidebar blindMode" : "sidebar"}>
-            	{/*<div className="sidebar__header">
-                <p>Главы</p>
-              </div>*/}
-              <ul className={this.props.appStateControl.blindMode ? "main-menu nav nav-stacked affix blindMode" : "main-menu nav nav-stacked affix"}>
-            	 
+            	<ul className={this.props.appStateControl.blindMode ? "main-menu nav nav-stacked affix blindMode" : "main-menu nav nav-stacked affix"}>
+            	   
               </ul>
-                {/*<SidebarAddittional />*/}
             </div>
         );
     }

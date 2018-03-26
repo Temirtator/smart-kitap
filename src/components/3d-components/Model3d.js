@@ -5,8 +5,10 @@ import * as THREE from 'three'
 import TrackballControls from '../3d-modules/TrackballControls'
 import MTLLoader from '../3d-modules/MTLLoader'
 import OBJLoader from '../3d-modules/OBJLoader'
+import DDSLoader from '../3d-modules/DDSLoader'
 MTLLoader(THREE)
 OBJLoader(THREE)
+DDSLoader(THREE)
 THREE.ImageUtils.crossOrigin = "*"
 
 const perspectiveCameraName = 'perspectiveCamera'
@@ -66,14 +68,13 @@ class Model3d extends Component {
 		    const onError = ( xhr ) => { console.log(xhr) }
 		    const group = this.refs.group
 		    const mtlLoader = new this.THREE.MTLLoader()
-		    //mtlLoader.setPath('./assets/bb8/')
-		    mtlLoader.crossOrigin = ''
+		    mtlLoader.crossOrigin = '*'
+		    THREE.Loader.Handlers.add( /\.dds$/i, new this.THREE.DDSLoader() );
 		    return (
 		      mtlLoader.load(this.state.mtl, materials => {
 		      	materials.preload()
 		        const objLoader = new this.THREE.OBJLoader()
 		        objLoader.setMaterials(materials)
-		        //objLoader.setPath('./assets/bb8/')
 		        objLoader.crossOrigin = '*'
 		        objLoader.load(this.state.obj, object => {
 			        group.add(object)
