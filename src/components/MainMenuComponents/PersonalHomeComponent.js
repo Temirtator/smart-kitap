@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import MyBooksProgress from './../ProgressComponents/MyBooksProgressComponent'
 import NavigationHeader from './NavigationHeaderComponent'
 
@@ -12,9 +12,9 @@ import TestComponent from '../TestComponents/TestComponent'
 import PrecisComponent from '../PrecisComponents/PrecisComponent'
 import About from './AboutComponent'
 import PersonSettings from './PersonSettingsComponent'
-import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import {withRouter} from 'react-router'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 //import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 import * as userDataRequest from '../../actions/userDataRequest'
@@ -22,7 +22,7 @@ import * as appStateActions from '../../actions/appStateControl'
 
 const MyElement = (props) => {
     let menuItem = props.menuItem
-    
+
     switch (menuItem) {
         case 'main':
             return <MainBooks />
@@ -44,7 +44,7 @@ const MyElement = (props) => {
             break
         case 'about':
             return <About />
-            break 
+            break
         case 'settings':
             return <PersonSettings />
             break
@@ -70,7 +70,7 @@ class PersonalHomePage extends Component {
     }
 
     checkAuth() {
-        let { access_token } = this.state
+        let {access_token} = this.state
         if (!access_token) { // if access token isnt exist
             this.props.history.push('/')
         }
@@ -78,11 +78,11 @@ class PersonalHomePage extends Component {
             this.props.userDataRequest.getUserInfo(access_token)
         }
     }
-    
+
     componentWillMount() {
         this.checkAuth()
     }
-    
+
     isBookOrientation(key) {
         var components = [
             'book/video',
@@ -90,14 +90,14 @@ class PersonalHomePage extends Component {
             'book/test'
         ]
         for (var i = components.length - 1; i >= 0; i--) {
-            if ( components[i] === key ) {
-                this.setState({ isBookOrientation: true })
+            if (components[i] === key) {
+                this.setState({isBookOrientation: true})
                 break
             }
         }
         //this.setState({ isBookOrientation: false })
     }
-    
+
     switchFunction(key) {
         if (key === 'quit') {
             let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
@@ -108,33 +108,36 @@ class PersonalHomePage extends Component {
         }
 
         if (key === 'reset') {
-            window.localStorage.clear()
-            window.location.reload()
-            return -1
+            var needPassword = prompt('Введите пароль для сброса');
+            if (needPassword !== null && needPassword !== '' && needPassword === '7894321') {
+                window.localStorage.clear()
+                window.location.reload()
+                return -1
+            }
         }
 
         var components = [
-            'main', 
-            'mybooks', 
+            'main',
+            'mybooks',
             'book/video',
             'book/conspect',
-            'book/test', 
-            'myprogress', 
-            'about', 
+            'book/test',
+            'myprogress',
+            'about',
             'settings'
         ]
         // if key will be equal on of the components then open component
         for (var i = components.length - 1; i >= 0; i--) {
             if (components[i] === key) {
-                this.setState({ menuSelected: key, isBookOrientation: false })
+                this.setState({menuSelected: key, isBookOrientation: false})
             }
         }
     }
-    
+
     componentDidMount() {
         //try catch, i need to go away from undefined value 
         try {
-            let { menuSelected } = this.props.location.state
+            let {menuSelected} = this.props.location.state
             if (menuSelected !== undefined) {
                 this.setState({
                     menuSelected: menuSelected
@@ -142,7 +145,7 @@ class PersonalHomePage extends Component {
                 // this function is need to change navigation headers
                 this.isBookOrientation(menuSelected)
             }
-        } catch(e) {
+        } catch (e) {
             console.log("Cannot read property 'menuSelected' of undefined")
         }
     }
@@ -151,12 +154,12 @@ class PersonalHomePage extends Component {
     findBook(e) {
         this.props.appStateActions.setSearchBook(e.target.value)
     }
-    
+
     render() {
-        let { icons, menuSelected, isBookOrientation } = this.state
-        let { language } = this.props.appStateControl.user_settings
-        let { blindMode } = this.props.appStateControl 
-        let { isTurnOn, theme } = this.props.appStateControl.theme_settings
+        let {icons, menuSelected, isBookOrientation} = this.state
+        let {language} = this.props.appStateControl.user_settings
+        let {blindMode} = this.props.appStateControl
+        let {isTurnOn, theme} = this.props.appStateControl.theme_settings
         let bodyClass = "personal-home-page__body"
         let bodyMainClass = "personal-home-page__body__main"
         if (blindMode) {
@@ -169,29 +172,33 @@ class PersonalHomePage extends Component {
         }
         return (
             <div className="personal-home-page">
-                
-            	<NavigationHeader switchFunction={this.switchFunction} />
-            	<div className={bodyClass}>
+
+                <NavigationHeader switchFunction={this.switchFunction}/>
+                <div className={bodyClass}>
                     <div className="personal-home-page__body__header">
-                        { isBookOrientation ? <BookOrientation isInMainPage={true} menuSelected={(menuSelected) => this.setState({menuSelected})} /> : <TextSettings textSize={{display: 'none'}} textColor={{display: 'none'}} /> }
+                        { isBookOrientation ? <BookOrientation isInMainPage={true}
+                                                               menuSelected={(menuSelected) => this.setState({menuSelected})}/> :
+                            <TextSettings textSize={{display: 'none'}} textColor={{display: 'none'}}/> }
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
-                                <input onChange={(e) => this.findBook(e)} ref="findTextValue" type="text" className="form-control form-control_search" placeholder={languages[0][language]['search-book']}></input>
+                                <input onChange={(e) => this.findBook(e)} ref="findTextValue" type="text"
+                                       className="form-control form-control_search"
+                                       placeholder={languages[0][language]['search-book']}></input>
                             </div>
                         </div>
                     </div>
-                    
-            		<div className={bodyMainClass}>
-						<MyElement menuItem={this.state.menuSelected} />
-					</div>
-            	</div>
+
+                    <div className={bodyMainClass}>
+                        <MyElement menuItem={this.state.menuSelected}/>
+                    </div>
+                </div>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-   appStateControl: state.appStateControl
+    appStateControl: state.appStateControl
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -200,6 +207,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(PersonalHomePage))

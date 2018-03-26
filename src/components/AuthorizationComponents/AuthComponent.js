@@ -28,6 +28,15 @@ const versionStyle = {
     position: 'absolute',
     zIndex: '5000',
     color: 'white',
+    fontSize: '9pt',
+    padding: '15px 15px'
+}
+const versionStyle2 = {
+    position: 'absolute',
+    zIndex: '5000',
+    color: 'white',
+    top: 20,
+    fontSize: '9pt',
     padding: '15px 15px'
 }
 class AuthComponent extends Component {
@@ -134,6 +143,9 @@ class AuthComponent extends Component {
                         .then(response => {
                             try {
                                 console.log('Auth check', response)
+                                //Сохраняет данные о лицензий
+                                this.setState({license_id: response.data.id})
+                                window.localStorage.setItem('license_id', response.data.id)
                                 if (response.status === 200) {
                                     this.checkAuth()
                                 }
@@ -162,16 +174,20 @@ class AuthComponent extends Component {
             registrationClass,
             loginClass,
             isLoading,
-            appApproved
+            appApproved,
+            license_id
         } = this.state
 
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
+                console.log('license_id', window.localStorage.getItem('license_id'));
+                this.setState({license_id: window.localStorage.getItem('license_id')});
                 return {
                     enterKeyClass: prev.enterKeyClass + ' disableElement',
                     registrationClass: 'auth-component__header__registration',
                     loginClass: 'auth-component__header__login',
+
                     enterKey: false, registration: true, appApproved: true
                 }
             })}/>
@@ -189,6 +205,8 @@ class AuthComponent extends Component {
             <div className="auth-component">
                 { appApproved ? <SelectorBooks /> : null}
                 <p style={ versionStyle }>Версия: {version}</p>
+                {license_id !== '' &&
+                <p style={ versionStyle2 }>Лицензия: {license_id}</p>}
                 {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">
