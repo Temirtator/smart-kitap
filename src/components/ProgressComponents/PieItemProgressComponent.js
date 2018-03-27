@@ -22,6 +22,12 @@ class PieItemProgress extends Component {
 					      '.chart_text': {
 					        fontSize: '1em',
 					        fill: '#fff'
+					      },
+					      '.pie-chart-label': {
+					      	'text-anchor': 'end', 'font-size': '9px'
+					      },
+					      '.pie-chart-label:nth-child(2)': {
+					      	'text-anchor': 'inherit'
 					      }
 					    }}
 					  />

@@ -85,24 +85,24 @@ class Model3d extends Component {
 			console.log('error on loading 3d model')
 		}
 	}
-
+	
 	componentDidMount() {
     	const controls = new TrackballControls(this.refs.mainCamera,
       	ReactDOM.findDOMNode(this.refs.react3))
-
+    	
 	    controls.rotateSpeed = 1.0
 	    controls.zoomSpeed = 1.2
 	    controls.panSpeed = 0.8
-
+	    
 	    controls.noZoom = false
 	    controls.noPan = false
-
+	    
 	    controls.staticMoving = true
 	    controls.dynamicDampingFactor = 0.3
-
+	    
 	    this.controls = controls
         this.loadAndRenderObject()
-
+        
         controls.addEventListener('change', () => {
             if (this.refs.mainCamera !== undefined){
                 this.setState({
@@ -111,7 +111,7 @@ class Model3d extends Component {
             }
         })
 	}
-
+	
 	componentWillUnmount() {
 	    this.refs.group.remove(this.state.object)
 	    this.refs.group2.remove(this.state.geo)
@@ -119,11 +119,11 @@ class Model3d extends Component {
 	    this.controls.dispose();
 	    delete this.controls;
 	}
-
+	
 	_onAnimate = () => {
 	    this.controls.update()
 	}
-
+	
 	render3DModel() {
 		const width = 500,
     		  height = 500

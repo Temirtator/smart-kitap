@@ -38,8 +38,13 @@ const ShowToolTipComponent = (props) => {
         let centralizeLeft = (rect.left + ((rect.width) / 2) + 25),
             centralizeTop = (rect.top - 25)
         return (
-            <div onClick={onToolTipClick} className="quote" id="quote" style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
-                <img src='./image/quote.png' style={{ width: '100%' }} />
+            <div    onClick={onToolTipClick} 
+                    className="quote" 
+                    id="quote" 
+                    style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
+                    
+                <img    src='./image/quote.png' 
+                        style={{ width: '100%' }} />
             </div>
         )
     }
@@ -51,7 +56,6 @@ const ShowToolTipComponent = (props) => {
     }
 }
 
-
 let textStyle = {
     color: 'white',
     position: 'absolute',
@@ -60,12 +64,11 @@ let textStyle = {
     left: 'calc(50vw + 100px)'
 }
 
-
-var TRange=null;
+var TRange=null
 
 class Content extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             pageInView: 1,
@@ -130,10 +133,14 @@ class Content extends Component {
     }
 
     scrollToElement(e) {
-        let id = e.target.id.substr(0, e.target.id.length-5)
-        console.log('scrollToElement', id)
-        let element = document.getElementById(id)
-        element.scrollIntoView()
+        try {
+            let id = e.target.id.substr(0, e.target.id.length-5)
+            console.log('scrollToElement', id)
+            let element = document.getElementById(id)
+            element.scrollIntoView()
+        } catch(e) {
+            console.log('scrollToElement error', e)
+        }
     }
 
     validateNewText(newText, oldText, rectanglePos, book_page_id) {
@@ -160,7 +167,7 @@ class Content extends Component {
     // firing when text selected on book content 
     getSelectionText() {
         let {quoteExist, selectionText} = this.state
-        let selection, text, range, rect, parentPos, relativePos;
+        let selection, text, range, rect, parentPos, relativePos
         //let scrollTop = window.pageYOffset || this.refs.statiContent.scrollTop
         let parentEl = null
         parentPos = book.getBoundingClientRect() // book is global variable
@@ -176,7 +183,7 @@ class Content extends Component {
 
                 parentEl = range.commonAncestorContainer
                 if (parentEl.nodeType != 1) {
-                    parentEl = parentEl.parentNode;
+                    parentEl = parentEl.parentNode
                 }
                 //console.log('parentEl', parentEl)
                 parentEl = parentEl.closest('.page')
@@ -206,7 +213,7 @@ class Content extends Component {
 
                 parentEl = range.commonAncestorContainer
                 if (parentEl.nodeType != 1) {
-                    parentEl = parentEl.parentNode;
+                    parentEl = parentEl.parentNode
                 }
                 parentEl = parentEl.closest('.page')
                 let parentElId = parentEl.id
@@ -221,7 +228,6 @@ class Content extends Component {
                     this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
         }
-
     }
     
     // on call show tooltip by some rect position
@@ -246,7 +252,6 @@ class Content extends Component {
             let newPrecises, book_position
 
             for (var i = new_precises.length - 1; i >= 0; i--) {
-                //console.log(new_precises[i].book_id, '===', book_id)
                 if (Number(new_precises[i].book_id) === book_id) {
                     newPrecises = new_precises[i].precise //array of objects
                     book_position = i
@@ -298,7 +303,7 @@ class Content extends Component {
                 if (percent >= readedPages) {
                     this.setState({ progressBarPage: readedPage })
                     clearTimeout(this.tm)
-                    return;
+                    return
                 }
                 this.setState({
                     progressBarPercent: percent,
@@ -616,7 +621,7 @@ class Content extends Component {
         this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
             this.someFunc(h2El, (result) => { // callback
                 console.log('result', result)
-                for (var i = result.length - 1; i >= 0; i--) {
+                for (var i = 0; i <= result.length - 1; i++) {
                     let parentNode = result[i].sub_menu[0]
                     let newEl = result[i].liEl
                     parentNode.appendChild(newEl)
@@ -644,7 +649,7 @@ class Content extends Component {
         for (let i = 0; i < divs.length; i++) {
             //divs[i].setAttribute('id', 'menu_' + i)
             let pageNum = i + 1
-            $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i]);
+            $('<p class="pageNum">стр. ' + pageNum + '</p>').insertAfter(divs[i])
         }
     }
     
@@ -673,7 +678,7 @@ class Content extends Component {
                     ReactGA.event({
                         category: 'Книга',
                         action: 'Открыто книга: ' + data.name
-                    });
+                    })
                     this.setState({
                         name: data.name,
                         author: data.author,

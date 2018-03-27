@@ -40,24 +40,24 @@ export function getAllUserProgress(license_token, access_token) {
 			let general_progress = [
 				   	[
 				      {	
-				      	key: Math.round((book_page_count / (book_page_count + readed_page_count)) * 100).toFixed(2) + ' %',
+				      	key: Math.round((book_page_count / (book_page_count + readed_page_count)) * 100) + ' %',
 				        value: book_page_count,
 				        color: color
 				      },
 				      {
-				      	key: Math.round((readed_page_count / (book_page_count + readed_page_count)) * 100).toFixed(2) + ' %',
+				      	key: Math.round((readed_page_count / (book_page_count + readed_page_count)) * 100) + ' %',
 				        value: readed_page_count,
 				        color: highlight
 				      }
 				    ],
 				    [
 				      {
-				      	key: Math.round((general_correct_answ / (general_correct_answ + general_incorrect_answ)) * 100).toFixed(2) + ' %',
+				      	key: Math.round((general_correct_answ / (general_correct_answ + general_incorrect_answ)) * 100) + ' %',
 				        value: general_correct_answ,
 				        color: color
 				      },
 				      {
-				      	key: Math.round((general_incorrect_answ / (general_correct_answ + general_incorrect_answ)) * 100).toFixed(2) + ' %',
+				      	key: Math.round((general_incorrect_answ / (general_correct_answ + general_incorrect_answ)) * 100) + ' %',
 				        value: general_incorrect_answ,
 				        color: highlight
 				      }
@@ -88,12 +88,12 @@ export function getAllUserProgress(license_token, access_token) {
 			        [
 			          {
 			            value: readed_books[i].total_page,
-			            key: Math.round((readed_books[i].total_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100).toFixed(2) + ' %',
+			            key: Math.round((readed_books[i].total_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100) + ' %',
 			            color:color,
 			          },
 			          {
 			            value: readed_books[i].last_opened_page,
-			            key: Math.round((readed_books[i].last_opened_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100).toFixed(2) + ' %',
+			            key: Math.round((readed_books[i].last_opened_page / (readed_books[i].total_page + readed_books[i].last_opened_page)) * 100) + ' %',
 			            color:highlight,
 			          }
 			        ],
@@ -117,7 +117,7 @@ export function getAllUserProgress(license_token, access_token) {
 			        ]
 			      ]
 			    }
-
+			    
 			    readed_book_progress.push(book_readed_progress)
 			}
 
@@ -164,7 +164,7 @@ export function getAllUserProgress(license_token, access_token) {
 			        ]
 			      ]
 			    }
-
+			    
 			    iread_book_progress.push(book_iread_progress)
 			}
 			//console.log('iread_book_progress', iread_book_progress)

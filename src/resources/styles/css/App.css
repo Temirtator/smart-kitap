@@ -882,7 +882,7 @@ a {
 
 .content__header__sub {
   width: auto;
-  height: 193px;
+  height: 209px;
   padding: 46px 0 46px 18px;
   display: flex; }
   .content__header__sub a {
@@ -919,7 +919,7 @@ a {
 
 .content__header__sub1 {
   width: auto;
-  height: calc(100vh - 193px); }
+  height: calc(100vh - 209px); }
 
 .stylish-input-group {
   -webkit-margin-before: 1.3em;
