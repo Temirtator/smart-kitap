@@ -616,7 +616,7 @@ class Content extends Component {
         this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
             this.someFunc(h2El, (result) => { // callback
                 console.log('result', result)
-                for (var i = result.length - 1; i >= 0; i--) {
+                for (var i = 0; i <= result.length - 1; i++) {
                     let parentNode = result[i].sub_menu[0]
                     let newEl = result[i].liEl
                     parentNode.appendChild(newEl)
