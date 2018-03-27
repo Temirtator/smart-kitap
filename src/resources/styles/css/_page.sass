@@ -1,12 +1,12 @@
-$p-font-size: 10pt
-$h1-font-size: 14pt
-$h2-font-size: 12pt
+$p-font-size: 12px
+$h1-font-size: 16px
+$h2-font-size: 14px
 $h3-font-size: 18.6
 $h4-font-size: 18.6
 $h5-font-size: 18.6
 $li-font-size: 18.6
 
-$span-font-size: 12pt
+$span-font-size: 14px
 
 //first style
 $page-style-a: #fff
@@ -59,10 +59,27 @@ $page-style-text-c: #000
 		border-collapse: collapse
 
 	h1
-		font-size: $h1-font-size !important
+		font-size: $h1-font-size
 
 	h2
-		font-size: $h2-font-size !important
+		font-size: $h2-font-size
+		padding: 0 0 25px 0
+
+	//h3
+	//	font-weight: bold
+
+	span
+		font-size: $span-font-size
+
+	p
+		font-size: $p-font-size
+		margin: 0
+
+		span.floatRight
+			float: right
+
+		span.bold-text
+			font-weight: bold
 
 	//h3
 	//	font-size: $h3-font-size !important
@@ -77,26 +94,10 @@ $page-style-text-c: #000
 		text-align: center
 		font-weight: bold
 
-	h2
-		padding: 0 0 25px 0
-
-	h3
-		font-weight: bold
-
-	p
-		font-size: $p-font-size
-		margin: 0
-
-		span.floatRight
-			float: right
-
-		span.bold-text
-			font-weight: bold
-
 	ul
 		li
 			font-size: $li-font-size
-
+	
 	img
 		margin: 15px 15px
 

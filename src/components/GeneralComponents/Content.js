@@ -64,7 +64,7 @@ let textStyle = {
     left: 'calc(50vw + 100px)'
 }
 
-var TRange=null
+let TRange=null
 
 class Content extends Component {
     constructor(props) {
@@ -97,7 +97,8 @@ class Content extends Component {
             content: '',
             timerCount: 0,
             BookLoaded: true,
-            prevAllEl: ''
+            prevAllEl: '',
+            changingTextSize: false
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -251,7 +252,7 @@ class Content extends Component {
             let {selectionText, rect, access_token, book_page_id} = this.state
             let newPrecises, book_position
 
-            for (var i = new_precises.length - 1; i >= 0; i--) {
+            for (let i = new_precises.length - 1; i >= 0; i--) {
                 if (Number(new_precises[i].book_id) === book_id) {
                     newPrecises = new_precises[i].precise //array of objects
                     book_position = i
@@ -321,7 +322,7 @@ class Content extends Component {
             let str = findTextValue.value
             if (window.find && window.getSelection) {
                 window.find(str)
-                var sel = window.getSelection()
+                let sel = window.getSelection()
                 let parentEl = sel.getRangeAt(0).commonAncestorContainer.parentNode
                 parentEl.scrollIntoView()
             }
@@ -337,8 +338,8 @@ class Content extends Component {
     // firing when scroll event happen
     chapterFlashing() {
         let {chapters, subChapters, sidebarChapters, sidebarSubChapters} = this.state
-        for (var i = 0; i < chapters.length; i++) {
-            var isVisible = this.isElementInViewport(chapters, i)
+        for (let i = 0; i < chapters.length; i++) {
+            let isVisible = this.isElementInViewport(chapters, i)
             let { curElement } = this.state
 
             if (isVisible) { // if header is visible
@@ -373,8 +374,8 @@ class Content extends Component {
         }
         
         //For subchapters
-        for (var j = 0; j < subChapters.length; j++) {
-            var isVisible1 = this.isElementInViewport(subChapters, j)
+        for (let j = 0; j < subChapters.length; j++) {
+            let isVisible1 = this.isElementInViewport(subChapters, j)
             let { curElementSub } = this.state
 
             if (isVisible1) {
@@ -433,8 +434,8 @@ class Content extends Component {
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let el = book.getElementsByClassName("page")
-        for (var i = 0; i < el.length; i++) { // iterate over all pages
-            var isVisible = this.isElementInViewport(el, i)
+        for (let i = 0; i < el.length; i++) { // iterate over all pages
+            let isVisible = this.isElementInViewport(el, i)
 
             if(isVisible){
                 this.setState({ pageInView: i+1, pageInViewId: el[i].id })
@@ -446,7 +447,7 @@ class Content extends Component {
     }
 
     settingTextSize(all_el, newTextSize) {
-        for (let j = all_el.length - 1; j >= 0; j--) {
+        for (let j = 0; j <= all_el.length - 1; j++) {
             let style = window.getComputedStyle(all_el[j], null).getPropertyValue('font-size')
             let fontSize = parseFloat(style) // get flaot of element in page
             if (prevTextSize === null) { // if first time
@@ -485,39 +486,44 @@ class Content extends Component {
         }
     }
 
-    changeTextSize(newTextSize) {
-        let book = ReactDOM.findDOMNode(this.refs.book)
-        let pages = book.getElementsByClassName('page')
-        let all_el = []
-        for (let i = 0; i <= pages.length - 1; i++) {
-            let p_el = pages[i].getElementsByTagName('p'), 
-                h1_el = pages[i].getElementsByTagName('h1'),
-                h2_el = pages[i].getElementsByTagName('h2'),
-                h3_el = pages[i].getElementsByTagName('h3'),
-                h4_el = pages[i].getElementsByTagName('h4'),
-                h5_el = pages[i].getElementsByTagName('h5'),
-                li_el = pages[i].getElementsByTagName('li'),
-                span_el = pages[i].getElementsByTagName('span')
-            all_el = [  ...all_el,
-                        ...h1_el, 
-                        ...h2_el,
-                        ...h3_el, 
-                        ...h4_el, 
-                        ...h5_el,
-                        ...li_el, 
-                        ...span_el ] // all elements in page
-            this.settingTextSize(all_el, newTextSize)
-            all_el = []
-        }
-        prevTextSize = newTextSize
-        /*for (var i = pages.length - 1; i >= 0; i--) {
-            // if text size settings, first time
-            if (prevTextSize !== null)
-                pages[i].classList.remove("page-" + prevTextSize)
-                
-            pages[i].className += " page-" + newTextSize
-        }
-        prevTextSize = newTextSize*/
+    changeTextSize(newTextSize, callback) {
+        this.setState({ changingTextSize: true }, () => {
+            let book = ReactDOM.findDOMNode(this.refs.book)
+            let pages = book.getElementsByClassName('page')
+            let all_el = []
+            for (let i = 0; i <= pages.length - 1; i++) {
+                let p_el = pages[i].getElementsByTagName('p'), 
+                    h1_el = pages[i].getElementsByTagName('h1'),
+                    h2_el = pages[i].getElementsByTagName('h2'),
+                    h3_el = pages[i].getElementsByTagName('h3'),
+                    h4_el = pages[i].getElementsByTagName('h4'),
+                    h5_el = pages[i].getElementsByTagName('h5'),
+                    li_el = pages[i].getElementsByTagName('li'),
+                    span_el = pages[i].getElementsByTagName('span')
+                all_el = [  ...all_el,
+                            ...h1_el, 
+                            ...h2_el,
+                            ...h3_el, 
+                            ...h4_el, 
+                            ...h5_el,
+                            ...li_el, 
+                            ...span_el,
+                            ...p_el ] // all elements in page
+                this.settingTextSize(all_el, newTextSize)
+                all_el = []
+            }
+            prevTextSize = newTextSize
+
+            /*for (var i = pages.length - 1; i >= 0; i--) {
+                // if text size settings, first time
+                if (prevTextSize !== null)
+                    pages[i].classList.remove("page-" + prevTextSize)
+                    
+                pages[i].className += " page-" + newTextSize
+            }
+            prevTextSize = newTextSize*/
+        })
+        callback()
     }
     
     changeColor(colorStyle) {
@@ -531,7 +537,7 @@ class Content extends Component {
         }
         prevStyle = colorStyle
     }
-    
+
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let images = book.getElementsByTagName('img')
@@ -547,7 +553,7 @@ class Content extends Component {
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild)) 
         }
     }
-    
+
     tablesFixer() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let tables = book.getElementsByTagName('table')
@@ -555,7 +561,7 @@ class Content extends Component {
             tables[i].style.width = "100%"
         }
     }
-    
+
     parse3D() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let models = book.getElementsByClassName('models_3d')
@@ -570,7 +576,7 @@ class Content extends Component {
             ReactDOM.render(my_model, models[i]) // replacing operation
         }
     }
-    
+
     setIdHeader() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
@@ -683,7 +689,7 @@ class Content extends Component {
         this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
             this.someFunc(h2El, (result) => { // callback
                 //console.log('result', result)
-                for (var i = 0; i <= result.length - 1; i++) {
+                for (let i = 0; i <= result.length - 1; i++) {
                     let parentNode = result[i].sub_menu[0]
                     let newEl = result[i].liEl
                     parentNode.appendChild(newEl)
@@ -837,7 +843,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img, BookLoaded, show3D } = this.state
+                img, BookLoaded, show3D, changingTextSize } = this.state
         let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
@@ -862,6 +868,15 @@ class Content extends Component {
                     <div>
                         <ReactSpinner color='#fff' />
                         <p style={textStyle}>Загружается книга...</p>
+                    </div>
+                </ModalContainer>
+            }
+
+            { changingTextSize &&
+                <ModalContainer>
+                    <div>
+                        <ReactSpinner color='#fff' />
+                        <p style={textStyle}>Изменяется размер пожалуйста подождите...</p>
                     </div>
                 </ModalContainer>
             }   
@@ -907,7 +922,10 @@ class Content extends Component {
                                             textColor={{padding:'14px 0px'}}
                                             blindMode={{padding:'12px 0'}}
                                             generalStyle={{height:'55px'}}
-                                            changeTextSize={(textSize) => this.changeTextSize(textSize)}
+                                            changeTextSize={(textSize) => this.changeTextSize(textSize, () => {
+                                                // changing text size is finished
+                                                this.setState({ changingTextSize: false })
+                                            })}
                                             changeColor={(colorType) => this.changeColor(colorType)} />
                         </div>
                         
