@@ -414,15 +414,9 @@
     border: 1px solid #aaa;
     border-collapse: collapse; }
   .page h1 {
-    font-size: 24 !important; }
+    font-size: 14pt !important; }
   .page h2 {
-    font-size: 21.3 !important; }
-  .page h3 {
-    font-size: 18.6 !important; }
-  .page h4 {
-    font-size: 18.6 !important; }
-  .page h5 {
-    font-size: 18.6 !important; }
+    font-size: 12pt !important; }
   .page h1, .page h2, .page h3, .page h4, .page h5 {
     text-align: center;
     font-weight: bold; }
@@ -431,7 +425,7 @@
   .page h3 {
     font-weight: bold; }
   .page p {
-    font-size: 18.6px;
+    font-size: 10pt;
     margin: 0; }
     .page p span.floatRight {
       float: right; }
@@ -482,9 +476,9 @@
         padding: 0 20px; }
 
 .page-1x h1 {
-  font-size: 24px !important; }
+  font-size: 14ptpx !important; }
 .page-1x h2 {
-  font-size: 21.3px !important; }
+  font-size: 12ptpx !important; }
 .page-1x h3 {
   font-size: 18.6px !important; }
 .page-1x h4 {
@@ -492,16 +486,16 @@
 .page-1x h5 {
   font-size: 18.6px !important; }
 .page-1x p {
-  font-size: 18.6px !important; }
+  font-size: 10ptpx !important; }
 .page-1x ul li {
   font-size: 18.6px !important; }
 .page-1x span {
-  font-size: medium !important; }
+  font-size: 12pt !important; }
 
 .page-2x h1 {
-  font-size: 31.2px !important; }
+  font-size: 18.2ptpx !important; }
 .page-2x h2 {
-  font-size: 27.69px !important; }
+  font-size: 15.6ptpx !important; }
 .page-2x h3 {
   font-size: 24.18px !important; }
 .page-2x h4 {
@@ -509,16 +503,16 @@
 .page-2x h5 {
   font-size: 24.18px !important; }
 .page-2x p {
-  font-size: 24.18px !important; }
+  font-size: 13ptpx !important; }
 .page-2x ul li {
   font-size: 24.18px !important; }
 .page-2x span {
   font-size: large !important; }
 
 .page-3x h1 {
-  font-size: 38.4px !important; }
+  font-size: 22.4ptpx !important; }
 .page-3x h2 {
-  font-size: 34.08px !important; }
+  font-size: 19.2ptpx !important; }
 .page-3x h3 {
   font-size: 29.76px !important; }
 .page-3x h4 {
@@ -526,7 +520,7 @@
 .page-3x h5 {
   font-size: 29.76px !important; }
 .page-3x p {
-  font-size: 29.76px !important; }
+  font-size: 16ptpx !important; }
 .page-3x ul li {
   font-size: 29.76px !important; }
 .page-3x span {

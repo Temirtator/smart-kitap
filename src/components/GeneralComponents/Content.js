@@ -503,7 +503,7 @@ class Content extends Component {
                         ...h2_el,
                         ...h3_el, 
                         ...h4_el, 
-                        ...h5_el, 
+                        ...h5_el,
                         ...li_el, 
                         ...span_el ] // all elements in page
             this.settingTextSize(all_el, newTextSize)
@@ -531,7 +531,7 @@ class Content extends Component {
         }
         prevStyle = colorStyle
     }
-
+    
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let images = book.getElementsByTagName('img')
@@ -547,7 +547,7 @@ class Content extends Component {
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild)) 
         }
     }
-
+    
     tablesFixer() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let tables = book.getElementsByTagName('table')
@@ -555,7 +555,7 @@ class Content extends Component {
             tables[i].style.width = "100%"
         }
     }
-
+    
     parse3D() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let models = book.getElementsByClassName('models_3d')
@@ -570,7 +570,7 @@ class Content extends Component {
             ReactDOM.render(my_model, models[i]) // replacing operation
         }
     }
-
+    
     setIdHeader() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let headers = book.getElementsByTagName('h1')
@@ -682,7 +682,7 @@ class Content extends Component {
         
         this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
             this.someFunc(h2El, (result) => { // callback
-                console.log('result', result)
+                //console.log('result', result)
                 for (var i = 0; i <= result.length - 1; i++) {
                     let parentNode = result[i].sub_menu[0]
                     let newEl = result[i].liEl
