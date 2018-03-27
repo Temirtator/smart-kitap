@@ -47,7 +47,10 @@
       "kazakh": "Казахский",
       "dark-theme": "Темная",
       "white-theme": "Белая",
-      "reset": "Сбросить"
+      "reset": "Сбросить",
+      "internet-not-work": "Интернет не работает. Пожалуйста проверьте ваше соединение",
+      "load_book": "Загружается книга",
+      "load_precises": "Загружается конспекты"
   },
   {
       "main": "Main",
@@ -96,7 +99,10 @@
       "kazakh": "Kazakh",
       "dark-theme": "Dark",
       "white-theme": "White",
-      "reset": "Reset"
+      "reset": "Reset",
+      "internet-not-work": "Internet does not work. Please check your connection",
+      "load_book": "Book is loading",
+      "load_precises": "Precises is loading"
   },
   {
       "main": "Басты бет",
@@ -145,6 +151,9 @@
       "kazakh": "Қазақ тілі",
       "dark-theme": "Қара",
       "white-theme": "Ақшыл",
-      "reset": "Қалпына келтіру"
+      "reset": "Қалпына келтіру",
+      "internet-not-work": "Интернет жұмыс істемейді. Байланысты тексеріңіз",
+      "load_book": "Кітап жүктелуде",
+      "load_precises": "Конспекттер жүктелуде"
   }
 ]

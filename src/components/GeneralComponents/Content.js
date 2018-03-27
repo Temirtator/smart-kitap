@@ -432,7 +432,7 @@ class Content extends Component {
     // identify, is book page in viewport?
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        var el = book.getElementsByClassName("page")
+        let el = book.getElementsByClassName("page")
         for (var i = 0; i < el.length; i++) { // iterate over all pages
             var isVisible = this.isElementInViewport(el, i)
 
@@ -444,18 +444,80 @@ class Content extends Component {
             }
         }
     }
-    
+
+    settingTextSize(all_el, newTextSize) {
+        for (let j = all_el.length - 1; j >= 0; j--) {
+            let style = window.getComputedStyle(all_el[j], null).getPropertyValue('font-size')
+            let fontSize = parseFloat(style) // get flaot of element in page
+            if (prevTextSize === null) { // if first time
+                if (newTextSize === '2x') {
+                    all_el[j].style.fontSize = (fontSize + 10) + "px"
+                }
+                else if (newTextSize === '3x') {
+                    all_el[j].style.fontSize = (fontSize + 20) + "px"   
+                }
+            } else {
+                if (prevTextSize === '1x') {
+                    if (newTextSize === '2x') {
+                        all_el[j].style.fontSize = (fontSize + 10) + "px"
+                    }
+                    else if (newTextSize === '3x') {
+                        all_el[j].style.fontSize = (fontSize + 20) + "px"   
+                    }
+                }
+                else if (prevTextSize === '2x') {
+                    if (newTextSize === '1x') {
+                        all_el[j].style.fontSize = (fontSize - 10) + "px"
+                    }
+                    else if (newTextSize === '3x') {
+                        all_el[j].style.fontSize = (fontSize + 10) + "px"   
+                    }
+                }
+                else if (prevTextSize === '3x') {
+                    if (newTextSize === '1x') {
+                        all_el[j].style.fontSize = (fontSize - 20) + "px"
+                    }
+                    else if (newTextSize === '2x') {
+                        all_el[j].style.fontSize = (fontSize - 10) + "px"
+                    }
+                }
+            }
+        }
+    }
+
     changeTextSize(newTextSize) {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let pages = book.getElementsByClassName('page')
-        for (var i = pages.length - 1; i >= 0; i--) {
+        let all_el = []
+        for (let i = 0; i <= pages.length - 1; i++) {
+            let p_el = pages[i].getElementsByTagName('p'), 
+                h1_el = pages[i].getElementsByTagName('h1'),
+                h2_el = pages[i].getElementsByTagName('h2'),
+                h3_el = pages[i].getElementsByTagName('h3'),
+                h4_el = pages[i].getElementsByTagName('h4'),
+                h5_el = pages[i].getElementsByTagName('h5'),
+                li_el = pages[i].getElementsByTagName('li'),
+                span_el = pages[i].getElementsByTagName('span')
+            all_el = [  ...all_el,
+                        ...h1_el, 
+                        ...h2_el,
+                        ...h3_el, 
+                        ...h4_el, 
+                        ...h5_el, 
+                        ...li_el, 
+                        ...span_el ] // all elements in page
+            this.settingTextSize(all_el, newTextSize)
+            all_el = []
+        }
+        prevTextSize = newTextSize
+        /*for (var i = pages.length - 1; i >= 0; i--) {
             // if text size settings, first time
             if (prevTextSize !== null)
                 pages[i].classList.remove("page-" + prevTextSize)
-
+                
             pages[i].className += " page-" + newTextSize
         }
-        prevTextSize = newTextSize
+        prevTextSize = newTextSize*/
     }
     
     changeColor(colorStyle) {

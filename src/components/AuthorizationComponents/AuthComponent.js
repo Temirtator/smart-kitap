@@ -71,9 +71,9 @@ class AuthComponent extends Component {
     
     checkAuth() {
         //TODO:: Перед пушем выключай его. А то перед клиентом бесить
-        /*if (this.state.access_token) {
+        if (this.state.access_token) {
              this.props.history.push('/main-personal-page')
-        }*/
+        }
     }
 
     authType(key) {
@@ -141,7 +141,7 @@ class AuthComponent extends Component {
                                 this.setState({license_id: response.data.id})
                                 window.localStorage.setItem('license_id', response.data.id)
                                 if (response.status === 200) {
-                                    this.checkAuth()
+                                    //this.checkAuth()
                                 }
                                 else if (response.status === 401) {
                                     alert(response.msg)
@@ -240,7 +240,7 @@ class AuthComponent extends Component {
 
                 <div className="container av-support auth-av-support">
                     <div className="row">
-                        <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Support</span>
+                        <img src="./image/headphone.svg" alt="headphone"/>&nbsp;&nbsp;<span>Поддержка</span>
                     </div>
                     <div className="row av-site">
                         <span className="av-site">Smart Kitap</span>
