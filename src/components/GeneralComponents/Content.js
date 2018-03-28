@@ -725,6 +725,17 @@ class Content extends Component {
         }
     }
     
+    sortBookPages(objects) { // sort of bookPages by order
+        objects.sort((a, b) => {
+            let keyA = a.order, 
+                keyB = b.order
+            if (keyA < keyB) return -1
+            if (keyA > keyB) return 1
+            return 0  
+        })
+        return objects
+    }
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)  
@@ -741,8 +752,9 @@ class Content extends Component {
                 
                 try {
                     let content = ''
-                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                        content += data.book_page[i].content
+                    let sortedBook = this.sortBookPages(data.book_page)
+                    for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
+                        content += sortedBook[i].content
                     }
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
@@ -751,6 +763,7 @@ class Content extends Component {
                         category: 'Книга',
                         action: 'Открыто книга: ' + data.name
                     })
+                    
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -759,7 +772,7 @@ class Content extends Component {
                         pageCount: data.page_count,
                         readedPage: data.last_opened_page
                     })
-                    console.log('last opened page', data)
+                    
                 }
                 catch(e) {
                     console.log('Error on loading book')
