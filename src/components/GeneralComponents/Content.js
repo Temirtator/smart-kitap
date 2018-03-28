@@ -446,40 +446,44 @@ class Content extends Component {
         }
     }
 
+    pixelToPoint(value) {
+        return (3/4) * value
+    }
+
     settingTextSize(all_el, newTextSize) {
         for (let j = 0; j <= all_el.length - 1; j++) {
             let style = window.getComputedStyle(all_el[j], null).getPropertyValue('font-size')
             let fontSize = parseFloat(style) // get flaot of element in page
             if (prevTextSize === null) { // if first time
                 if (newTextSize === '2x') {
-                    all_el[j].style.fontSize = (fontSize + 10) + "px"
+                    all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"
                 }
                 else if (newTextSize === '3x') {
-                    all_el[j].style.fontSize = (fontSize + 20) + "px"   
+                    all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 10) + "pt"   
                 }
             } else {
                 if (prevTextSize === '1x') {
                     if (newTextSize === '2x') {
-                        all_el[j].style.fontSize = (fontSize + 10) + "px"
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"
                     }
                     else if (newTextSize === '3x') {
-                        all_el[j].style.fontSize = (fontSize + 20) + "px"   
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 10) + "pt"   
                     }
                 }
                 else if (prevTextSize === '2x') {
                     if (newTextSize === '1x') {
-                        all_el[j].style.fontSize = (fontSize - 10) + "px"
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 5) + "pt"
                     }
                     else if (newTextSize === '3x') {
-                        all_el[j].style.fontSize = (fontSize + 10) + "px"   
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"   
                     }
                 }
                 else if (prevTextSize === '3x') {
                     if (newTextSize === '1x') {
-                        all_el[j].style.fontSize = (fontSize - 20) + "px"
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 10) + "pt"
                     }
                     else if (newTextSize === '2x') {
-                        all_el[j].style.fontSize = (fontSize - 10) + "px"
+                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 5) + "pt"
                     }
                 }
             }
