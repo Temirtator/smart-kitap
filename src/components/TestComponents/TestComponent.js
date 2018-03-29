@@ -6,14 +6,23 @@ import { bindActionCreators } from 'redux'
 import Question from './Question'
 import TextSettings from '../GeneralComponents/TextSettingsComponent'
 import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import ReactSpinner from 'react-spinjs'
 
 import { Link } from 'react-router-dom'
 
 import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 
+let textStyle = {
+    color: 'white',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    left: 'calc(50vw + 125px)'
+}
+
 class TestComponent extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         
         this.state = {
           access_token: window.localStorage.getItem('access_token'),
@@ -22,7 +31,8 @@ class TestComponent extends Component {
           exam_id: null,
           tests: [],
           test_state: false,
-          isShowingModal: false
+          isShowingModal: false,
+          examLoaded: true
         }
         this.openTest = this.openTest.bind(this)
         this.sendTestResults =  this.sendTestResults.bind(this)
@@ -34,7 +44,11 @@ class TestComponent extends Component {
         let {license_token, access_token, book_id} = this.state
         this.props.actions.getTestQuestions(license_token, access_token, book_id, exam_id)
         .then(response => {
-            this.setState({test_state: true, exam_id: exam_id})
+            this.setState({
+              test_state: true, 
+              exam_id: exam_id,
+              examLoaded: false
+            })
         })
       })
       .catch(() => {
@@ -55,7 +69,12 @@ class TestComponent extends Component {
             incorrect: incorrect_answers
           })
           this.props.actions.setTestFinished()
-          this.props.actions.setTestResults(license_token, access_token, Number(book_id), exam_id, correct_answers, incorrect_answers)
+          this.props.actions.setTestResults(  license_token, 
+                                              access_token, 
+                                              Number(book_id), 
+                                              exam_id, 
+                                              correct_answers, 
+                                              incorrect_answers)
         }
         else {
           alert('Вам необходимо ответить на все вопросы')
@@ -76,6 +95,9 @@ class TestComponent extends Component {
           this.setState({
             tests: data
           })
+          if (data.length >= 1) {
+            this.openTest(data[0].id) // open first test by setting exam id
+          }
         })
       })
       .catch(() => {
@@ -85,28 +107,45 @@ class TestComponent extends Component {
 
     render() {
         let { questions } = this.props.book_test
-        let { tests, test_state, correct, incorrect } = this.state
+        let { tests, test_state, correct, incorrect, examLoaded } = this.state
         return (
             <div className="test-component">
+                { examLoaded ? 
+                    <ModalContainer>
+                        <div>
+                            <ReactSpinner color='#fff' />
+                            <p style={textStyle}>Загружается тесты...</p>
+                        </div>
+                    </ModalContainer> : null
+                }
+
                 <div className="test-component__header">
-                    <TextSettings   textSize={{padding:'5px 5px'}} 
+                    <TextSettings   textSize={{padding:'5px 5px', display: 'none'}} 
                                     textColor={{display: 'none'}} 
                                     blindMode={{padding: '13px 0'}} />
                 </div>
                 <div className="test-component__body">
+                  {
+                    (tests.length < 1) ? <p className="no-data-message">Нет тестов</p> : null
+                  }
                   { this.state.isShowingModal &&
-                                  <ModalContainer>
-                                    <ModalDialog onClose={this.handleClose}>
-                                      <h1>Результаты теста</h1>
-                                      <p>Правильных: {correct}</p>
-                                      <p>Неправильных: {incorrect}</p>
-                                    </ModalDialog>
-                                  </ModalContainer> }
+                      <ModalContainer>
+                        <ModalDialog onClose={this.handleClose}>
+                          <h1>Результаты теста</h1>
+                          <p>Правильных: {correct}</p>
+                          <p>Неправильных: {incorrect}</p>
+                        </ModalDialog>
+                      </ModalContainer> }
                   <div className="col-sm-8">
                     { (test_state && questions.length > 0) ? questions.map((object, index) =>
-                         <Question objectQuestion={object} key={index} index={index} />
-                    ) : null}                  
-                    { (test_state && questions.length > 0) ? <button onClick={this.sendTestResults} type="submit"                                                                                                     className="btn btn-primary">Завершить тест</button> : null}
+                         <Question  objectQuestion={object} 
+                                    key={index} 
+                                    index={index} />
+                    ) : null}
+                    { (test_state && questions.length > 0) ? 
+                      <button 
+                          onClick={this.sendTestResults} 
+                          type="submit"                                                                                                     className="btn btn-primary">Завершить тест</button> : null}
                   </div>
 
                   <div className="col-sm-4 side-test-menu">

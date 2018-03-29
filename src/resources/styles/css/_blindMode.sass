@@ -4,14 +4,18 @@ $BM-scrollbar-color: #484e56
 $BM-scrollbar-color1: #e1e6ea 
 $white-color: #fff
 
+$sidebar-flash-on-viewport: #6c6f76
 
 .blindMode
 	background-color: $BM-base-color !important
 	
 	.flash-on-viewport
-		background-color: #6c6f76цц
+		background-color: $sidebar-flash-on-viewport
+
+		li
+			background-color: $sidebar-flash-on-viewport !important
 		p
-			border-color: #fff
+			border-color: $white-color
 
 	img, svg, g, path, div.round, div.bar
 		-webkit-filter: grayscale(100%)
@@ -19,7 +23,7 @@ $white-color: #fff
 
 	.form-group
 		input.form-control
-			color: #000 !important
+			color: $BM-base-color !important
 
 
 	.content__body__precises,
@@ -36,21 +40,24 @@ $white-color: #fff
 	.content__body__precises
 		.text-settings__text-style
 			span
-				border: 1px solid #fff !important
+				border: 1px solid $white-color !important
 	
 	.content__header__sub1
 		li:hover 
-			background-color: $BM-base-color !important
+			background-color: $sidebar-flash-on-viewport !important
 	
 	li.chapter-header
 		p:hover
-			background-color: #000 !important
-			border-color: #fff !important	
+			background-color: $sidebar-flash-on-viewport !important
+			border-color: $white-color !important
+			
+			li.sub-header
+				background-color: $sidebar-flash-on-viewport
 
 	ul.sub-menu
 		li
-			background-color: #000
-			border-color: #fff !important
+			background-color: $BM-base-color
+			border-color: $white-color !important
 
 	.react-tabs
 		.react__tablist__wrap
@@ -144,17 +151,17 @@ $white-color: #fff
 				.header__menu__video,
 				.header__menu__test
 					border-color: $white-color
-
+					
 					p
 						color: $white-color
-
+						
 					svg
 						fill: #fff
 	
 	.content__body__main__body
 		.content__body__precises
 			background-color: $BM-base-color
-
+			
 			.text-settings
 				.text-settings__text-size
 				
@@ -204,7 +211,7 @@ $white-color: #fff
 		&__body
 
 			.side-test-menu
-
+				
 
 			&__test-menu
 				color: #fff
@@ -220,7 +227,7 @@ $white-color: #fff
 					label
 						p
 							color: $white-color
-
+							
 			.btn-primary,
 			.btn-primary:hover,
 			.btn-primary:active,

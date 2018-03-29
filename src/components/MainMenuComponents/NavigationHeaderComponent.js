@@ -4,11 +4,14 @@ import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 
 class NavigationHeader extends Component {
-
 	static propType = {
 		switchFunction: PropTypes.func.isRequired
 	}
     
+    state = {
+        isClicked: ''
+    }
+
     render() {
     	let { switchFunction, appStateControl, userData } = this.props
     	let { language } = this.props.appStateControl.user_settings
@@ -42,10 +45,18 @@ class NavigationHeader extends Component {
                     </div>
         		</div>
         		<div className="second-lvl__menu">
-                    <span onClick={() => switchFunction('main')}>
+                    <span   className={this.state.isClicked === 'main' ? "isChecked" : ''} 
+                            onClick={() => {
+                                switchFunction('main')
+                                this.setState({ isClicked: 'main' })
+                            }}>
                         <i className="fas fa-home"></i>&nbsp;&nbsp;&nbsp;&nbsp;<p>{choosenLang['main']}</p>
                     </span>
-                    <span onClick={() => switchFunction('mybooks')}>
+                    <span   className={this.state.isClicked === 'mybooks' ? "isChecked" : ''} 
+                            onClick={() => {
+                                switchFunction('mybooks')
+                                this.setState({ isClicked: 'mybooks' }) 
+                            }}>
                         <svg    version="1.1" 
                                 id="Capa_1" 
                                 xmlns="http://www.w3.org/2000/svg" 
@@ -73,7 +84,11 @@ class NavigationHeader extends Component {
                         </svg>
                         &nbsp;&nbsp;&nbsp;&nbsp;<p>{choosenLang['my-books']}</p>
                     </span>
-                    <span onClick={() => switchFunction('myprogress')}>
+                    <span   className={this.state.isClicked === 'myprogress' ? "isChecked" : ''} 
+                            onClick={() => {
+                                switchFunction('myprogress')
+                                this.setState({ isClicked: 'myprogress' })
+                            }}>
                         <svg    version="1.1" 
                                 id="Capa_1" 
                                 xmlns="http://www.w3.org/2000/svg" 
@@ -105,7 +120,11 @@ class NavigationHeader extends Component {
 
                         &nbsp;&nbsp;&nbsp;&nbsp;<p>{choosenLang['my-progress']}</p>
                     </span>
-                    <span onClick={() => switchFunction('about')}>
+                    <span   className={this.state.isClicked === 'about' ? "isChecked" : ''} 
+                            onClick={() => {
+                                switchFunction('about')
+                                this.setState({ isClicked: 'about' })
+                            }}>
                         <svg    version="1.1" 
                                 id="Capa_1" 
                                 xmlns="http://www.w3.org/2000/svg" 
@@ -132,18 +151,30 @@ class NavigationHeader extends Component {
                         </svg>
                         &nbsp;&nbsp;&nbsp;&nbsp;<p>{choosenLang['about-program']}</p>
                     </span>
-                    <div className="">
-                        <span onClick={() => switchFunction('settings')}>
+                    <div>
+                        <span   className={this.state.isClicked === 'settings' ? "isChecked" : ''} 
+                                onClick={() => {
+                                    switchFunction('settings')
+                                    this.setState({ isClicked: 'settings' })
+                                }}>
                             <i className="fas fa-cog"></i>&nbsp;&nbsp;&nbsp;&nbsp;
                             <p>{choosenLang['settings']}</p>
                         </span>
-                        <span onClick={() => switchFunction('quit')}>
+                        <span   className={this.state.isClicked === 'quit' ? "isChecked" : ''} 
+                                onClick={() => {
+                                    switchFunction('quit')
+                                    this.setState({ isClicked: 'quit' })
+                                }}>
                             <i className="fas fa-sign-out-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;
                             <p>{choosenLang['quit']}</p>
                         </span>
                     </div>
                     { (userData.user_role === "Администратор" || userData.user_role === "Учитель") &&
-                        <span onClick={() => switchFunction('reset')}>
+                        <span   className={this.state.isClicked === 'reset' ? "isChecked" : ''} 
+                                onClick={() => {
+                                    switchFunction('reset')
+                                    this.setState({ isClicked: 'reset' })
+                                }}>
                             <svg    version="1.0" 
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="981.000000pt" 
