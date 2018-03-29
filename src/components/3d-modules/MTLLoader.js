@@ -4,7 +4,7 @@
  *
  * @author angelxuanchang
  */
-module.exports = function (THREE) {
+ module.exports = function (THREE) {
 THREE.MTLLoader = function ( manager ) {
 
 	this.manager = ( manager !== undefined ) ? manager : THREE.DefaultLoadingManager;

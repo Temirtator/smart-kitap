@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - OBJLoader + MTLLoader</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #fff;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+		</style>
+	</head>
+
+	<body>
+		<div id="info">
+		<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - OBJLoader + MTLLoader
+		</div>
+		<input type="file" name="file" id="file">
+		
+		<script>
+			readFile();
+
+			function readFile() {
+				document.getElementById('file').onchange = function(){
+
+			  	  var file = this.files[0];
+				  var reader = new FileReader();
+				  reader.onload = function(progressEvent){
+				    // Entire file
+				    //console.log(this.result);
+
+				    // By lines
+				    var lines = this.result.split('\n');
+				    for(var line = 0; line < lines.length; line++){
+				      //console.log(lines[line].split(' '));
+				      var words = lines[line].split(' '); //array of words in 1 line
+				      if (	words[0].trim() === 'map_Kd' || 
+				      		words[0].trim() === 'map_Ka' ||
+				      		words[0].trim() === 'map_Ks') { // if diffussion light
+
+				      	var textureLink = words[1].split(/[/, \\]+/)
+				      	var textureName = textureLink[textureLink.length - 1]
+				      	words[1] = "http://smartkitap.avsoft.kz/u/graphics_model/" + textureName
+				      	var newText = words.join(' ')
+				      	lines[line] = newText
+				      }
+				    }
+				    console.log(lines.join('\n'))
+				  };
+				  reader.readAsText(file);
+				};
+			}
+		</script>
+
+	</body>
+</html>

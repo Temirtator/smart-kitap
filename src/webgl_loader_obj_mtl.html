@@ -31,14 +31,13 @@
 		</div>
 
 		<script src="../node_modules/three/build/three.js"></script>
-
+		
 		<script src="components/3d-modules/DDSLoader.js"></script>
 		<script src="components/3d-modules/MTLLoader.js"></script>
 		<script src="components/3d-modules/OBJLoader.js"></script>
-
+		
 		<!-- <script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script> -->
-
 		<script>
 			var container, stats;
 			var camera, scene, renderer;
@@ -47,6 +46,25 @@
 			var windowHalfY = window.innerHeight / 2;
 			init();
 			animate();
+			readTextFile('../public/assets/models3d/male02/male02.mtl');
+
+			function readTextFile(file) {
+				var rawFile = new XMLHttpRequest();
+			    rawFile.open("GET", file, false);
+			    rawFile.onreadystatechange = function ()
+			    {
+			        if(rawFile.readyState === 4)
+			        {
+			            if(rawFile.status === 200 || rawFile.status == 0)
+			            {
+			                var allText = rawFile.responseText;
+			                console.log(allText)
+			            }
+			        }
+			    }
+			    rawFile.send(null);
+			}
+
 			function init() {
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );

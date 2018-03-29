@@ -84,6 +84,7 @@ class Content extends Component {
             color: '#3FC7FA',
             pageCount: 0,
             readedPage: 0,
+            readedPageId: '',
             rect: null,
             selectionText: '',
             quoteExist: false,
@@ -729,9 +730,8 @@ class Content extends Component {
         objects.sort((a, b) => {
             let keyA = a.order, 
                 keyB = b.order
-            if (keyA < keyB) return -1
-            if (keyA > keyB) return 1
-            return 0  
+            
+            return keyA - keyB  
         })
         return objects
     }
@@ -770,9 +770,9 @@ class Content extends Component {
                         img: data.cover,
                         content: content,
                         pageCount: data.page_count,
-                        readedPage: data.last_opened_page
+                        readedPage: data.last_opened_page,
+                        readedPageId: data.progress.last_opened_page_id
                     })
-                    
                 }
                 catch(e) {
                     console.log('Error on loading book')
@@ -806,7 +806,11 @@ class Content extends Component {
                     /*to scroll into view*/
                     try {
                         let { book_page_id } = this.props.appStateControl
-                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                        let element = document.getElementById('page_' + book_page_id ) // i used document, because i couldnt find another solution
+                        if (element === null) {
+                            element = document.getElementById('page_' + this.state.readedPageId )
+                        }
+                        
                         element.scrollIntoView()
                         this.props.appStateControlActions.setBookScrollPos(0)
                     }
