@@ -92,10 +92,8 @@ class NewPrecises extends Component {
         let book_id = Number(this.state.book_id)
         let { indexPrecise, PrecisLoaded } = this.state
         let { name, author, img } = this.props.precisesStore.precises
-        
-        console.log('precises', precisesStore.precises.new_precises)
+        let precises = precisesStore.precises.new_precises[indexPrecise].precise
         return (
-              
             <div className="new-precises">
                 { PrecisLoaded ? 
                     <ModalContainer>
@@ -105,7 +103,10 @@ class NewPrecises extends Component {
                         </div>
                     </ModalContainer> : null
                 }
-	        	<Masonry
+                {
+                (precises.length < 1) ? <p className="no-data-message">Нет конспектов</p> : null
+                }
+                <Masonry
 		            className="masonry"
 		              
 		            loader={
@@ -122,11 +123,8 @@ class NewPrecises extends Component {
 		            loadMore={this.loadMorePrecis}
 		          >
 		            {
-		            	precisesStore.precises.new_precises[indexPrecise].precise.map((object, i) => 
+		            	precises.map((object, i) => 
 		            		<NewPreciseItem
-                                /*name={name}
-                                author={author}
-                                img={img}*/
                                 text={object.precis}
                                 index={i}
                                 precis_id={object.precis_id}

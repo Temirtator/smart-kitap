@@ -38,11 +38,12 @@ class Model3d extends Component {
 		    mtl: mtl,
 		    graveScale: new THREE.Vector3(5, 5, 5),
 		    lightIntesity: 0.6,
-		    show3D: false
+		    show3D: false,
+		    downloaded: 0
         }
-
+        
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
-
+        
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
 	    this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0)
 	    this.groundRepeat = new THREE.Vector2(25, 25)
@@ -61,7 +62,10 @@ class Model3d extends Component {
 		    const onProgress = ( xhr ) => {
 		    	if ( xhr.lengthComputable ) {
 		    		var percentComplete = xhr.loaded / xhr.total * 100
-		    		console.log( Math.round(percentComplete, 2) + '% downloaded' )
+		    		//console.log( Math.round(percentComplete, 2) + '% downloaded' )
+		    		this.setState({
+		    			downloaded: Math.round(percentComplete, 2) 
+		    		})
 		    	}
 		    }
 		    const onError = ( xhr ) => { console.log(xhr) }
@@ -146,7 +150,7 @@ class Model3d extends Component {
 		        width={width}
 		        height={height}
 		        antialias
-		        clearColor={'rgba(0, 0, 0, .55)'}
+		        clearColor={'rgba(53, 54, 56, .55)'}
 		        alpha={true}
 		        onAnimate={this._onAnimate}
 		    >
@@ -241,7 +245,6 @@ class Model3d extends Component {
 
 	show3DModal(e) {
 		this.setState({ show3D: true })
-		console.log('show3DModal')
 	}
 
 	hide3DModal(e) {
@@ -249,7 +252,6 @@ class Model3d extends Component {
 		e.cancelBubble = true
 		e.stopPropagation()
 		this.setState({ show3D: false })
-		console.log('hide3DModal')
 	}
 
     render() {
@@ -273,6 +275,9 @@ class Model3d extends Component {
 		        		<div onClick={this.hide3DModal}>
 		        			<i className="fas fa-times" />
 		        		</div>
+		        		<span style={{color: 'red', position: 'absolute', marginLeft: '10px'}}>
+		        			Загружена {this.state.downloaded} %
+		        		</span>
 		        		{ this.render3DModel() }
 		    	</div>
 		    </div>

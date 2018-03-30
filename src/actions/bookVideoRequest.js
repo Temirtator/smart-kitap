@@ -24,7 +24,7 @@ export function getVideoLectures(license_token, access_token, book_id) {
 				type: types.LOAD_BOOK_VIDEO,
 				videoLectures: response.data
 			})
-
+			return response
 		})
 		.catch(error => {
 			console.log('getVideoLectures', error)

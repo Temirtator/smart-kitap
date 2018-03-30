@@ -103,13 +103,14 @@ class OldPrecises extends Component {
         let book_id = Number(this.state.book_id)
         let { indexPrecise } = this.state
         let { name, author, img } = this.props.precisesStore.precises
-
+        let oldPrecises = precisesStore.precises.old_precises
     	return (
-            
             <div className="new-precises">
+                {
+                    (oldPrecises.length < 1) ? <p className="no-data-message">Нет конспектов</p> : null
+                }
 	        	<Masonry
 		            className="masonry"
-		            
 		            loader={
 		              <div className="sk-folding-cube">
 		                <div className="sk-cube1 sk-cube" />
@@ -124,11 +125,8 @@ class OldPrecises extends Component {
 		            loadMore={this.loadMorePrecis}
 		          >
 		            {
-		            	precisesStore.precises.old_precises.map((object, i) => (
+		            	oldPrecises.map((object, i) => (
 		            		<OldPreciseItem 
-                                name={name}
-                                author={author}
-                                img={img}
                                 text={object.precis}
                                 index={i}
                                 precis_id={object.precis_id}

@@ -9,7 +9,7 @@ class VideoLecture extends Component {
         cover: PropTypes.string,
         videoSrc: PropTypes.string
     }
-
+    
     render() {
         let {title, description, cover, videoSrc} = this.props
         if (!videoSrc.startsWith('http')) {

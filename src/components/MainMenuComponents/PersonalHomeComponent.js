@@ -101,7 +101,9 @@ class PersonalHomePage extends Component {
 
     switchFunction(key) {
         if (key === 'quit') {
-            let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
+            let massive = [ 'access_token', 'author', 
+                            'book_id', 'img', 
+                            'name', 'opened_book_menu']
             massive.map((value, index) => {
                 window.localStorage.removeItem(value)
             })
@@ -110,7 +112,9 @@ class PersonalHomePage extends Component {
 
         if (key === 'reset') {
             var needPassword = prompt('Введите пароль для сброса');
-            if (needPassword !== null && needPassword !== '' && needPassword === '7894321') {
+            if ( needPassword !== null && 
+                 needPassword !== '' && 
+                 needPassword === '7894321') {
                 window.localStorage.clear()
                 window.location.reload()
                 return -1
@@ -177,9 +181,11 @@ class PersonalHomePage extends Component {
                 <NavigationHeader switchFunction={this.switchFunction}/>
                 <div className={bodyClass}>
                     <div className="personal-home-page__body__header">
-                        { isBookOrientation ? <BookOrientation isInMainPage={true}
-                                                               menuSelected={(menuSelected) => this.setState({menuSelected})}/> :
-                            <TextSettings textSize={{display: 'none'}} textColor={{display: 'none'}}/> }
+                        { isBookOrientation ? 
+                            <BookOrientation    isInMainPage={true}
+                                                menuSelected={(menuSelected) => this.setState({menuSelected})}/> :
+                            <TextSettings       textSize={{display: 'none'}} 
+                                                textColor={{display: 'none'}}/> }
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
                                 <input onChange={(e) => this.findBook(e)} ref="findTextValue" type="text"

@@ -85,3 +85,11 @@ fabric.properties
 
 # 3d models 
 /public/assets/models3d/
+
+# 3d model examples
+/src/checkParser.html
+/src/some.json
+/src/webgl_animation_keyframes_json.html
+/src/webgl_loader_obj_mtl.html
+/src/resources/styles/css/App.css
+/src/resources/styles/css/App.css.map

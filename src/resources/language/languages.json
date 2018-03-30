@@ -50,7 +50,8 @@
       "reset": "Сбросить",
       "internet-not-work": "Интернет не работает. Пожалуйста проверьте ваше соединение",
       "load_book": "Загружается книга",
-      "load_precises": "Загружается конспекты"
+      "load_precises": "Загружается конспекты",
+      "loaded": "Загружена"
   },
   {
       "main": "Main",
@@ -102,7 +103,8 @@
       "reset": "Reset",
       "internet-not-work": "Internet does not work. Please check your connection",
       "load_book": "Book is loading",
-      "load_precises": "Precises is loading"
+      "load_precises": "Precises is loading",
+      "loaded": "Loaded"
   },
   {
       "main": "Басты бет",
@@ -154,6 +156,7 @@
       "reset": "Қалпына келтіру",
       "internet-not-work": "Интернет жұмыс істемейді. Байланысты тексеріңіз",
       "load_book": "Кітап жүктелуде",
-      "load_precises": "Конспекттер жүктелуде"
+      "load_precises": "Конспекттер жүктелуде",
+      "loaded": "Жүктелді"
   }
 ]

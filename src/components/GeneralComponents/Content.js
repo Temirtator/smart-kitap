@@ -26,7 +26,7 @@ import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../../resources/language/languages.json'
 
 import Model3d from '../3d-components/Model3d'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import {ModalContainer} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 
 let book = null, prevTextSize = null, prevStyle = null
@@ -84,6 +84,7 @@ class Content extends Component {
             color: '#3FC7FA',
             pageCount: 0,
             readedPage: 0,
+            readedPageId: '',
             rect: null,
             selectionText: '',
             quoteExist: false,
@@ -725,6 +726,16 @@ class Content extends Component {
         }
     }
     
+    sortBookPages(objects) { // sort of bookPages by order
+        objects.sort((a, b) => {
+            let keyA = a.order, 
+                keyB = b.order
+            
+            return keyA - keyB  
+        })
+        return objects
+    }
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)  
@@ -741,8 +752,9 @@ class Content extends Component {
                 
                 try {
                     let content = ''
-                    for (let i = 0; i <= data.book_page.length - 1; i++) { //iterate over every page of the book
-                        content += data.book_page[i].content
+                    let sortedBook = this.sortBookPages(data.book_page)
+                    for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
+                        content += sortedBook[i].content
                     }
                     window.localStorage.setItem('img', data.cover)
                     window.localStorage.setItem('author', data.author)
@@ -751,15 +763,16 @@ class Content extends Component {
                         category: 'Книга',
                         action: 'Открыто книга: ' + data.name
                     })
+                    
                     this.setState({
                         name: data.name,
                         author: data.author,
                         img: data.cover,
                         content: content,
                         pageCount: data.page_count,
-                        readedPage: data.last_opened_page
+                        readedPage: data.last_opened_page,
+                        readedPageId: data.progress.last_opened_page_id
                     })
-                    console.log('last opened page', data)
                 }
                 catch(e) {
                     console.log('Error on loading book')
@@ -793,7 +806,11 @@ class Content extends Component {
                     /*to scroll into view*/
                     try {
                         let { book_page_id } = this.props.appStateControl
-                        let element = document.getElementById('page_' + book_page_id) // i used document, because i couldnt find another solution
+                        let element = document.getElementById('page_' + book_page_id ) // i used document, because i couldnt find another solution
+                        if (element === null) {
+                            element = document.getElementById('page_' + this.state.readedPageId )
+                        }
+
                         element.scrollIntoView()
                         this.props.appStateControlActions.setBookScrollPos(0)
                     }
@@ -818,19 +835,38 @@ class Content extends Component {
         
         this.stopTimer(this)
 
-        let {license_token, access_token, book_id, timerCount, pageInView, pageInViewId, pageCount, readedPage} = this.state
+        let {   license_token, 
+                access_token, 
+                book_id, 
+                timerCount, 
+                pageInView, 
+                pageInViewId, 
+                pageCount, 
+                readedPage} = this.state
+        
         let id = Number(book_id)
+        
         if (timerCount >= 30) { // if spend time in book more than 30 sec
-            this.props.userProgressRequestActions.bookIsOpened(license_token, access_token, book_id) // notify server that book is opened
-            this.props.booksRequestActions.sendBookDuration(license_token, access_token, id, timerCount) // send book reading duration
+            this.props.userProgressRequestActions.bookIsOpened( license_token, 
+                                                                access_token, 
+                                                                book_id) // notify server that book is opened
+
+            this.props.booksRequestActions.sendBookDuration(    license_token, 
+                                                                access_token, 
+                                                                id, 
+                                                                timerCount) // send book reading duration
         }
-        //console.log(pageInViewId, 'pageInViewId', 'readedPage', readedPage)
         if (pageInViewId !== null && pageInView > readedPage){ // if incoming value is not null
             let last_opened_page_id = Number(pageInViewId.substr(5, pageInViewId.length - 1))
-            this.props.userProgressRequestActions.setLastOpenedPage(license_token, access_token, book_id, last_opened_page_id) // pageInView its my last opened page
+            this.props.userProgressRequestActions.setLastOpenedPage(    license_token, 
+                                                                        access_token, 
+                                                                        book_id, 
+                                                                        last_opened_page_id ) // pageInView its my last opened page
         }
         if (pageCount <= pageInView) { // opened last page and book is closed, so book is finished
-            this.props.userProgressRequestActions.bookIsReaded(license_token, access_token, book_id)
+            this.props.userProgressRequestActions.bookIsReaded( license_token, 
+                                                                access_token, 
+                                                                book_id )
         } 
     }
     
@@ -848,7 +884,13 @@ class Content extends Component {
                 name,
                 author,
                 img, BookLoaded, show3D, changingTextSize } = this.state
-        let { language, blindMode, user_settings, theme_settings, opened_book_category } = this.props.appStateControl
+        
+        let {   language, 
+                blindMode, 
+                user_settings, 
+                theme_settings, 
+                opened_book_category } = this.props.appStateControl
+
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
         let bodyClass = "content__body"
@@ -861,7 +903,6 @@ class Content extends Component {
             headerClass += " blackMode"
             bodyClass += " blackMode"
         }
-
         let progressStyle = {
           width: progressBarPercent + "%"
         }
@@ -872,15 +913,6 @@ class Content extends Component {
                     <div>
                         <ReactSpinner color='#fff' />
                         <p style={textStyle}>Загружается книга...</p>
-                    </div>
-                </ModalContainer>
-            }
-
-            { changingTextSize &&
-                <ModalContainer>
-                    <div>
-                        <ReactSpinner color='#fff' />
-                        <p style={textStyle}>Изменяется размер пожалуйста подождите...</p>
                     </div>
                 </ModalContainer>
             }   
@@ -896,10 +928,10 @@ class Content extends Component {
                                 <p>{author}</p>
                             </div>
                             <div className="content__header__sub__progress-bar">
-                                
                                 <div ref="bookReadedLoader">
                                     <div className="shell">
-                                      <div className="bar" style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
+                                      <div  className="bar" 
+                                            style={ progressStyle }>{/*<span>{ progressBarPercent + "%" }</span>*/}</div>
                                     </div>
                                 </div>
                                 <p>{progressBarPage} / {pageCount}</p>
@@ -916,7 +948,11 @@ class Content extends Component {
                         <BookOrientation isInMainPage={false}/>
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
-                                <input onKeyDown={(e) => this.findText(e)} ref="findTextValue" type="text" className="form-control form-control_search" placeholder={choosenLang['search-word']}></input>
+                                <input  onKeyDown={(e) => this.findText(e)} 
+                                        ref="findTextValue" 
+                                        type="text" 
+                                        className="form-control form-control_search" 
+                                        placeholder={choosenLang['search-word']}></input>
                             </div>
                         </div>
                     </div>
@@ -926,21 +962,18 @@ class Content extends Component {
                                             textColor={{padding:'14px 0px'}}
                                             blindMode={{padding:'12px 0'}}
                                             generalStyle={{height:'55px'}}
-                                            changeTextSize={(textSize) => this.changeTextSize(textSize, () => {
-                                                // changing text size is finished
-                                                this.setState({ changingTextSize: false })
-                                            })}
+                                            changeTextSize={(textSize) => this.changeTextSize(textSize, () => this.setState({ changingTextSize: false }) )}
                                             changeColor={(colorType) => this.changeColor(colorType)} />
                         </div>
                         
                         <div ref="statiContent" id="static-content" className="content__text">
-                            <ShowToolTipComponent onToolTipClick={this.onToolTipClick} rect={rect} />
+                            <ShowToolTipComponent   onToolTipClick={this.onToolTipClick} 
+                                                    rect={rect} />
                             <Book ref="book" book={content} />
                         </div>
                     </div>
                 </div>
                 {/* <p className="fixed-page-show">стр. {pageInView}</p>*/}
-
             </div>
         )
     }
@@ -966,7 +999,3 @@ export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
 )(Content))
-
-
-//background: -webkit-linear-gradient(top, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%); /* Chrome10-25,Safari5.1-6 */
-//background: linear-gradient(to bottom, #009b29 1%,#db8667 61%,#d8615f 78%,#ea2623 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */

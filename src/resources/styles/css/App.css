@@ -402,6 +402,8 @@
       height: auto; }
       .page .models_3d .model-3d svg {
         display: none; }
+        .page .models_3d .model-3d svg path {
+          color: #fff; }
       .page .models_3d .model-3d canvas {
         width: 100% !important;
         height: 100% !important; }
@@ -842,11 +844,17 @@ a {
     .personal-home-page__header .second-lvl__menu div {
       display: grid;
       margin-top: 40px; }
-    .personal-home-page__header .second-lvl__menu span:hover {
+    .personal-home-page__header .second-lvl__menu span:hover, .personal-home-page__header .second-lvl__menu span:active {
       border-left: 1px solid; }
-      .personal-home-page__header .second-lvl__menu span:hover p {
+      .personal-home-page__header .second-lvl__menu span:hover p, .personal-home-page__header .second-lvl__menu span:active p {
         color: #fff; }
-      .personal-home-page__header .second-lvl__menu span:hover svg path {
+      .personal-home-page__header .second-lvl__menu span:hover svg path, .personal-home-page__header .second-lvl__menu span:active svg path {
+        fill: #fff !important; }
+    .personal-home-page__header .second-lvl__menu span.isChecked {
+      border-left: 1px solid; }
+      .personal-home-page__header .second-lvl__menu span.isChecked p {
+        color: #fff; }
+      .personal-home-page__header .second-lvl__menu span.isChecked svg path {
         fill: #fff !important; }
 
 .video-header {
@@ -2034,6 +2042,11 @@ div.my-books__test-by-books {
     width: 100% !important;
     height: 100% !important; }
 
+.no-data-message {
+  margin: 50px 0 0 0;
+  text-align: center;
+  font-size: 27px; }
+
 .blackMode {
   background-color: #2a2e35 !important;
   border-color: #404651 !important;
@@ -2285,7 +2298,9 @@ div.my-books__test-by-books {
 .blindMode {
   background-color: #000 !important; }
   .blindMode .flash-on-viewport {
-    background-color: #6c6f76 цц; }
+    background-color: #6c6f76; }
+    .blindMode .flash-on-viewport li {
+      background-color: #6c6f76 !important; }
     .blindMode .flash-on-viewport p {
       border-color: #fff; }
   .blindMode img, .blindMode svg, .blindMode g, .blindMode path, .blindMode div.round, .blindMode div.bar {
@@ -2328,10 +2343,12 @@ div.my-books__test-by-books {
   .blindMode .content__body__precises .text-settings__text-style span {
     border: 1px solid #fff !important; }
   .blindMode .content__header__sub1 li:hover {
-    background-color: #000 !important; }
+    background-color: #6c6f76 !important; }
   .blindMode li.chapter-header p:hover {
-    background-color: #000 !important;
+    background-color: #6c6f76 !important;
     border-color: #fff !important; }
+    .blindMode li.chapter-header p:hover li.sub-header {
+      background-color: #6c6f76; }
   .blindMode ul.sub-menu li {
     background-color: #000;
     border-color: #fff !important; }
