@@ -274,7 +274,7 @@ class Model3d extends Component {
 		        		<div onClick={this.hide3DModal}>
 		        			<i className="fas fa-times" />
 		        		</div>
-		        		<span style={{color: 'red', position: 'absolute', marginLeft: '10px'}}>
+		        		<span style={{color: '#6d6666', position: 'absolute', marginLeft: '10px'}}>
 		        			Загружена {this.state.downloaded} %
 		        		</span>
 		        		{ this.render3DModel() }
