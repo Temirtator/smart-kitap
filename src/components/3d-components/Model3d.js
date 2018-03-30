@@ -166,7 +166,6 @@ class Model3d extends Component {
 			            ref="mainCamera"
 			            name={mainCameraName}
 			            fov={50}
-			            aspect={aspectRatio}
 			            near={1}
 			            far={10000}
 			            position={mainCameraPosition}
