@@ -41,7 +41,7 @@ class Model3d extends Component {
 		    show3D: false,
 		    downloaded: 0
         }
-        
+        console.log(obj, mtl)
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
         
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)

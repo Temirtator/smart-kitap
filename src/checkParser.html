@@ -32,38 +32,33 @@
 		<input type="file" name="file" id="file">
 		
 		<script>
-			readFile();
+			MTLinkParser();
 
-			function readFile() {
-				document.getElementById('file').onchange = function(){
-					
-			  	var file = this.files[0];
-				var reader = new FileReader();
-				reader.onload = function(progressEvent){
-				    // Entire file
-				    //console.log(this.result);
-				    
-				    // By lines
-				    var lines = this.result.split('\n');
-				    for(var line = 0; line < lines.length; line++){
-				      //console.log(lines[line].split(' '));
-				      var words = lines[line].split(' '); //array of words in 1 line
-				      if (	words[0].trim() === 'map_Kd' || 
-				      		words[0].trim() === 'map_Ka' ||
-				      		words[0].trim() === 'map_Ks') { // if diffussion light
+		      function MTLinkParser() {
+		        document.getElementById('file').onchange = function(){  
+		          var file = this.files[0];
+		        var reader = new FileReader();
+		        reader.onload = function(progressEvent){
+		            var lines = this.result.split('\n');
+		            for(var i = 0; i < lines.length; i++){
+		              var line = lines[i].split(' '); //array of line in 1 line
+		              if (  line[0].trim() === 'map_Kd' || 
+		                  line[0].trim() === 'map_Ka' ||
+		                  line[0].trim() === 'map_Ks') { // if diffussion light
 
-				      	var textureLink = words[1].split(/[/, \\]+/)
-				      	var textureName = textureLink[textureLink.length - 1]
-				      	words[1] = "http://smartkitap.avsoft.kz/u/graphics_model/" + textureName
-				      	var newText = words.join(' ')
-				      	lines[line] = newText
-				      }
-				    }
-				    console.log(lines.join('\n'))
-				  };
-				  reader.readAsText(file);
-				};
-			}
+		                var textureLink = line[1].split(/[/, \\]+/)
+		                var textureName = textureLink[textureLink.length - 1]
+		                line[1] = "http://smartkitap.avsoft.kz/u/graphics_model/" + textureName
+		                var newText = line.join(' ')
+		                lines[i] = newText
+		              }
+		            }
+		            console.log(lines.join('\n'))
+		            //return lines.join('\n')
+		          };
+		          reader.readAsText(file);
+		        };
+		      }
 		</script>
 
 	</body>

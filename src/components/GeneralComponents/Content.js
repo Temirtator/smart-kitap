@@ -572,12 +572,12 @@ class Content extends Component {
         let models = book.getElementsByClassName('models_3d')
 
         for (let i = 0; i <= models.length - 1; i++) {
-            let childNodes = models[i].getElementsByTagName("a")
-            let objLink = childNodes[0].getAttribute("href")
-            let mtlLink = childNodes[1].getAttribute('href')
+            let wrapper = models[i].getElementsByClassName('models_3d_textarea')[0].value
+            let info3d = JSON.parse(wrapper) 
+            console.log(JSON.parse(wrapper))
             models[i].innerHTML = ''
-            const my_model = <Model3d   obj={objLink} 
-                                        mtl={mtlLink} />
+            const my_model = <Model3d   obj={ info3d.obj_path } 
+                                        mtl={ info3d.mtl_path } />
             ReactDOM.render(my_model, models[i]) // replacing operation
         }
     }
