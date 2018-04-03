@@ -39,17 +39,30 @@
 		          var file = this.files[0];
 		        var reader = new FileReader();
 		        reader.onload = function(progressEvent){
-		            var lines = this.result.split('\n');
+		        	var fullText = this.result 
+		            var lines = fullText.split('\n');
 		            for(var i = 0; i < lines.length; i++){
 		              var line = lines[i].split(' '); //array of line in 1 line
-		              if (  line[0].trim() === 'map_Kd' || 
-		                  line[0].trim() === 'map_Ka' ||
-		                  line[0].trim() === 'map_Ks') { // if diffussion light
-
-		                var textureLink = line[1].split(/[/, \\]+/)
+		              if (  line[0].trim() === 'map_Kd' 	|| 
+		                    line[0].trim() === 'map_Ka' 	||
+		                    line[0].trim() === 'map_Ks' 	||
+		                    line[0].trim() === 'map_Ke' 	|| 
+		                    line[0].trim() === 'map_bump' 	||
+		                    line[0].trim() === 'map_d' 		||
+		                    line[0].trim() === 'bump') { // if diffussion light
+		              	var fixedLine
+		              	if (line.length >= 3) { //if link have spaces		              	
+		              		fixedLine = line.slice(1, line[1].length - 1).join()		
+		              	}
+		              	else {
+		              		fixedLine = line[1]
+		              	}
+		              	var re2 = new RegExp("\\\\","g");
+		              	var str2 = fixedLine.replace(re2,"/"); 
+		                var textureLink = str2.split(/[/\\//]+/)
 		                var textureName = textureLink[textureLink.length - 1]
 		                line[1] = "http://smartkitap.avsoft.kz/u/graphics_model/" + textureName
-		                var newText = line.join(' ')
+		                var newText = line.slice(0,2).join(' ')
 		                lines[i] = newText
 		              }
 		            }

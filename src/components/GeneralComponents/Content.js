@@ -99,7 +99,7 @@ class Content extends Component {
             timerCount: 0,
             BookLoaded: true,
             prevAllEl: '',
-            changingTextSize: false
+            changingTextSize: false 
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -434,7 +434,7 @@ class Content extends Component {
     // identify, is book page in viewport?
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        let el = book.getElementsByClassName("page")
+        let el = book.getElementsByClassName("page") // program can fall in this moment
         for (let i = 0; i < el.length; i++) { // iterate over all pages
             let isVisible = this.isElementInViewport(el, i)
 
@@ -566,7 +566,7 @@ class Content extends Component {
             tables[i].style.width = "100%"
         }
     }
-
+    
     parse3D() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let models = book.getElementsByClassName('models_3d')
@@ -915,7 +915,7 @@ class Content extends Component {
                         <p style={textStyle}>Загружается книга...</p>
                     </div>
                 </ModalContainer>
-            }   
+            }
             
                 <div className={headerClass}>
                     <div className="content__header__sub">
@@ -945,12 +945,12 @@ class Content extends Component {
 
                 <div className={bodyClass}>
                     <div className="content__body__main__header">
-                        <BookOrientation isInMainPage={false}/>
+                        <BookOrientation    isInMainPage={false} />
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
-                                <input  onKeyDown={(e) => this.findText(e)} 
-                                        ref="findTextValue" 
-                                        type="text" 
+                                <input  onKeyDown={(e) => this.findText(e)}
+                                        ref="findTextValue"
+                                        type="text"
                                         className="form-control form-control_search" 
                                         placeholder={choosenLang['search-word']}></input>
                             </div>

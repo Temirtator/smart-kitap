@@ -250,7 +250,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent; }
 
 .react-toggle-screenreader-only {
@@ -1017,7 +1017,7 @@ button {
       display: block;
       position: absolute;
       top: 5px;
-      left: 6px;
+      left: 5.9999999px;
       content: "";
       border-radius: 100%;
       height: 10px;
@@ -1159,15 +1159,18 @@ button {
         fill: #919291; }
     .book-orientation-component .content__body__main__header__menu .header__menu__conspect:hover,
     .book-orientation-component .content__body__main__header__menu .header__menu__video:hover,
-    .book-orientation-component .content__body__main__header__menu .header__menu__test:hover {
+    .book-orientation-component .content__body__main__header__menu .header__menu__test:hover,
+    .book-orientation-component .content__body__main__header__menu .header__menu--selected {
       border-color: #09519f; }
       .book-orientation-component .content__body__main__header__menu .header__menu__conspect:hover p,
       .book-orientation-component .content__body__main__header__menu .header__menu__video:hover p,
-      .book-orientation-component .content__body__main__header__menu .header__menu__test:hover p {
+      .book-orientation-component .content__body__main__header__menu .header__menu__test:hover p,
+      .book-orientation-component .content__body__main__header__menu .header__menu--selected p {
         color: #09519f; }
       .book-orientation-component .content__body__main__header__menu .header__menu__conspect:hover svg,
       .book-orientation-component .content__body__main__header__menu .header__menu__video:hover svg,
-      .book-orientation-component .content__body__main__header__menu .header__menu__test:hover svg {
+      .book-orientation-component .content__body__main__header__menu .header__menu__test:hover svg,
+      .book-orientation-component .content__body__main__header__menu .header__menu--selected svg {
         fill: #09519f; }
 
 .model-3d {
@@ -1309,10 +1312,17 @@ button {
       height: auto;
       border: 2px solid #e4ebf1;
       background-color: #f9fafb;
-      padding: 15px 15px; }
+      padding: 15px 15px;
+      cursor: pointer; }
       .test-component__body__test-menu p {
-        margin: 0;
-        cursor: pointer; }
+        margin: 0; }
+    .test-component__body__test-menu:hover,
+    .test-component__body .test-menu--selected {
+      background-color: #09519f;
+      border-color: #09519f; }
+      .test-component__body__test-menu:hover p,
+      .test-component__body .test-menu--selected p {
+        color: #fff; }
     .test-component__body .btn-primary {
       position: relative !important;
       left: 50% !important;
@@ -2021,7 +2031,7 @@ div.my-books__test-by-books {
 
 .zoom {
   width: 95vh !important;
-  height: 90vh !important;
+  height: 95vh !important;
   background: white;
   position: fixed;
   z-index: 100;

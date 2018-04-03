@@ -32,14 +32,24 @@ class TestComponent extends Component {
           tests: [],
           test_state: false,
           isShowingModal: false,
-          examLoaded: true
+          examLoaded: true,
+          testFlashing: [],
+          prevIndex: 0
         }
         this.openTest = this.openTest.bind(this)
         this.sendTestResults =  this.sendTestResults.bind(this)
     }
     
-    openTest(exam_id) {
+    openTest(exam_id, index) {
       this.props.checkConnectivity.onlineCheck().then(() => {
+        this.setState(prev => {
+          prev.testFlashing[index] = true // javascript magic
+          prev.testFlashing[prev.prevIndex] = false
+          return {
+            testFlashing: prev.testFlashing,
+            prevIndex: index
+          }
+        })
         this.props.actions.setTestStarted()
         let {license_token, access_token, book_id} = this.state
         this.props.actions.getTestQuestions(license_token, access_token, book_id, exam_id)
@@ -49,7 +59,7 @@ class TestComponent extends Component {
               exam_id: exam_id,
               examLoaded: false
             })
-        })
+        }) 
       })
       .catch(() => {
         alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
@@ -107,14 +117,14 @@ class TestComponent extends Component {
 
     render() {
         let { questions } = this.props.book_test
-        let { tests, test_state, correct, incorrect, examLoaded } = this.state
+        let { tests, test_state, correct, incorrect, examLoaded, testFlashing } = this.state
         return (
             <div className="test-component">
                 { examLoaded ? 
                     <ModalContainer>
                         <div>
                             <ReactSpinner color='#fff' />
-                            <p style={textStyle}>Загружается тесты...</p>
+                            <p style={textStyle}>Загружаются тесты...</p>
                         </div>
                     </ModalContainer> : null
                 }
@@ -145,13 +155,16 @@ class TestComponent extends Component {
                     { (test_state && questions.length > 0) ? 
                       <button 
                           onClick={this.sendTestResults} 
-                          type="submit"                                                                                                     className="btn btn-primary">Завершить тест</button> : null}
+                          type="submit"                                                                                                     
+                          className="btn btn-primary">Завершить тест</button> : null}
                   </div>
 
                   <div className="col-sm-4 side-test-menu">
                     { tests.map((value, index) => 
-                      <div className="test-component__body__test-menu" key={index}>
-                        <p onClick={() => this.openTest(value.id)}>{value.title}</p>
+                      <div  className={testFlashing[index] ? "test-component__body__test-menu test-menu--selected" : 'test-component__body__test-menu'}
+                            onClick={() => this.openTest(value.id, index)}
+                            key={index}>
+                        <p>{value.title}</p>
                       </div>  
                     )}
                   </div>

@@ -177,12 +177,12 @@ class PersonalHomePage extends Component {
         }
         return (
             <div className="personal-home-page">
-
                 <NavigationHeader switchFunction={this.switchFunction}/>
                 <div className={bodyClass}>
                     <div className="personal-home-page__body__header">
                         { isBookOrientation ? 
                             <BookOrientation    isInMainPage={true}
+                                                selected={menuSelected}
                                                 menuSelected={(menuSelected) => this.setState({menuSelected})}/> :
                             <TextSettings       textSize={{display: 'none'}} 
                                                 textColor={{display: 'none'}}/> }
@@ -194,7 +194,7 @@ class PersonalHomePage extends Component {
                             </div>
                         </div>
                     </div>
-
+                    
                     <div className={bodyMainClass}>
                         <MyElement menuItem={this.state.menuSelected}/>
                     </div>
