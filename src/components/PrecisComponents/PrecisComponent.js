@@ -10,9 +10,8 @@ import OldPrecises from './OldPrecisesComponent'
 import * as languages from '../../resources/language/languages.json'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 
-
 class PrecisComponent extends Component {
-
+    
     componentWillMount() {
         this.props.checkConnectivity.onlineCheck().then((response) => {
         })

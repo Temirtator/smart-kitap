@@ -49,8 +49,9 @@
       "white-theme": "Белая",
       "reset": "Сбросить",
       "internet-not-work": "Интернет не работает. Пожалуйста проверьте ваше соединение",
-      "load_book": "Загружается книга",
-      "load_precises": "Загружается конспекты",
+      "load_book": "Загружаются книги",
+      "load_precises": "Загружаются конспекты",
+      "load_tests": "Загружаются тесты",
       "loaded": "Загружена"
   },
   {
@@ -104,6 +105,7 @@
       "internet-not-work": "Internet does not work. Please check your connection",
       "load_book": "Book is loading",
       "load_precises": "Precises is loading",
+      "load_tests": "Tests is loading",
       "loaded": "Loaded"
   },
   {
@@ -157,6 +159,7 @@
       "internet-not-work": "Интернет жұмыс істемейді. Байланысты тексеріңіз",
       "load_book": "Кітап жүктелуде",
       "load_precises": "Конспекттер жүктелуде",
+      "load_tests": "Тесттер жүктелуде",
       "loaded": "Жүктелді"
   }
 ]

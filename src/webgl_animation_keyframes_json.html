@@ -59,11 +59,13 @@
 			pointLight = new THREE.PointLight( 0xffffff, 1 );
 			pointLight.position.copy( camera.position );
 			scene.add( pointLight );
-			new THREE.ObjectLoader().load('../public/assets/models3d/pump/pump.json', function ( model ) {
+			new THREE.ObjectLoader().load('../public/assets/models3d/cube.json', function ( model ) {
 				scene.add( model );
-				mixer = new THREE.AnimationMixer( model );
-				mixer.clipAction( model.animations[ 0 ] ).play();
-				animate();
+				if (model.animations !== undefined) {
+					mixer = new THREE.AnimationMixer( model );
+					mixer.clipAction( model.animations[ 0 ] ).play();
+					animate();
+				}
 			} );
 			window.onresize = function () {
 				camera.aspect = window.innerWidth / window.innerHeight;

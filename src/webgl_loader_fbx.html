@@ -86,7 +86,7 @@
 				scene.add( grid );
 				// model
 				var loader = new THREE.FBXLoader();
-				loader.load('../public/assets/models3d/Soldier_2k_poly.fbx', function ( object ) {
+				loader.load('../public/assets/models3d/bb8.fbx', function ( object ) {
 					object.mixer = new THREE.AnimationMixer( object );
 					mixers.push( object.mixer );
 					var action = object.mixer.clipAction( object.animations[ 0 ] );
