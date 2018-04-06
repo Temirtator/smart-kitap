@@ -624,6 +624,9 @@ body {
 a {
   cursor: pointer; }
 
+ol {
+  margin-bottom: 0 !important; }
+
 .sidebar {
   height: calc(100vh - 193px);
   width: 100%;
@@ -884,7 +887,7 @@ a {
   height: 40px; }
 
 .content__header__sub {
-  width: auto;
+  width: inherit;
   height: 209px;
   padding: 46px 0 46px 18px;
   display: flex; }
@@ -911,7 +914,9 @@ a {
       padding: 0 0 0 10px; }
       .content__header__sub .content__header__sub__right .content__header__sub__name h5 {
         margin-top: 0px;
-        padding-right: 5px; }
+        padding-right: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis; }
       .content__header__sub .content__header__sub__right .content__header__sub__name p {
         font-size: 10px;
         color: #aeafaf; }
@@ -1931,7 +1936,10 @@ div.my-books__test-by-books {
       .content__header__sub__right .content__header__sub__progress-bar svg {
         width: 100px !important; }
     .content__header__sub__right .content__header__sub__name h5 {
-      font-size: 11px !important; }
+      font-size: 11px !important;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 125px; }
     .content__header__sub .content__header__sub__left img {
       width: 46px !important; }
 
@@ -2443,6 +2451,8 @@ div.my-books__test-by-books {
     background-color: #000; }
     .blindMode .video-component .video-body__content .video-body__description h2, .blindMode .video-component .video-body__content .video-body__description p {
       color: #fff; }
+  .blindMode .video-component .video-body__content .no-data-message {
+    color: #fff; }
   .blindMode .video-component .video-body__content__side-video-menu p {
     color: #000; }
   .blindMode .video-component .video-body__content .video-react,
@@ -2454,6 +2464,8 @@ div.my-books__test-by-books {
       padding: 4px 0 0 0 !important; }
     .blindMode .test-component__header .text-settings__text-style span {
       border: 1px solid #fff !important; }
+  .blindMode .test-component__body .no-data-message {
+    color: #fff; }
   .blindMode .test-component__body__test-menu {
     color: #fff;
     background-color: #000; }

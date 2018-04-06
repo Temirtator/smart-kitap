@@ -30,7 +30,7 @@ class NewPrecises extends Component {
             license_token: window.localStorage.getItem('license_token'),
             PrecisLoaded: true
         }
-
+        
         this.loadMorePrecis = this.loadMorePrecis.bind(this)
         this.getIndexes = this.getIndexes.bind(this)
     }

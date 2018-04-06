@@ -82,7 +82,7 @@ class TestComponent extends Component {
           this.props.actions.setTestResults(  license_token, 
                                               access_token, 
                                               Number(book_id), 
-                                              exam_id, 
+                                              exam_id,
                                               correct_answers, 
                                               incorrect_answers)
         }
@@ -107,6 +107,8 @@ class TestComponent extends Component {
           })
           if (data.length >= 1) {
             this.openTest(data[0].id) // open first test by setting exam id
+          } else {
+            this.setState({ examLoaded: false })
           }
         })
       })

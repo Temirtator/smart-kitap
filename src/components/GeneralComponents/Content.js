@@ -763,7 +763,8 @@ class Content extends Component {
                         category: 'Книга',
                         action: 'Открыто книга: ' + data.name
                     })
-                    
+                    let progress = data.progress
+                    let last_opened_page_id = progress ? progress.last_opened_page_id : 1
                     this.setState({
                         name: data.name,
                         author: data.author,
@@ -771,11 +772,11 @@ class Content extends Component {
                         content: content,
                         pageCount: data.page_count,
                         readedPage: data.last_opened_page,
-                        readedPageId: data.progress.last_opened_page_id
+                        readedPageId: last_opened_page_id
                     })
                 }
                 catch(e) {
-                    console.log('Error on loading book')
+                    console.log('Error on loading book', e)
                 }
                 this.setState({ BookLoaded: false })
             })

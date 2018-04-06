@@ -41,6 +41,9 @@ body
 a
 	cursor: pointer
 
+ol
+	margin-bottom: 0 !important
+
 .sidebar
 	height: calc(100vh - 193px)
 	width: 100%
@@ -315,7 +318,7 @@ a
 	height: 40px
 
 .content__header__sub
-	width: auto
+	width: inherit
 	height: 209px
 	padding: 46px 0 46px 18px
 	display: flex
@@ -342,10 +345,13 @@ a
 		.content__header__sub__name
 			float: left
 			padding: 0 0 0 10px
+				
 			h5
 				margin-top: 0px
 				padding-right: 5px
-				
+				overflow: hidden
+				text-overflow: ellipsis
+			
 			p
 				font-size: 10px
 				color: #aeafaf
@@ -1281,10 +1287,10 @@ div.my-books__test-by-books
 	display: flex
 	justify-content: center
 	align-items: center
-	> h2
+	// > h2
 	font-size: 6em
 	margin: 1.6em 0
-	//position: relative !important
+	// position: relative !important
 
 .sk-folding-cube
 	margin: 20px auto
@@ -1460,6 +1466,9 @@ div.my-books__test-by-books
 			.content__header__sub__name
 				h5
 					font-size: 11px !important
+					text-overflow: ellipsis
+					overflow: hidden
+					max-width: 125px
 
 		.content__header__sub__left
 			img
@@ -1490,9 +1499,7 @@ div.my-books__test-by-books
 
 					.new-precise__header__right__second-lvl
 						padding: 0 5px
-
-				.new-precise__header__left
-			
+				
 			.new-precise__body
 				font-size: 11px
 				word-wrap: break-word

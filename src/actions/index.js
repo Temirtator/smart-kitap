@@ -77,9 +77,11 @@ export function getTestQuestions(license_token, access_token, book_id, exam_id) 
 				type: types.GET_TEST_QUESTIONS,
 				questions: response.data
 			})
+			return response
 		})
 		.catch(error => {
-			console.log('getAllExamByBookId', error)
+			console.log('getTestQuestions', error)
+			return error
 		})
 	}
 }
