@@ -1,7 +1,7 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
 
-let url = 'http://smartkitap.avsoft.kz'
+let url = 'http://smart-kitap.kz'
 let api = '/api/v1/', api2 = '/api/v2/'
 
 export function getAllUserProgress(license_token, access_token) {
