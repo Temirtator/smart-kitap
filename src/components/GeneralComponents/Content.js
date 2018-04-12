@@ -550,7 +550,7 @@ class Content extends Component {
         let img = e.target
         this.setState({
             imageOpen: true,
-            imageLink: img.src
+            imageLink: img.src,
         })
     }
 
@@ -935,8 +935,8 @@ class Content extends Component {
             { imageOpen &&
                 <ModalContainer>
                     <ModalDialog    onClose={() => this.setState({ imageOpen: false })} 
-                                    style={{ width: '80vw', height: '80vh' }}>
-                        <img style={{ width: '100%' }} src={imageLink} />
+                                    style={{ width: 'auto', height: 'auto' }}>
+                        <img style={{ width: '80vw' }} src={imageLink} />
                     </ModalDialog>
                 </ModalContainer>
             }
