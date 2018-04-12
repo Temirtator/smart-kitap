@@ -921,7 +921,7 @@ class Content extends Component {
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
-                            <img src={'http://smartkitap.avsoft.kz' + img} alt="book image"/>
+                            <img src={'https://smart-kitap.kz' + img} alt="book image"/>
                         </div>
                         <div className="content__header__sub__right">
                             <div className="content__header__sub__name">

@@ -98,7 +98,7 @@ class SelectorBooks extends Component {
 	            	{
 	            		orders.map((value, index) => 
 	            			<div className="col-sm-4 books__book" key={index}>
-								<img src={'http://smartkitap.avsoft.kz/' + value.book.cover} alt="book image" />
+								<img src={'https://smart-kitap.kz/' + value.book.cover} alt="book image" />
 								<div className="books__book__wrap">
 									<div className="books__book__wrap__text col-md-10">
 										<p 	title={value.book.name} 

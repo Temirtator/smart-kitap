@@ -2,7 +2,7 @@ import * as types from '../constants/e_reader'
 import axios from 'axios'
 import * as checkConnectivity from './checkConnectivity'
 
-let url = 'http://smart-kitap.kz'
+let url = 'https://smart-kitap.kz'
 let api = '/api/v1/'
 
 export function login(email, password) {

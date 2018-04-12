@@ -1,7 +1,7 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
 
-let url = 'http://smart-kitap.kz'
+let url = 'https://smart-kitap.kz'
 let api = '/api/v1/', api2 = '/api/v2/'
 
 export function getAllUserProgress(license_token, access_token) {
@@ -81,7 +81,7 @@ export function getAllUserProgress(license_token, access_token) {
 				incorrect_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0]
 				//console.log(correct_count, 'correct_count')
 				let book_readed_progress = {
-			      image: 'http://smartkitap.avsoft.kz' + readed_books[i].book.cover,
+			      image: 'https://smart-kitap.kz' + readed_books[i].book.cover,
 			      name: readed_books[i].book.name,
 			      author: readed_books[i].book.author, 
 			      statistics: [
@@ -128,7 +128,7 @@ export function getAllUserProgress(license_token, access_token) {
 				incorrect_count = exam_progress.filter(object => object.book_id === opened_books[j].book_id)[0]
 				//console.log('correct_count', correct_count)
 				let book_iread_progress = {
-			      image: 'http://smartkitap.avsoft.kz' + opened_books[j].book.cover,
+			      image: 'https://smart-kitap.kz' + opened_books[j].book.cover,
 			      name: opened_books[j].book.name,
 			      author: opened_books[j].book.author, 
 			      statistics: [

@@ -13,14 +13,14 @@ class VideoLecture extends Component {
     render() {
         let {title, description, cover, videoSrc} = this.props
         if (!videoSrc.startsWith('http')) {
-            videoSrc = 'http://smartkitap.avsoft.kz' + videoSrc
+            videoSrc = 'https://smart-kitap.kz' + videoSrc
         }
         return (
             <div>
                 <div className="video-body__content__player">
                     <Player
                         playsInline
-                        poster={'http://smartkitap.avsoft.kz' + cover}
+                        poster={'https://smart-kitap.kz' + cover}
                         src={videoSrc}
                         className="video-player-style"
                     />

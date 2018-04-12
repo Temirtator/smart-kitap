@@ -1,4 +1,4 @@
-let baseUrl = 'http://smart-kitap.kz'
+let baseUrl = 'https://smart-kitap.kz'
 let isOnline = false
 let xhr = new XMLHttpRequest()	
 export function onlineCheck() {

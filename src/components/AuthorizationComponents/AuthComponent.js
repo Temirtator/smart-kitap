@@ -106,7 +106,8 @@ class AuthComponent extends Component {
                     } else {
                         this.setState({isLoading: true})
                         console.log('It"s NW.JS Project')
-                        window.loadUpdateFromURL('http://smartkitap.avsoft.kz/' + response.data.path_file, (data) => {
+                        console.log('https://smart-kitap.kz' + response.data.path_file);
+                        window.loadUpdateFromURL('https://smart-kitap.kz' + response.data.path_file, (data) => {
                             //Сохраняет
 
                             if (data.status === 200) {
