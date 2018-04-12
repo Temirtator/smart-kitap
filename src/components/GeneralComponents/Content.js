@@ -26,7 +26,7 @@ import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../../resources/language/languages.json'
 
 import Model3d from '../3d-components/Model3d'
-import {ModalContainer} from 'react-modal-dialog'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 import { url as url_api } from '../../path.json'
 
@@ -100,7 +100,9 @@ class Content extends Component {
             timerCount: 0,
             BookLoaded: true,
             prevAllEl: '',
-            changingTextSize: false
+            changingTextSize: false,
+            imageOpen: false,
+            imageLink: ''
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -123,6 +125,7 @@ class Content extends Component {
         this.parse3D = this.parse3D.bind(this)
         this.tablesFixer = this.tablesFixer.bind(this)
         this.prevAll_h1 = this.prevAll_h1.bind(this)
+        this.onClickHandler = this.onClickHandler.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -219,10 +222,9 @@ class Content extends Component {
                     parentEl = parentEl.parentNode
                 }
                 parentEl = parentEl.closest('.page')
-                let parentElId = parentEl.id
+                let parentElId = parentEl.id // TODO: BUG - ID OF NULL 
                 let book_page_id = Number(parentElId.substr(5, parentElId.length - 1))
-                console.log('book_page_id', book_page_id)
-
+                
                 relativePos.top = rect.top - parentPos.top,
                     relativePos.right = rect.right - parentPos.right,
                     relativePos.bottom = rect.bottom - parentPos.bottom,
@@ -544,10 +546,21 @@ class Content extends Component {
         prevStyle = colorStyle
     }
 
+    onClickHandler(e) {
+        let img = e.target
+        this.setState({
+            imageOpen: true,
+            imageLink: img.src
+        })
+    }
+
     imageZoom() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let images = book.getElementsByTagName('img')
         for (let i = images.length - 1; i >= 0; i--) {
+            images[i].addEventListener('click', (e) => this.onClickHandler(e), false)
+        }
+        /*for (let i = images.length - 1; i >= 0; i--) {
             let parentNode = images[i].parentNode
             let src = images[i].src //src link of my image
             let newEl = document.createElement('div')
@@ -557,7 +570,7 @@ class Content extends Component {
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
-        }
+        }*/
     }
 
     tablesFixer() {
@@ -802,7 +815,7 @@ class Content extends Component {
                     this.setIdHeader()
                     this.increaseProgressBar()
                     this.parse3D()
-                    // this.imageZoom()
+                    this.imageZoom()
                     this.tablesFixer()
                     this.sidebarFunc(this.scrollToElement)
                     /*to scroll into view*/
@@ -885,7 +898,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img, BookLoaded, show3D, changingTextSize } = this.state
+                img, BookLoaded, show3D, changingTextSize, imageOpen, imageLink } = this.state
 
         let {   language,
                 blindMode,
@@ -916,6 +929,15 @@ class Content extends Component {
                         <ReactSpinner color='#fff' />
                         <p style={textStyle}>Загружается книга...</p>
                     </div>
+                </ModalContainer>
+            }
+
+            { imageOpen &&
+                <ModalContainer>
+                    <ModalDialog    onClose={() => this.setState({ imageOpen: false })} 
+                                    style={{ width: '80vw', height: '80vh' }}>
+                        <img style={{ width: '100%' }} src={imageLink} />
+                    </ModalDialog>
                 </ModalContainer>
             }
 

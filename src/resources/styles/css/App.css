@@ -394,7 +394,7 @@
   min-height: 1000px;
   overflow: hidden;
   text-align: justify;
-  font-family: Verdana, serif; }
+  font-family: Verdana, serif !important; }
   .page .models_3d {
     border: 1px solid; }
     .page .models_3d .model-3d {
@@ -540,6 +540,8 @@
   background-color: #2a2e35 !important; }
   .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li {
     color: #fff !important; }
+  .page-style-b a, .page-style-b a:hover, .page-style-b a:focus {
+    color: white; }
 
 .page-style-c {
   background-color: #fff2aa !important; }
