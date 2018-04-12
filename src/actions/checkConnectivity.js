@@ -1,4 +1,5 @@
-let baseUrl = 'http://smart-kitap.kz'
+import { url as url_api } from '../path.json'
+let baseUrl = url_api
 let isOnline = false
 let xhr = new XMLHttpRequest()	
 export function onlineCheck() {

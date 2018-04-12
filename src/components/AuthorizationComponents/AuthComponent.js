@@ -15,6 +15,7 @@ import ReactGA from 'react-ga';
 import {version} from '../../../package.json'
 
 import SelectorBooks from './SelectorBooksComponent'
+import { url as url_api } from '../../path.json'
 
 /*window.onbeforeunload = function () { // i need finish to write this function
  let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
@@ -106,7 +107,7 @@ class AuthComponent extends Component {
                     } else {
                         this.setState({isLoading: true})
                         console.log('It"s NW.JS Project')
-                        window.loadUpdateFromURL('http://smartkitap.avsoft.kz/' + response.data.path_file, (data) => {
+                        window.loadUpdateFromURL(url_api + response.data.path_file, (data) => {
                             //Сохраняет
 
                             if (data.status === 200) {

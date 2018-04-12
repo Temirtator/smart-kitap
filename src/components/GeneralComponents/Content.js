@@ -28,6 +28,7 @@ import * as languages from '../../resources/language/languages.json'
 import Model3d from '../3d-components/Model3d'
 import {ModalContainer} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
+import { url as url_api } from '../../path.json'
 
 let book = null, prevTextSize = null, prevStyle = null
 
@@ -917,11 +918,11 @@ class Content extends Component {
                     </div>
                 </ModalContainer>
             }
-            
+                
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
-                            <img src={'http://smartkitap.avsoft.kz' + img} alt="book image"/>
+                            <img src={ url_api + img} alt="book image"/>
                         </div>
                         <div className="content__header__sub__right">
                             <div className="content__header__sub__name">

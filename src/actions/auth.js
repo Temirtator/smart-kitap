@@ -1,9 +1,10 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
 import * as checkConnectivity from './checkConnectivity'
+import { url as url_api, api_v1 } from '../path.json'
 
-let url = 'http://smart-kitap.kz'
-let api = '/api/v1/'
+let url = url_api
+let api = api_v1
 
 export function login(email, password) {
 	return dispatch => {

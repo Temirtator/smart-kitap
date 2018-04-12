@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import 'video-react/dist/video-react.css'
 import {Player} from 'video-react'
+import { url as url_api } from '../../path.json'
 
 class VideoLecture extends Component {
     static propTypes = {
@@ -13,14 +14,14 @@ class VideoLecture extends Component {
     render() {
         let {title, description, cover, videoSrc} = this.props
         if (!videoSrc.startsWith('http')) {
-            videoSrc = 'http://smartkitap.avsoft.kz' + videoSrc
+            videoSrc = url_api + videoSrc
         }
         return (
             <div>
                 <div className="video-body__content__player">
                     <Player
                         playsInline
-                        poster={'http://smartkitap.avsoft.kz' + cover}
+                        poster={ url_api + cover}
                         src={videoSrc}
                         className="video-player-style"
                     />

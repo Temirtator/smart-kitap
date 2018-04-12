@@ -1,8 +1,9 @@
 import * as types from '../constants/e_reader'
 import axios from 'axios'
+import { url as url_api, api_v1, api_v2 } from '../path.json'
 
-let url = 'http://smart-kitap.kz'
-let api = '/api/v1/', api2 = '/api/v2/' 
+let url = url_api
+let api = api_v1, api2 = api_v2 
 
 export function getAllBooks(license_token, access_token) {
 	return dispatch => {

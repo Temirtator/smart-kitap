@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 
 import * as bookRequest from '../../actions/booksRequest'
 import * as checkConnectivity from '../../actions/checkConnectivity'
+import { url as url_api } from '../../path.json'
 
 class SelectorBooks extends Component {
 
@@ -98,7 +99,7 @@ class SelectorBooks extends Component {
 	            	{
 	            		orders.map((value, index) => 
 	            			<div className="col-sm-4 books__book" key={index}>
-								<img src={'http://smartkitap.avsoft.kz/' + value.book.cover} alt="book image" />
+								<img src={ url_api + value.book.cover} alt="book image" />
 								<div className="books__book__wrap">
 									<div className="books__book__wrap__text col-md-10">
 										<p 	title={value.book.name} 
