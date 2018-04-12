@@ -422,6 +422,8 @@
     padding: 0 0 25px 0; }
   .page h3, .page h4, .page h5 {
     font-size: 14pt; }
+  .page strong {
+    font-size: 12pt; }
   .page span {
     font-size: 12pt; }
   .page p {
@@ -531,17 +533,17 @@
 
 .page-style-a {
   background-color: #fff !important; }
-  .page-style-a p, .page-style-a h1, .page-style-a h2, .page-style-a h3, .page-style-a h4, .page-style-a h5 {
+  .page-style-a p, .page-style-a h1, .page-style-a h2, .page-style-a h3, .page-style-a h4, .page-style-a h5, .page-style-a ol, .page-style-a ul, .page-style-a li {
     color: #000 !important; }
 
 .page-style-b {
   background-color: #2a2e35 !important; }
-  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5 {
+  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li {
     color: #fff !important; }
 
 .page-style-c {
   background-color: #fff2aa !important; }
-  .page-style-c p, .page-style-c h1, .page-style-c h2, .page-style-c h3, .page-style-c h4, .page-style-c h5 {
+  .page-style-c p, .page-style-c h1, .page-style-c h2, .page-style-c h3, .page-style-c h4, .page-style-c h5, .page-style-c ol, .page-style-c ul, .page-style-c li {
     color: #000 !important; }
 
 .star {
