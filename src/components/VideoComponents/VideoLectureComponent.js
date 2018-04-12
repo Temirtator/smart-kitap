@@ -10,12 +10,11 @@ class VideoLecture extends Component {
         cover: PropTypes.string,
         videoSrc: PropTypes.string
     }
-    
+
     render() {
         let {title, description, cover, videoSrc} = this.props
         if (!videoSrc.startsWith('http')) {
             videoSrc = url_api + videoSrc
-        }
         return (
             <div>
                 <div className="video-body__content__player">
@@ -36,5 +35,5 @@ class VideoLecture extends Component {
         )
     }
 }
-
-export default VideoLecture
+}
+export default VideoLecture;

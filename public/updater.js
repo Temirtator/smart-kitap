@@ -72,12 +72,9 @@ window.runUpdate = function () {
 }
 window.downloadFile = function (url, dir, filename, callback) {
     var fs = require('fs');
-    var http = require('http');
+    var https = require('https');
     var path = require('path');
     var Url = require('url');
-    if (Url.parse(url).protocol !== "http:") {
-        throw new Error("Can only be http! Do not use HTTPS!")
-    }
     if (!dir) {
         throw new Error("Please enter a file path")
     }
@@ -87,7 +84,7 @@ window.downloadFile = function (url, dir, filename, callback) {
     var location = dir + filename;
     console.log(location);
 
-    http.get(url, function (res) {
+    https.get(url, function (res) {
         let chunk = "";
         var len = parseInt(res.headers['content-length']);
         res.setEncoding('binary');

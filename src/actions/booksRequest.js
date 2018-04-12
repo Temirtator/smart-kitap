@@ -3,7 +3,7 @@ import axios from 'axios'
 import { url as url_api, api_v1, api_v2 } from '../path.json'
 
 let url = url_api
-let api = api_v1, api2 = api_v2 
+let api = api_v1, api2 = api_v2
 
 export function getAllBooks(license_token, access_token) {
 	return dispatch => {

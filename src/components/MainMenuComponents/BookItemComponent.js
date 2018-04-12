@@ -63,7 +63,7 @@ class BookItem extends Component {
 
         return (
             <div className="col-sm-4 books__book" >
-				<img 	onClick={this.onClickHandler} src={ url_api + img} 
+				<img 	onClick={this.onClickHandler} src={ url_api + img}
 						alt="book image" />
 				<div className="books__book__wrap">
 					<div className="books__book__text__wrap col-md-10">
