@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as appStateControlActions from '../../actions/appStateControl'
 import * as bookRequestActions from '../../actions/booksRequest'
 import * as checkConnectivity from '../../actions/checkConnectivity'
+import { url as url_api } from '../../path.json'
 
 class BookItem extends Component {
 	static propTypes = {
@@ -62,7 +63,7 @@ class BookItem extends Component {
 
         return (
             <div className="col-sm-4 books__book" >
-				<img 	onClick={this.onClickHandler} src={'https://smart-kitap.kz' + img}
+				<img 	onClick={this.onClickHandler} src={ url_api + img}
 						alt="book image" />
 				<div className="books__book__wrap">
 					<div className="books__book__text__wrap col-md-10">
