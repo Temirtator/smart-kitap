@@ -836,7 +836,7 @@ class Content extends Component {
                     statiContent.addEventListener('scroll', this.chapterFlashing)
                     book = statiContent.getElementsByClassName('book')[0]
                     book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                    //window.oncontextmenu = this.cancelDefaultMenu
+                    window.oncontextmenu = this.cancelDefaultMenu
                     this.countOfPage()
                     this.setIdHeader()
                     this.increaseProgressBar()
