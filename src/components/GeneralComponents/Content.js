@@ -143,7 +143,7 @@ class Content extends Component {
     scrollToElement(e) {
         try {
             let id = e.target.id.substr(0, e.target.id.length-5)
-            console.log('scrollToElement', id)
+            //console.log('scrollToElement', id)
             let element = document.getElementById(id)
             element.scrollIntoView()
         } catch(e) {
@@ -509,7 +509,10 @@ class Content extends Component {
                     h4_el = pages[i].getElementsByTagName('h4'),
                     h5_el = pages[i].getElementsByTagName('h5'),
                     li_el = pages[i].getElementsByTagName('li'),
-                    span_el = pages[i].getElementsByTagName('span')
+                    span_el = pages[i].getElementsByTagName('span'),
+                    strong_el = pages[i].getElementsByTagName('strong'),
+                    em_el = pages[i].getElementsByTagName('em')
+
                 all_el = [  ...all_el,
                             ...h1_el,
                             ...h2_el,
@@ -518,7 +521,9 @@ class Content extends Component {
                             ...h5_el,
                             ...li_el,
                             ...span_el,
-                            ...p_el ] // all elements in page
+                            ...p_el,
+                            ...strong_el,
+                            ...em_el ] // all elements in page
                 this.settingTextSize(all_el, newTextSize)
                 all_el = []
             }
@@ -587,7 +592,7 @@ class Content extends Component {
             let newEl = document.createElement('div')
             let srcLink = src //.substr(22, src.length) rectify image link
             parentNode.removeChild(images[i])
-
+            
             const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
             newEl.innerHTML = '<div className="zoom-image"></div>'
             ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
@@ -867,8 +872,7 @@ class Content extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
         window.removeEventListener('scroll', this.chapterFlashing)
-        //window.oncontextmenu = this.cancelDefaultMenu
-
+        prevTextSize = '1x'
         this.stopTimer(this)
 
         let {   license_token,
