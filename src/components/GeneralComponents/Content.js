@@ -102,7 +102,9 @@ class Content extends Component {
             prevAllEl: '',
             changingTextSize: false,
             imageOpen: false,
-            imageLink: ''
+            imageLink: '',
+            imgWidth: null,
+            imgHeight: null
         }
 
         this.pageInViewport = this.pageInViewport.bind(this)
@@ -548,9 +550,28 @@ class Content extends Component {
 
     onClickHandler(e) {
         let img = e.target
+        let width = img.clientWidth
+        let height = img.clientHeight
+        let vW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+        let vH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        let ratio = 0
+        let imgWidth = null, imgHeight = null
+        if (width > vW) {
+            ratio = vW / width
+            imgWidth = vW
+            imgHeight = height * ratio
+        }
+
+        if (height > vH) {
+            ratio = vH / height
+            imgHeight = vH
+            imgWidth = width * ratio
+        }
         this.setState({
             imageOpen: true,
             imageLink: img.src,
+            imgWidth: imgWidth,
+            imgHeight: imgHeight
         })
     }
 
@@ -898,7 +919,7 @@ class Content extends Component {
                 content,
                 name,
                 author,
-                img, BookLoaded, show3D, changingTextSize, imageOpen, imageLink } = this.state
+                img, BookLoaded, show3D, changingTextSize, imageOpen, imageLink, imgWidth, imgHeight } = this.state
 
         let {   language,
                 blindMode,
@@ -936,7 +957,10 @@ class Content extends Component {
                 <ModalContainer>
                     <ModalDialog    onClose={() => this.setState({ imageOpen: false })} 
                                     style={{ width: 'auto', height: 'auto' }}>
-                        <img style={{ width: '80vw' }} src={imageLink} />
+                        <img style={{   width: imgWidth, 
+                                        height: imgHeight,
+                                        maxWidth: '80vw',
+                                        maxHeight: '80vh' }} src={imageLink} />
                     </ModalDialog>
                 </ModalContainer>
             }

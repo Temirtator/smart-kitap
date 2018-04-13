@@ -250,7 +250,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent; }
 
 .react-toggle-screenreader-only {
@@ -538,7 +538,7 @@
 
 .page-style-b {
   background-color: #2a2e35 !important; }
-  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li {
+  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li, .page-style-b strong, .page-style-b td, .page-style-b tr {
     color: #fff !important; }
   .page-style-b a, .page-style-b a:hover, .page-style-b a:focus {
     color: white; }
@@ -1028,7 +1028,7 @@ button {
       display: block;
       position: absolute;
       top: 5px;
-      left: 6px;
+      left: 5.9999999px;
       content: "";
       border-radius: 100%;
       height: 10px;
