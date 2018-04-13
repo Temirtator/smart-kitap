@@ -92,12 +92,12 @@ export function getAllMyBooks(license_token, access_token) {
 		})
 		.then(response => {
 			console.log('getAllMyBooks', response)
-
+			
 			dispatch({
 				type: types.SET_MY_ALL_BOOKS,
 				data: response.data
 			})
-
+			
 			dispatch({
 				type: types.SET_MY_HUMANITARIES_BOOKS,
 				data: response.data.filter(object => object.category_id === 1)

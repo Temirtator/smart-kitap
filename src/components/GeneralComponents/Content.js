@@ -452,7 +452,7 @@ class Content extends Component {
         }
     }
 
-    pixelToPoint(value) {
+    pointToPixel(value) {
         return (3/4) * value
     }
 
@@ -462,34 +462,34 @@ class Content extends Component {
             let fontSize = parseFloat(style) // get flaot of element in page
             if (prevTextSize === null) { // if first time
                 if (newTextSize === '2x') {
-                    all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"
+                    all_el[j].style.fontSize = (this.pointToPixel(fontSize) + 5) + "pt"
                 }
                 else if (newTextSize === '3x') {
-                    all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 10) + "pt"
+                    all_el[j].style.fontSize = (this.pointToPixel(fontSize) + 10) + "pt"
                 }
             } else {
                 if (prevTextSize === '1x') {
                     if (newTextSize === '2x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) + 5) + "pt"
                     }
                     else if (newTextSize === '3x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 10) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) + 10) + "pt"
                     }
                 }
                 else if (prevTextSize === '2x') {
                     if (newTextSize === '1x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 5) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) - 5) + "pt"
                     }
                     else if (newTextSize === '3x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) + 5) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) + 5) + "pt"
                     }
                 }
                 else if (prevTextSize === '3x') {
                     if (newTextSize === '1x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 10) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) - 10) + "pt"
                     }
                     else if (newTextSize === '2x') {
-                        all_el[j].style.fontSize = (this.pixelToPoint(fontSize) - 5) + "pt"
+                        all_el[j].style.fontSize = (this.pointToPixel(fontSize) - 5) + "pt"
                     }
                 }
             }
@@ -523,7 +523,7 @@ class Content extends Component {
                             ...span_el,
                             ...p_el,
                             ...strong_el,
-                            ...em_el ] // all elements in page
+                             ] // all elements in page
                 this.settingTextSize(all_el, newTextSize)
                 all_el = []
             }
@@ -836,7 +836,7 @@ class Content extends Component {
                     statiContent.addEventListener('scroll', this.chapterFlashing)
                     book = statiContent.getElementsByClassName('book')[0]
                     book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                    window.oncontextmenu = this.cancelDefaultMenu
+                    //window.oncontextmenu = this.cancelDefaultMenu
                     this.countOfPage()
                     this.setIdHeader()
                     this.increaseProgressBar()
