@@ -223,16 +223,20 @@ class Content extends Component {
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode
                 }
-                parentEl = parentEl.closest('.page')
-                let parentElId = parentEl.id // TODO: BUG - ID OF NULL 
-                let book_page_id = Number(parentElId.substr(5, parentElId.length - 1))
-                
+                let parentElId = null, book_page_id = null
+                try {
+                    parentEl = parentEl.closest('.page')
+                    parentElId = parentEl.id // TODO: BUG - ID OF NULL 
+                    book_page_id = Number(parentElId.substr(5, parentElId.length - 1))
+                } catch (e) {
+                    console.log(e)
+                }
                 relativePos.top = rect.top - parentPos.top,
-                    relativePos.right = rect.right - parentPos.right,
-                    relativePos.bottom = rect.bottom - parentPos.bottom,
-                    relativePos.left = rect.left - parentPos.left,
-                    relativePos.width = rect.width,
-                    this.validateNewText(text, selectionText, relativePos, book_page_id)
+                relativePos.right = rect.right - parentPos.right,
+                relativePos.bottom = rect.bottom - parentPos.bottom,
+                relativePos.left = rect.left - parentPos.left,
+                relativePos.width = rect.width,
+                this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
         }
     }

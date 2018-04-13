@@ -393,7 +393,6 @@
   padding: 10mm;
   min-height: 1000px;
   overflow: hidden;
-  text-align: justify;
   font-family: Verdana, serif !important; }
   .page .models_3d {
     border: 1px solid; }
@@ -409,12 +408,24 @@
         height: 100% !important; }
   .page td, .page th {
     border: 1px solid black !important;
-    padding: 8px !important; }
+    padding: 2px !important; }
   .page table {
     width: 100%;
     border-spacing: 0;
-    border: 1px solid #aaa;
-    border-collapse: collapse; }
+    border-collapse: collapse;
+    border: 1px solid;
+    margin: 0 auto; }
+    .page table thead tr th {
+      border: 1px solid;
+      text-align: center;
+      padding: 0 20px; }
+    .page table tbody tr {
+      border: 1px solid; }
+      .page table tbody tr td {
+        border: 1px solid;
+        padding: 0 20px; }
+    .page table p {
+      text-indent: 0px !important; }
   .page h1 {
     font-size: 16pt; }
   .page h2 {
@@ -467,18 +478,6 @@
         height: auto; }
       .page__images__image span.description-name {
         display: block; }
-  .page table {
-    border: 1px solid;
-    margin: 0 auto; }
-    .page table thead tr th {
-      border: 1px solid;
-      text-align: center;
-      padding: 0 20px; }
-    .page table tbody tr {
-      border: 1px solid; }
-      .page table tbody tr td {
-        border: 1px solid;
-        padding: 0 20px; }
 
 .page-1x h1 {
   font-size: 16ptpx !important; }
@@ -533,19 +532,19 @@
 
 .page-style-a {
   background-color: #fff !important; }
-  .page-style-a p, .page-style-a h1, .page-style-a h2, .page-style-a h3, .page-style-a h4, .page-style-a h5, .page-style-a ol, .page-style-a ul, .page-style-a li {
+  .page-style-a p, .page-style-a h1, .page-style-a h2, .page-style-a h3, .page-style-a h4, .page-style-a h5, .page-style-a ol, .page-style-a ul, .page-style-a li, .page-style-a strong, .page-style-a td, .page-style-a tr, .page-style-a span {
     color: #000 !important; }
 
 .page-style-b {
   background-color: #2a2e35 !important; }
-  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li, .page-style-b strong, .page-style-b td, .page-style-b tr {
+  .page-style-b p, .page-style-b h1, .page-style-b h2, .page-style-b h3, .page-style-b h4, .page-style-b h5, .page-style-b ol, .page-style-b ul, .page-style-b li, .page-style-b strong, .page-style-b td, .page-style-b tr, .page-style-b span {
     color: #fff !important; }
   .page-style-b a, .page-style-b a:hover, .page-style-b a:focus {
     color: white; }
 
 .page-style-c {
   background-color: #fff2aa !important; }
-  .page-style-c p, .page-style-c h1, .page-style-c h2, .page-style-c h3, .page-style-c h4, .page-style-c h5, .page-style-c ol, .page-style-c ul, .page-style-c li {
+  .page-style-c p, .page-style-c h1, .page-style-c h2, .page-style-c h3, .page-style-c h4, .page-style-c h5, .page-style-c ol, .page-style-c ul, .page-style-c li, .page-style-c strong, .page-style-c td, .page-style-c tr, .page-style-c span {
     color: #000 !important; }
 
 .star {
