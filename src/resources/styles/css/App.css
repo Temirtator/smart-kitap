@@ -541,6 +541,10 @@
     color: #fff !important; }
   .page-style-b a, .page-style-b a:hover, .page-style-b a:focus {
     color: white; }
+  .page-style-b table {
+    border: 1px solid white !important; }
+    .page-style-b table tbody, .page-style-b table thead, .page-style-b table tr, .page-style-b table th, .page-style-b table td {
+      border: 1px solid white !important; }
 
 .page-style-c {
   background-color: #fff2aa !important; }

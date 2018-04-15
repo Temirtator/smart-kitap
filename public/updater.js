@@ -7,7 +7,7 @@ window.getMacAddress = function () {
         console.log('SERIAL', window.serial_number)
     }
 
-    exec('chcp 65001 | wmic CPU get ProcessorId', puts);
+    exec('chcp 65001 | wmic csproduct get & wmic diskdrive get SerialNumber & wmic cpu get ProcessorId', puts);
 };
 window.getSystemInfo = function () {
     var sys = require('util')
