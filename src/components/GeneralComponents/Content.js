@@ -387,9 +387,9 @@ class Content extends Component {
         for (let j = 0; j < subChapters.length; j++) {
             let isVisible1 = this.isElementInViewport(subChapters, j)
             let { curElementSub } = this.state
-
+            console.log(curElementSub, subChapters[j])
             if (isVisible1) {
-                //console.log('isVisible', curElementSub)
+                console.log('isVisible', curElementSub)
                 if ((curElementSub !== -1) && (j !== curElementSub)) {
                     sidebarSubChapters[curElementSub].classList.remove("flash-on-viewport")
                     sidebarSubChapters[j].className += " flash-on-viewport"
@@ -639,25 +639,53 @@ class Content extends Component {
         }
     }
 
-    prevAll_h1(element) {
-        let result = []
+    h1Filter(el) {
+        return el.nodeName.toLowerCase() === 'div'
+    }
 
-        while (element = element.previousElementSibling){
+    getPrevSiblings(el, filter) {
+        let siblings = []
+        while (el = el.previousSibling) {
+            if (!filter || filter(el)) {           
+                siblings.push(el)
+            } 
+        }
+        return siblings
+    }
+
+    prevAll_h1(element) {
+        let sub_header = element
+        let result = []
+        while (element = element.previousElementSibling) {
+            // console.log(element.parentNode, this.getPrevSiblings(element.parentNode, this.h1Filter))
+            // console.log(element)
             if (element.tagName === 'H1'){
                 result.push(element)
             }
         }
-        return result
+        if (result.length > 0) {
+            return result
+        } else {
+            let prevLinks = this.getPrevSiblings(sub_header.parentNode, this.h1Filter) // prevPages
+            let prevPage = null, headers = null
+            for (let i = 0; i <= prevLinks.length - 1; i++) {
+                prevPage = prevLinks[i]
+                headers = prevPage.getElementsByTagName('H1')
+                result = result.concat(Object.values(headers))
+            }
+            return result
+        }
     }
 
     someFunc(h2El, callback) {
-        let el_id, prevTitle1, sub_menu, liEl, element, prevHeader, prevH1
+        let el_id, prevTitle1, sub_menu, liEl, element, prevHeader, prevH1, isExistUL
         let result = []
         for (let i = 0; i <= h2El.length - 1; i++) {
+            isExistUL = false
             element = h2El[i] // my h2 element - subheader
             prevHeader = this.prevAll_h1(element) // must return header of subheader - value may be {}
-            prevH1 = this.state.prevAllEl[0] // prev h1 element
-            //console.log('previous Header', prevHeader)
+            prevH1 = prevHeader[0] // prev h1 element
+            //console.log(element, prevHeader)
             if (prevH1 !== undefined) {
                 el_id = prevH1.getAttribute('id') + '-menu' // get id of element
                 prevTitle1 = document.getElementById(el_id) // get prevTitle1 
@@ -666,19 +694,18 @@ class Content extends Component {
                 liEl.title = element.innerHTML
                 liEl.className = 'sub-header'
                 liEl.id = element.getAttribute('id') + "-menu"
-                liEl.innerHTML = element.textContent
+                liEl.innerHTML = element.textContent.trim()
             }
-
             if (prevHeader.length === 0) {
                 result.push({
                     liEl: liEl,
                     sub_menu: sub_menu
                 })
             } else {
-                /*if (prevH1 !== undefined) {
-                    let isExistUL = (prevTitle1.getElementsByTagName('ul').length === 0) ? false : true
-                    //console.log('isExistUL', isExistUL)
-                    if (isExistUL) {
+                if (prevH1 !== undefined) {
+                    isExistUL = (prevTitle1.getElementsByTagName('ul').length === 0) ? false : true
+                    // console.log('isExistUL', isExistUL, element)
+                    if (!isExistUL) {
                         let newUL = document.createElement('ul')
                         newUL.className = 'sub-menu'
                         prevTitle1.appendChild(newUL)
@@ -686,8 +713,13 @@ class Content extends Component {
                             liEl: liEl,
                             sub_menu: sub_menu
                         })
+                    } else {
+                        result.push({
+                            liEl: liEl,
+                            sub_menu: sub_menu
+                        })
                     }
-                }*/
+                }
                 this.setState({
                     prevAllEl: prevHeader
                 })
@@ -703,41 +735,12 @@ class Content extends Component {
             header.setAttribute('class', 'chapter-header') // set class to li
             let header_p = document.createElement("p") // creating p element
             header_p.id = id // set id to paragraph
-            if($(this).text().trim() !== '') {
-                header.title = $(this).text().trim() // set title
-                header_p.innerHTML = $(this).text().trim() // set text to p element    
-            } else {
-                header.title = 'Пустой заголовок' // set title
-                header_p.innerHTML = 'Пустой заголовок'
-            }
-            
+            header.title = $(this).text().trim() // set title
+            header_p.innerHTML = $(this).text().trim() // set text to p element
             header_p.addEventListener('click', scrollToElement, false) // set event listener
             header.append(header_p) // appending li element to p
             sidebarMainMenu.append(header)
         })
-    }
-
-    find_H2(content, sidebarMainMenu, callback) {
-        content.find('h2').each(function() {
-            let element = $(this)
-            let prevAll = element.prevAll('h1')
-            let prevTitle = sidebarMainMenu.find('#' + prevAll.first().attr('id') + '-menu')
-            prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>') // check for existence
-            if ($(this).text().trim() !== $(this).text().trim()) {
-                prevTitle.find('.sub-menu').append('<li title="' + $(this).text().trim()
-                + '" class="sub-header" id="'
-                + $(this).attr('id')
-                + '-menu">'
-                + $(this).text().trim() + '</li>')
-            } else {
-                prevTitle.find('.sub-menu').append('<li title="' + 'Пустой подзаголовок'
-                + '" class="sub-header" id="'
-                + $(this).attr('id')
-                + '-menu">'
-                + 'Пустой подзаголовок' + '</li>')
-            }
-        })
-        callback()
     }
 
     // i want to rewrite this function
@@ -748,16 +751,14 @@ class Content extends Component {
         let content1 = ReactDOM.findDOMNode(this.refs.statiContent)
         let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
         let h2El = content1.getElementsByTagName('h2')
-        this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
-            this.someFunc(h2El, (result) => { // callback
-                //console.log('result', result)
-                for (let i = 0; i <= result.length - 1; i++) {
-                    let parentNode = result[i].sub_menu[0]
-                    let newEl = result[i].liEl
-                    parentNode.appendChild(newEl)
-                }
-                this.forceUpdate()
-            })
+        this.someFunc(h2El, (result) => { // callback
+            // console.log('result', result)
+            for (let i = 0; i <= result.length - 1; i++) {
+                let parentNode = result[i].sub_menu[0]
+                let newEl = result[i].liEl
+                parentNode.appendChild(newEl)
+            }
+            this.forceUpdate()
         })
     }
 
@@ -850,7 +851,7 @@ class Content extends Component {
                     })
 
                     statiContent.addEventListener('scroll', this.pageInViewport)
-                    statiContent.addEventListener('scroll', this.chapterFlashing)
+                    //statiContent.addEventListener('scroll', this.chapterFlashing)
                     book = statiContent.getElementsByClassName('book')[0]
                     book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
                     //window.oncontextmenu = this.cancelDefaultMenu
@@ -888,7 +889,7 @@ class Content extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.pageInViewport)
-        window.removeEventListener('scroll', this.chapterFlashing)
+        //window.removeEventListener('scroll', this.chapterFlashing)
         prevTextSize = '1x'
         this.stopTimer(this)
 
