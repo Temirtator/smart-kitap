@@ -1,6 +1,6 @@
 {
-  "name": "ebook",
-  "version": "0.1.35",
+  "name": "SmartKitap",
+  "version": "0.1.36",
   "description": "",
   "main": "index.html",
   "runAsAdmin": true,
