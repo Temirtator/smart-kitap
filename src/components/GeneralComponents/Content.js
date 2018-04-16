@@ -198,7 +198,7 @@ class Content extends Component {
                 try{
                     let parentElId = parentEl.id // cannot read property id of null
                     let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
-                    console.log('book_page_id', book_page_id)
+                    //console.log('book_page_id', book_page_id)
 
                     relativePos.top = rect.top - parentPos.top,
                     relativePos.right = rect.right - parentPos.right,
@@ -657,7 +657,7 @@ class Content extends Component {
             element = h2El[i] // my h2 element - subheader
             prevHeader = this.prevAll_h1(element) // must return header of subheader - value may be {}
             prevH1 = this.state.prevAllEl[0] // prev h1 element
-
+            //console.log('previous Header', prevHeader)
             if (prevH1 !== undefined) {
                 el_id = prevH1.getAttribute('id') + '-menu' // get id of element
                 prevTitle1 = document.getElementById(el_id) // get prevTitle1 
@@ -701,10 +701,16 @@ class Content extends Component {
             let id = $(this).attr('id') + '-menu' // name of id
             let header = document.createElement("li") // creating li element
             header.setAttribute('class', 'chapter-header') // set class to li
-            header.title = $(this).text() // set title
             let header_p = document.createElement("p") // creating p element
             header_p.id = id // set id to paragraph
-            header_p.innerHTML = $(this).text() // set text to p element
+            if($(this).text().trim() !== '') {
+                header.title = $(this).text().trim() // set title
+                header_p.innerHTML = $(this).text().trim() // set text to p element    
+            } else {
+                header.title = 'Пустой заголовок' // set title
+                header_p.innerHTML = 'Пустой заголовок'
+            }
+            
             header_p.addEventListener('click', scrollToElement, false) // set event listener
             header.append(header_p) // appending li element to p
             sidebarMainMenu.append(header)
@@ -717,11 +723,19 @@ class Content extends Component {
             let prevAll = element.prevAll('h1')
             let prevTitle = sidebarMainMenu.find('#' + prevAll.first().attr('id') + '-menu')
             prevTitle.not(":has(ul)").append('<ul class="sub-menu"></ul>') // check for existence
-            prevTitle.find('.sub-menu').append('<li title="' + $(this).text()
+            if ($(this).text().trim() !== $(this).text().trim()) {
+                prevTitle.find('.sub-menu').append('<li title="' + $(this).text().trim()
                 + '" class="sub-header" id="'
                 + $(this).attr('id')
                 + '-menu">'
-                + $(this).text() + '</li>')
+                + $(this).text().trim() + '</li>')
+            } else {
+                prevTitle.find('.sub-menu').append('<li title="' + 'Пустой подзаголовок'
+                + '" class="sub-header" id="'
+                + $(this).attr('id')
+                + '-menu">'
+                + 'Пустой подзаголовок' + '</li>')
+            }
         })
         callback()
     }
@@ -734,7 +748,6 @@ class Content extends Component {
         let content1 = ReactDOM.findDOMNode(this.refs.statiContent)
         let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
         let h2El = content1.getElementsByTagName('h2')
-
         this.find_H2(content, sidebarMainMenu, () => { // callback from parsing h2
             this.someFunc(h2El, (result) => { // callback
                 //console.log('result', result)

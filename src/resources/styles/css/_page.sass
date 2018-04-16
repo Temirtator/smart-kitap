@@ -28,9 +28,10 @@ $page-style-text-c: #000
 .page
 	background-color: #fff
 	box-shadow: 1px 1px 5px 5px #C9C9C9
-	margin-top: 20px
+	margin: 20px auto
 	padding: 10mm
-	min-height: 900px
+	min-height: 900px //Не ставь 1000px.Клиент сам попросил сузить высоту страницы.
+	max-width: 800px
 	overflow: hidden
 	// text-align: justify
 	font-family: Verdana, serif !important
@@ -51,8 +52,6 @@ $page-style-text-c: #000
 			canvas
 				width: 100% !important
 				height: 100% !important
-
-
 
 	td, th
 		border: 1px solid black !important
@@ -85,6 +84,7 @@ $page-style-text-c: #000
 
 	h2
 		font-size: $h2-font-size
+		padding: 0
 
 	h3, h4, h5
 		font-size: $h3-font-size
@@ -118,7 +118,7 @@ $page-style-text-c: #000
 		//font-size: $h5-font-size !important
 
 	h1, h2, h3, h4, h5
-		text-align: center
+		// text-align: center
 		font-weight: bold
 	ul, ol
 		li
