@@ -94,9 +94,9 @@ class TestComponent extends Component {
         alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
       })
     }
-
+    
     handleClose = () => this.setState({isShowingModal: false})
-
+    
     componentWillMount() {
       this.props.checkConnectivity.onlineCheck().then(() => {
         let {access_token, license_token, book_id} = this.state
@@ -116,7 +116,7 @@ class TestComponent extends Component {
         alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
       })
     }
-
+    
     render() {
         let { questions } = this.props.book_test
         let { tests, test_state, correct, incorrect, examLoaded, testFlashing } = this.state

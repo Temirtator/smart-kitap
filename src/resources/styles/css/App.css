@@ -391,7 +391,7 @@
   box-shadow: 1px 1px 5px 5px #C9C9C9;
   margin: 20px auto;
   padding: 10mm;
-  min-height: 1000px;
+  min-height: 900px;
   max-width: 800px;
   overflow: hidden;
   font-family: Verdana, serif !important; }
@@ -1373,7 +1373,15 @@ button {
     background-color: #f9fafb; }
     .video-body__content__video-element p {
       margin: 0;
+      padding: 0;
       cursor: pointer; }
+  .video-body__content__video-element:hover,
+  .video-body__content .video-element--selected {
+    background-color: #09519f;
+    border-color: #09519f; }
+    .video-body__content__video-element:hover p,
+    .video-body__content .video-element--selected p {
+      color: #fff; }
   .video-body__content__side-video-menu {
     padding: 30px 14px 0 0; }
 

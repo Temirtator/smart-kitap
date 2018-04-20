@@ -85,12 +85,12 @@ class PersonalHomePage extends Component {
     }
 
     isBookOrientation(key) {
-        var components = [
+        let components = [
             'book/video',
             'book/conspect',
             'book/test'
         ]
-        for (var i = components.length - 1; i >= 0; i--) {
+        for (let i = components.length - 1; i >= 0; i--) {
             if (components[i] === key) {
                 this.setState({isBookOrientation: true})
                 break
@@ -111,7 +111,7 @@ class PersonalHomePage extends Component {
         }
 
         if (key === 'reset') {
-            var needPassword = prompt('Введите пароль для сброса');
+            let needPassword = prompt('Введите пароль для сброса');
             if ( needPassword !== null && 
                  needPassword !== '' && 
                  needPassword === '7894321') {
@@ -121,7 +121,7 @@ class PersonalHomePage extends Component {
             }
         }
 
-        var components = [
+        let components = [
             'main',
             'mybooks',
             'book/video',
@@ -132,7 +132,7 @@ class PersonalHomePage extends Component {
             'settings'
         ]
         // if key will be equal on of the components then open component
-        for (var i = components.length - 1; i >= 0; i--) {
+        for (let i = components.length - 1; i >= 0; i--) {
             if (components[i] === key) {
                 this.setState({menuSelected: key, isBookOrientation: false})
             }

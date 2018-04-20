@@ -37,7 +37,9 @@ class VideoComponent extends Component {
             description: '',
             cover: '',
             videoSrc: '',
-            lectureLoaded: true
+            lectureLoaded: true,
+            videoFlashing: [],
+            prevIndex: 0
         }
 
         ReactGA.initialize('UA-66591915-12')
@@ -69,9 +71,14 @@ class VideoComponent extends Component {
         })
     }
 
-    loadVideoLectures(title, description, cover, videoSrc) {
-        this.setState({
-            title, description, cover, videoSrc, lectureLoaded: true
+    loadVideoLectures(title, description, cover, videoSrc, index) {
+
+        this.setState(prev => {
+            prev.videoFlashing[index] = true // javascript magic
+            prev.videoFlashing[prev.prevIndex] = false
+            return {
+                title, description, cover, videoSrc, lectureLoaded: true, videoFlashing: prev.videoFlashing, prevIndex: index
+            }
         }, () => {
             this.setState({ lectureLoaded: false })
         })
@@ -83,7 +90,7 @@ class VideoComponent extends Component {
 
     render() {
         let {bookVideoState} = this.props
-        let {title, description, cover, videoSrc, lectureLoaded} = this.state
+        let {title, description, cover, videoSrc, lectureLoaded, videoFlashing} = this.state
         return (
             <div className="video-component">
                 { lectureLoaded &&
@@ -114,19 +121,20 @@ class VideoComponent extends Component {
                         </div>
                         <div className="col-sm-4 video-body__content__side-video-menu">
                             { bookVideoState.map((value, index) =>
-                                <div className="video-body__content__video-element" key={index}>
+                                <div className={videoFlashing[index] ? "video-body__content__video-element video-element--selected" : 'video-body__content__video-element' } key={index}>
                                     <p key={index}
                                        onClick={() => this.loadVideoLectures(   value.title, 
                                                                                 value.description, 
                                                                                 value.cover, 
-                                                                                value.video_url)}> {value.title} </p>
+                                                                                value.video_url,
+                                                                                index)}> {value.title} </p>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }
 

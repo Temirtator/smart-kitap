@@ -42,7 +42,7 @@ class BookItem extends Component {
                     }
         })
 	}
-
+	
 	setMyBookState(e) {
 		e.persist()
 		this.setState({
@@ -60,7 +60,7 @@ class BookItem extends Component {
 	
 	render() {
 		let { img, name, author} = this.props
-
+		
         return (
             <div className="col-sm-4 books__book" >
 				<img 	onClick={this.onClickHandler} src={ url_api + img}

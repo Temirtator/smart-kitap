@@ -892,7 +892,7 @@ class Content extends Component {
         //window.removeEventListener('scroll', this.chapterFlashing)
         prevTextSize = '1x'
         this.stopTimer(this)
-
+        
         let {   license_token,
                 access_token,
                 book_id,
