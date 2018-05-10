@@ -20,6 +20,5 @@ const rootReducer = combineReducers({
  	userData,
  	book_video
 })
-console.log("rootReducer on reducers/index.js reducer", rootReducer);
 
 export default rootReducer

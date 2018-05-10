@@ -40,11 +40,9 @@ class NewPrecises extends Component {
     }
     
     getIndexes(book_id) {
-        //console.log('book_id', book_id, 'book_category', book_category)
         let new_precises = this.props.precisesStore.precises.new_precises
         let indexPrecise, indexBook
-        for (var i = new_precises.length - 1; i >= 0; i--) {
-            //console.log(new_precises[i].book_id, '===', book_id)
+        for (let i = new_precises.length - 1; i >= 0; i--) {
             if (Number(new_precises[i].book_id) === Number(book_id)) {
                 indexPrecise = i
             }
@@ -108,7 +106,7 @@ class NewPrecises extends Component {
                 }
                 <Masonry
 		            className="masonry"
-		              
+		            
 		            loader={
 		              <div className="sk-folding-cube">
 		                <div className="sk-cube1 sk-cube" />
@@ -120,8 +118,7 @@ class NewPrecises extends Component {
 		            sizes={[
 		            		{ mq: '400px', columns: 1, gutter: 0 },
 					      	{ mq: '400px', columns: 2, gutter: 25 }]}
-		            loadMore={this.loadMorePrecis}
-		          >
+		            loadMore={this.loadMorePrecis}>
 		            {
 		            	precises.map((object, i) => 
 		            		<NewPreciseItem
@@ -133,24 +130,24 @@ class NewPrecises extends Component {
                             />
 			            )
 			        }
-	          </Masonry>
+	            </Masonry>
 		   	</div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-   precisesStore: state.precis,
-   main_book_item: state.main_book_item,
-   my_book_item: state.my_book_item,
-   appStateControl: state.appStateControl
+    precisesStore: state.precis,
+    main_book_item: state.main_book_item,
+    my_book_item: state.my_book_item,
+    appStateControl: state.appStateControl
 })
 
 const mapDispatchToProps = dispatch => ({
-   precisActions: bindActionCreators(precis_action, dispatch)
+    precisActions: bindActionCreators(precis_action, dispatch)
 })
 
 export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(NewPrecises))

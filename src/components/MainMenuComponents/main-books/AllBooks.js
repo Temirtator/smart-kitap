@@ -23,6 +23,9 @@ class AllBooks extends Component {
     
     bookFilter(book) {
       let { searchBookText } = this.props.appStateControl
+      if (!/[^?()/\\*\[\]]+$/.test(searchBookText)) {
+        return this.props.all_books
+      }
       return (String(book.name).toLowerCase()).match(String(searchBookText).toLowerCase()) || (String(book.author).toLowerCase()).match(String(searchBookText).toLowerCase())
     }
     

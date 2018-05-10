@@ -42,7 +42,7 @@ const versionStyle2 = {
     padding: '15px 15px'
 }
 class AuthComponent extends Component {
-
+    
     constructor(props) {
         super(props)
         let license_token = window.localStorage.getItem('license_token')
@@ -65,9 +65,8 @@ class AuthComponent extends Component {
             license_id: license_id !== null ? license_id : '',
         }
         this.checkAuth = this.checkAuth.bind(this)
-        ReactGA.initialize('UA-66591915-12');
-        ReactGA.pageview('/Авторизация');
-
+        ReactGA.initialize('UA-66591915-12')
+        ReactGA.pageview('/Авторизация')
     }
     
     checkAuth() {
@@ -76,7 +75,7 @@ class AuthComponent extends Component {
              this.props.history.push('/main-personal-page')
         }
     }
-
+    
     authType(key) {
         let {license_token} = this.state
         switch (key) {
@@ -93,7 +92,7 @@ class AuthComponent extends Component {
                 break
         }
     }
-
+    
     componentWillMount() {
         let {license_token} = this.state
         this.props.checkConnectivity.onlineCheck().then(() => {
@@ -167,7 +166,7 @@ class AuthComponent extends Component {
                 window.getSystemInfo()
             }
         } catch (e) {
-            console.log('IS NOT NW JS');
+            console.log('IS NOT NW JS')
         }
     }
 

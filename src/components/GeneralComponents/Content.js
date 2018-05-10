@@ -143,7 +143,6 @@ class Content extends Component {
     scrollToElement(e) {
         try {
             let id = e.target.id.substr(0, e.target.id.length-5)
-            //console.log('scrollToElement', id)
             let element = document.getElementById(id)
             element.scrollIntoView()
         } catch(e) {
@@ -193,13 +192,11 @@ class Content extends Component {
                 if (parentEl.nodeType != 1) {
                     parentEl = parentEl.parentNode
                 }
-                //console.log('parentEl', parentEl)
                 parentEl = parentEl.closest('.page')
                 try{
                     let parentElId = parentEl.id // cannot read property id of null
                     let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
-                    //console.log('book_page_id', book_page_id)
-
+                    
                     relativePos.top = rect.top - parentPos.top,
                     relativePos.right = rect.right - parentPos.right,
                     relativePos.bottom = rect.bottom - parentPos.bottom,
@@ -305,8 +302,6 @@ class Content extends Component {
     increaseProgressBar() {
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
-            //console.log('fwefwefwefwefwefw', pageCount, readedPage)
-            //let readedPage = 120, pageCount = 200 
             if (pageCount >= readedPage) {
                 //readed pages on percent
                 let readedPages = Math.ceil((readedPage/pageCount)*100)
@@ -387,9 +382,7 @@ class Content extends Component {
         for (let j = 0; j < subChapters.length; j++) {
             let isVisible1 = this.isElementInViewport(subChapters, j)
             let { curElementSub } = this.state
-            console.log(curElementSub, subChapters[j])
             if (isVisible1) {
-                console.log('isVisible', curElementSub)
                 if ((curElementSub !== -1) && (j !== curElementSub)) {
                     sidebarSubChapters[curElementSub].classList.remove("flash-on-viewport")
                     sidebarSubChapters[j].className += " flash-on-viewport"
@@ -533,14 +526,6 @@ class Content extends Component {
             }
             prevTextSize = newTextSize
 
-            /*for (var i = pages.length - 1; i >= 0; i--) {
-                // if text size settings, first time
-                if (prevTextSize !== null)
-                    pages[i].classList.remove("page-" + prevTextSize)
-
-                pages[i].className += " page-" + newTextSize
-            }
-            prevTextSize = newTextSize*/
         })
         callback()
     }
@@ -618,7 +603,6 @@ class Content extends Component {
         for (let i = 0; i <= models.length - 1; i++) {
             let wrapper = models[i].getElementsByClassName('models_3d_textarea')[0].value
             let info3d = JSON.parse(wrapper)
-            console.log(JSON.parse(wrapper))
             models[i].innerHTML = ''
             const my_model = <Model3d   obj={ info3d.obj_path }
                                         mtl={ info3d.mtl_path } />
@@ -657,8 +641,6 @@ class Content extends Component {
         let sub_header = element
         let result = []
         while (element = element.previousElementSibling) {
-            // console.log(element.parentNode, this.getPrevSiblings(element.parentNode, this.h1Filter))
-            // console.log(element)
             if (element.tagName === 'H1'){
                 result.push(element)
             }
@@ -685,7 +667,6 @@ class Content extends Component {
             element = h2El[i] // my h2 element - subheader
             prevHeader = this.prevAll_h1(element) // must return header of subheader - value may be {}
             prevH1 = prevHeader[0] // prev h1 element
-            //console.log(element, prevHeader)
             if (prevH1 !== undefined) {
                 el_id = prevH1.getAttribute('id') + '-menu' // get id of element
                 prevTitle1 = document.getElementById(el_id) // get prevTitle1 
@@ -704,7 +685,6 @@ class Content extends Component {
             } else {
                 if (prevH1 !== undefined) {
                     isExistUL = (prevTitle1.getElementsByTagName('ul').length === 0) ? false : true
-                    // console.log('isExistUL', isExistUL, element)
                     if (!isExistUL) {
                         let newUL = document.createElement('ul')
                         newUL.className = 'sub-menu'
@@ -752,7 +732,6 @@ class Content extends Component {
         let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
         let h2El = content1.getElementsByTagName('h2')
         this.someFunc(h2El, (result) => { // callback
-            // console.log('result', result)
             for (let i = 0; i <= result.length - 1; i++) {
                 let parentNode = result[i].sub_menu[0]
                 let newEl = result[i].liEl
@@ -798,7 +777,7 @@ class Content extends Component {
         this.checkAuth()
         this.startTimer(this)
     }
-
+    
     componentDidMount() {
         this.props.checkConnectivity.onlineCheck().then(() => {
             let { license_token, access_token } = this.state
@@ -841,7 +820,6 @@ class Content extends Component {
             .then(() => {
                 try {
                     let {statiContent, sidebar_place} = this.refs
-                    //console.log('sidebar_place', sidebar_place)
                     // here i get an array of elements
                     this.setState({
                         chapters: statiContent.getElementsByTagName('h1'),
