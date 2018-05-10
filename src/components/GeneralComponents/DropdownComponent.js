@@ -31,8 +31,7 @@ class Dropdown extends Component {
     
     componentDidMount() {
     	//set default language
-        console.log('selected', this.props.selected)
-    	this.dropdownOnSelect(this.props.selections[this.props.selected])
+        this.dropdownOnSelect(this.props.selections[this.props.selected])
     }
     
     render() {

@@ -50,7 +50,7 @@ class OldPreciseItem extends Component {
             } else {
                 let { precises } = this.props.precisesStore
                 let oldPrecises, book_position
-                for (var i = precises.old_precises.length - 1; i >= 0; i--) {
+                for (let i = precises.old_precises.length - 1; i >= 0; i--) {
                     if (precises.old_precises[i].book_id === this.props.book_id) {
                         oldPrecises = precises.old_precises[i].precise //array of object
                         book_position = i
@@ -113,7 +113,7 @@ class OldPreciseItem extends Component {
         let { editing, editingText, name, author, img } = this.state
         let { new_precises } = precisesStore.precises
         let book_position
-        for (var i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
+        for (let i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
             if (Number(new_precises[i].book_id) === Number(book_id)) {
                 book_position = i
             }

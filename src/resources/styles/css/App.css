@@ -2198,6 +2198,8 @@ div.my-books__test-by-books {
     border-color: #404651; }
   .blackMode .video-body__description h2, .blackMode .video-body__description p {
     color: #9a9ea2 !important; }
+  .blackMode .test-component__body .no-data-message {
+    color: #fff; }
   .blackMode .test-component__body .test-question {
     background-color: #2a2e35;
     border-color: #404651; }
@@ -2230,6 +2232,8 @@ div.my-books__test-by-books {
     background-color: #2a2e35; }
   .blackMode .video-component .video-body__content {
     background-color: #2a2e35; }
+    .blackMode .video-component .video-body__content .no-data-message {
+      color: #fff; }
     .blackMode .video-component .video-body__content .video-body__description h2, .blackMode .video-component .video-body__content .video-body__description p {
       color: #fff !important; }
   .blackMode .books::-webkit-scrollbar-track {

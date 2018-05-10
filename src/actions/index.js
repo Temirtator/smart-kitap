@@ -49,7 +49,6 @@ export function getAllExamByBookId(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('getAllExamByBookId', response)
 			return response.data
 		})
 		.catch(error => {
@@ -72,7 +71,6 @@ export function getTestQuestions(license_token, access_token, book_id, exam_id) 
 			}
 		})
 		.then(response => {
-			console.log('getTestQuestions', response)
 			dispatch({
 				type: types.GET_TEST_QUESTIONS,
 				questions: response.data
@@ -87,7 +85,6 @@ export function getTestQuestions(license_token, access_token, book_id, exam_id) 
 }
 
 export function setTestResults(license_token, access_token, book_id, exam_id, correct_answers, incorrect_answers) {
-	//console.log(license_token, access_token, book_id, exam_id, correct_answers, incorrect_answers)
 	return dispatch => {
 		axios({
 			method: 'post',
@@ -103,7 +100,6 @@ export function setTestResults(license_token, access_token, book_id, exam_id, co
 			}
 		})	
 		.then(response => {
-			console.log('setTestResults', response)
 			/*dispatch({
 				type: types.SET_TEST_RESULTS,
 				questions: response.data

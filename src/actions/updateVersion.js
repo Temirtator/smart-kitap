@@ -16,7 +16,6 @@ export function checkVersion(version) {
 			}
 		})
 		.then(response => {
-			console.log('checkVersion', response)
 			return response
 		})
 		.catch(error => {

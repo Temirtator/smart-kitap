@@ -31,7 +31,7 @@ class AllBooks extends Component {
       // call to system that this is all_books category, important
       this.props.appStateControlActions.setBookCategory('all_books')  
     }
-
+    
     componentWillUnmount() {
       this.props.appStateControlActions.setSearchBook('')
     }

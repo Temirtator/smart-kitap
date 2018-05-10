@@ -41,7 +41,6 @@ class Question extends Component {
     handleChange(value) {
         let { objectQuestion, book_test } = this.props
         try {
-            console.log(objectQuestion, 'objectQuestion')
             let right_answer = objectQuestion.variants.filter(object => object.isCorrect === 1)[0].value
             let isCorrect = objectQuestion.variants.filter(object => object.value === value)[0].isCorrect //is right or no
             let book_exam_question_id = objectQuestion.id // get id for identification, for non-repeating push answers

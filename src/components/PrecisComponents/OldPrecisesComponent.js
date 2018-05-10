@@ -30,11 +30,9 @@ class OldPrecises extends Component {
     }
 
     getIndexes(book_id) {
-        //console.log('book_id', book_id, 'book_category', book_category)
         let new_precises = this.props.precisesStore.precises.new_precises
         let indexPrecise, indexBook
-        for (var i = new_precises.length - 1; i >= 0; i--) {
-            //console.log(new_precises[i].book_id, '===', book_id)
+        for (let i = new_precises.length - 1; i >= 0; i--) {
             if (Number(new_precises[i].book_id) === Number(book_id)) {
                 indexPrecise = i
             }
@@ -63,7 +61,7 @@ class OldPrecises extends Component {
         let year1 = today.getFullYear()
         let currentDate = month1 + '/' + day1 + '/' + year1
         
-        for (var i = somePrecise.length - 1; i >= 0; i--) {
+        for (let i = somePrecise.length - 1; i >= 0; i--) {
             let created_date = somePrecise[i].created_at
             let day = new Date(created_date).getDate()
             let month = new Date(created_date).getMonth() + 1
@@ -71,7 +69,6 @@ class OldPrecises extends Component {
             let precisDate = month + '/' + day + '/' + year
             let timeDiff = Math.abs(new Date(currentDate).getTime() - new Date(precisDate).getTime())
             let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
-            //console.log('diffDays', diffDays)
             if (diffDays >= 30) { // if 1 or more month then ...
                 oldPrecisesArray.push(somePrecise[i])
             }

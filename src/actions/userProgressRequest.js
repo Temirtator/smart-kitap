@@ -19,7 +19,6 @@ export function getAllUserProgress(license_token, access_token) {
 			}
 		})
 		.then(response => {
-			console.log('getAllUserProgress', response)
 			let color = "#3e76bd", highlight = "#bdd0e6"
 			
 			let progress = response.data.progress
@@ -80,7 +79,6 @@ export function getAllUserProgress(license_token, access_token) {
 			for (let i = readed_books.length - 1; i >= 0; i--) {				
 				correct_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0]
 				incorrect_count = exam_progress.filter(object => object.book_id === readed_books[i].book_id)[0]
-				//console.log(correct_count, 'correct_count')
 				let book_readed_progress = {
 			      image: url + readed_books[i].book.cover,
 			      name: readed_books[i].book.name,
@@ -123,11 +121,9 @@ export function getAllUserProgress(license_token, access_token) {
 			}
 
 			let iread_book_progress = []
-			//console.log(opened_books, 'bla bafwef fwe bla')
 			for (let j = opened_books.length - 1; j >= 0; j--) {
 				correct_count = exam_progress.filter(object => object.book_id === opened_books[j].book_id)[0]
 				incorrect_count = exam_progress.filter(object => object.book_id === opened_books[j].book_id)[0]
-				//console.log('correct_count', correct_count)
 				let book_iread_progress = {
 			      image: url + opened_books[j].book.cover,
 			      name: opened_books[j].book.name,
@@ -168,8 +164,6 @@ export function getAllUserProgress(license_token, access_token) {
 			    
 			    iread_book_progress.push(book_iread_progress)
 			}
-			//console.log('iread_book_progress', iread_book_progress)
-			//console.log('readed_book_progress', readed_book_progress)
 			
 			dispatch({
 				type: types.GET_GENERAL_PROGRESS,
@@ -211,8 +205,6 @@ export function bookIsOpened(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('bookIsOpened', response)
-
 			//return response
 		})
 		.catch(error => {
@@ -238,7 +230,6 @@ export function bookIsReaded(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('bookIsReaded', response)
 		})
 		.catch(error => {
 			console.log('bookIsReaded', error)
@@ -262,7 +253,6 @@ export function setLastOpenedPage(license_token, access_token, book_id, last_ope
 			}
 		})
 		.then(response => {
-			console.log('setLastOpenedPage', response)
 		})
 		.catch(error => {
 			console.log('setLastOpenedPage', error)

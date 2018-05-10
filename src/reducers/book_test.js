@@ -21,8 +21,7 @@ export default function book_test(state = initialState, action) {
   		return {...state, questions: action.questions}
   		
   	case SET_ANSWER:
-      console.log('SET_ANSWER', action.answers)
-  		return {...state, answers: action.answers}
+      return {...state, answers: action.answers}
 
   	case SET_TEST_FINISHED:
   		return {...state, testIsFinished: true}

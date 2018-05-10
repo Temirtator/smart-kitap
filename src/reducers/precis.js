@@ -23,7 +23,6 @@ export default function precis(state = initialPrecises, action) {
   	case CHANGE_NEW_PRECIS:
       let newPrecises = state.precises
       for (let i = 0; i <= newPrecises.new_precises.length-1; i++) {
-        //console.log(action.newPrecis.book_id, '===', newPrecises.new_precises[i].book_id)
         if (Number(action.newPrecis.book_id) === Number(newPrecises.new_precises[i].book_id)) {
           newPrecises.new_precises[i] = action.newPrecis
           break

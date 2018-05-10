@@ -50,7 +50,7 @@ class NewPreciseItem extends Component {
             } else {
                 let { new_precises } = this.props.precisesStore.precises 
                 let newPrecises, book_position
-                for (var i = new_precises.length - 1; i >= 0; i--) { // iterate over 
+                for (let i = new_precises.length - 1; i >= 0; i--) { // iterate over 
                     if (Number(new_precises[i].book_id) === Number(this.props.book_id)) {
                         newPrecises = new_precises[i].precise //array of object
                         book_position = i
@@ -75,7 +75,7 @@ class NewPreciseItem extends Component {
             let { precises } = this.props.precisesStore
             let { access_token, license_token } = this.state
             let newPrecises, book_position
-            for (var i = precises.new_precises.length - 1; i >= 0; i--) {
+            for (let i = precises.new_precises.length - 1; i >= 0; i--) {
                 if (Number(precises.new_precises[i].book_id) === Number(this.props.book_id)) {
                     newPrecises = precises.new_precises[i].precise //array of object
                     book_position = i
@@ -119,7 +119,7 @@ class NewPreciseItem extends Component {
     	let { editing, editingText, name, author, img } = this.state
     	let { new_precises } = precisesStore.precises
         let book_position
-        for (var i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
+        for (let i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
             if (Number(new_precises[i].book_id)  === Number(book_id)) {
                 book_position = i
             }

@@ -100,7 +100,6 @@ class AuthComponent extends Component {
             .then(response => {
                 if (version !== response.data.version) { // check for new version
                     // here we need to start download new version
-                    console.log('Checkin version', version, response.data.version)
                     if (window.isReactJS()) {
                         console.log('Is not NW.JS project')
                     } else {
@@ -124,7 +123,6 @@ class AuthComponent extends Component {
 
                                 // $('.ui.progress').progress({total: 100, percent: data.progress});
                             }
-                            console.log(data, data.status === 200)
                             //Выключается приложение
                             //быстро заменяется файл и включает приложение
                         })
@@ -138,7 +136,6 @@ class AuthComponent extends Component {
                     this.props.licenseRequestActions.checkActivation(this.state.license_token) // check activation of application
                         .then(response => {
                             try {
-                                console.log('Auth check', response)
                                 //Сохраняет данные о лицензий
                                 this.setState({license_id: response.data.id})
                                 window.localStorage.setItem('license_id', response.data.id)
@@ -188,7 +185,6 @@ class AuthComponent extends Component {
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {
-                console.log('license_id', window.localStorage.getItem('license_id'));
                 this.setState({license_id: window.localStorage.getItem('license_id')});
                 return {
                     enterKeyClass: prev.enterKeyClass + ' disableElement',

@@ -19,12 +19,10 @@ export function getAllBooks(license_token, access_token) {
 			}
 		})
 		.then(response => {
-			console.log('getAllBooks', response)
 			let all_books = response.data
 			if (response.data.status === undefined) {
 
 			} else {
-				console.log('No books')
 				all_books = []
 			}
 			
@@ -68,7 +66,6 @@ export function getBookById(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('getBookById', response)
 			return response.data
 		})
 		.catch(error => {
@@ -91,8 +88,6 @@ export function getAllMyBooks(license_token, access_token) {
 			}
 		})
 		.then(response => {
-			console.log('getAllMyBooks', response)
-			
 			dispatch({
 				type: types.SET_MY_ALL_BOOKS,
 				data: response.data
@@ -135,8 +130,7 @@ export function addToFavouriteBooks(license_token, access_token, book_id, isFavo
 			}
 		})
 		.then(response => {
-			console.log('addToFavouriteBooks', response)
-
+			// return response
 		})
 		.catch(error => {
 			console.log('addToFavouriteBooks', error)
@@ -160,7 +154,7 @@ export function sendBookDuration(license_token, access_token, book_id, duration)
 			}
 		})
 		.then(response => {
-			console.log('sendBookDuration', response)
+			// return response
 		})
 		.catch(error => {
 			console.log('sendBookDuration', error)
@@ -182,7 +176,6 @@ export function getOrderedBooks(license_token, access_token) {
 			}
 		})
 		.then(response => {
-			console.log('getOrderedBooks', response)
 			return response
 		})
 		.catch(error => {
@@ -192,16 +185,11 @@ export function getOrderedBooks(license_token, access_token) {
 }
 
 export function setBookReserve(license_token, access_token, order_ids) {
-	//console.log('order_ids', order_ids)
 	return dispatch => {
 		let data = {
 			'COMP_ACCESS_TOKEN': license_token,
 			order_ids
 		}
-		/*for (let i = 0; i <= order_ids.length-1; i++) {
-			data['order_ids['+ i +']'] = order_ids[i]
-		}*/
-		//console.log('sended body data', data)
 		axios({
 			method: 'post',
 			url: url + api + 'book_reserve',
@@ -212,7 +200,7 @@ export function setBookReserve(license_token, access_token, order_ids) {
 			}
 		})
 		.then(response => {
-			console.log('setBookReserve', response)
+			// return response
 		})
 		.catch(error => {
 			console.log('setBookReserve', error)

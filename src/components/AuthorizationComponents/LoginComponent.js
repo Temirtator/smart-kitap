@@ -31,7 +31,6 @@ class Login extends Component {
 					window.localStorage.setItem('access_token', response.data.token)
 					this.props.history.push('/main-personal-page')	
 				} catch(e) {
-					console.log('some error on login component')
 					alert('Почта или пароль являются неверными')
 				}
 			})

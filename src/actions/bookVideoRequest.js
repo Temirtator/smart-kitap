@@ -19,8 +19,6 @@ export function getVideoLectures(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('getVideoLectures', response)
-
 			dispatch({
 				type: types.LOAD_BOOK_VIDEO,
 				videoLectures: response.data

@@ -41,7 +41,6 @@ class Model3d extends Component {
 		    show3D: false,
 		    downloaded: 0
         }
-        console.log(obj, mtl)
         this.loadAndRenderObject = this.loadAndRenderObject.bind(this)
         
 	    this.groundPosition = new THREE.Vector3(0, -250, 0)
@@ -61,8 +60,7 @@ class Model3d extends Component {
 		try{
 		    const onProgress = ( xhr ) => {
 		    	if ( xhr.lengthComputable ) {
-		    		var percentComplete = xhr.loaded / xhr.total * 100
-		    		//console.log( Math.round(percentComplete, 2) + '% downloaded' )
+		    		let percentComplete = xhr.loaded / xhr.total * 100
 		    		this.setState({
 		    			downloaded: Math.round(percentComplete, 2) 
 		    		})

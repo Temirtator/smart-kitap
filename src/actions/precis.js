@@ -65,14 +65,12 @@ export function getUserPrecis(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
-			console.log('getUserPrecis', response)
 			let object = {
 				book_id: book_id,
 				precise: []
 			}
 			
 			for (let i = 0; i <= response.data.length-1; i++) {
-				//console.log(response.data[i].book_id, '===', book_id)
 				if (response.data[i].book_id === Number(book_id)) {
 					object.precise.push({
 						precis: response.data[i].text, 
@@ -84,7 +82,7 @@ export function getUserPrecis(license_token, access_token, book_id) {
 			}
 			
 			/*let bookInfo = {}
-			for (var i = response.data.length - 1; i >= 0; i--) {
+			for (let i = response.data.length - 1; i >= 0; i--) {
 				if (response.data[i].book_id === Number(book_id)) {
 					let {name,author,cover} = response.data[i].book
 					bookInfo.name = name
@@ -129,8 +127,6 @@ export function addBookPrecis(access_token, book_id, book_page_id, text) {
 			}
 		})
 		.then(response => {
-			console.log('addBookPrecis', response)
-			
 		})
 		.catch(error => {
 			console.log('addBookPrecis', error)
@@ -152,8 +148,6 @@ export function clearBookPrecis(access_token, license_token, precise_id) {
 			}
 		})
 		.then(response => {
-			console.log('clearBookPrecis', response)
-			
 		})
 		.catch(error => {
 			console.log('clearBookPrecis', error)

@@ -257,21 +257,15 @@ THREE.ColladaLoader.prototype = {
 
 					default:
 						console.log( child );
-
 				}
-
 			}
-
 			library.animations[ xml.getAttribute( 'id' ) ] = data;
-
 		}
 
 		function parseAnimationSampler( xml ) {
-
 			var data = {
 				inputs: {},
 			};
-
 			for ( var i = 0, l = xml.childNodes.length; i < l; i ++ ) {
 
 				var child = xml.childNodes[ i ];

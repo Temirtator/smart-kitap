@@ -35,7 +35,6 @@ class MyBooksProgress extends Component {
             try {
                 this.props.userProgressRequestActions.getAllUserProgress(license_token, access_token)
                 .then(general_progress => {
-                    //console.log('Return from promise', general_progress)
                     this.setState({
                         books_progress: general_progress
                     })
@@ -53,7 +52,6 @@ class MyBooksProgress extends Component {
     render() {
     	let { books_progress } = this.state /* books_progress variable may sometimes undefined or null, this is bug*/
         //TODO: need debugging here
-    	//console.log('Render method books_progress', books_progress)
     	let { language } = this.props.appStateControl.user_settings
     	let choosenLang = languages[0][language]
         

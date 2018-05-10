@@ -8,7 +8,6 @@ $black-mode-scrollbar-color1: $black-mode-border-color
 .blackMode
 	background-color: $black-mode-base-color !important
 	border-color: $black-mode-border-color !important
-	
 	.content__header__sub1
 		.sidebar
 			ul.main-menu, li
@@ -138,6 +137,8 @@ $black-mode-scrollbar-color1: $black-mode-border-color
 			color: #9a9ea2 !important
 
 	.test-component__body
+		.no-data-message
+			color: #fff
 		.test-question
 			background-color: $black-mode-base-color
 			border-color: $black-mode-border-color
@@ -152,7 +153,6 @@ $black-mode-scrollbar-color1: $black-mode-border-color
 
 					input[type=radio]:checked ~ p
 						color: $correct-test-answer !important
-
 	.about-component
 		.container
 			.about-component__body
@@ -179,14 +179,14 @@ $black-mode-scrollbar-color1: $black-mode-border-color
 
 					p
 						color: #fff
-
 	.video-component
 		.video-body
 			&__precises
 				background-color: $black-mode-base-color
 			&__content
 				background-color: $black-mode-base-color
-
+				.no-data-message
+					color: #fff
 				&__player
 				
 				.video-body__description

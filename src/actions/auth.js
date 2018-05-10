@@ -20,7 +20,6 @@ export function login(email, password) {
 			}
 		})
 		.then(response => {
-			console.log("Login", response)
 			return response
 		})
 		.catch(error => {
@@ -42,7 +41,6 @@ export function forgotPassword(email) {
 			}
 		})
 		.then(response => {
-			console.log('forgotPassword', response)
 			return response
 		})
 		.catch(error => {
@@ -68,7 +66,6 @@ export function registration(first_name, last_name, email, password, license_tok
 			}
 		})
 		.then(response => {
-			console.log('registration', response)
 			return response
 		})
 		.catch(error => {
@@ -92,7 +89,7 @@ export function editPassword(license_token, access_token, password) {
 			}
 		})
 		.then(response => {
-			console.log('editPassword', response)
+			// return response
 		})
 		.catch(error => {
 			console.log('editPassword', error)
@@ -116,7 +113,7 @@ export function	editUserInfo(license_token, access_token, name, surname) {
 			}
 		})
 		.then(response => {
-			console.log('editUserInfo', response)
+			// return response
 		})
 		.catch(error => {
 			console.log('editUserInfo', error)

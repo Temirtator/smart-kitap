@@ -25,7 +25,6 @@ export function activation(serial_code) {
                 category: 'Приложение',
                 action: 'Проверка ключа'
             })
-			console.log(response)
 			return response
 		})
 		.catch(error => {
@@ -35,7 +34,6 @@ export function activation(serial_code) {
 }
 
 export function checkActivation(license_token) {
-	//console.log('license_token', license_token)
 	return dispatch => {
 		return axios({
 			method: 'post',
@@ -48,12 +46,10 @@ export function checkActivation(license_token) {
 			}
 		})
 		.then(response => {
-			console.log(response)
 			return response.data
 		})
 		.catch(error => {
 			console.log(error)
-
 		})
 	}
 }

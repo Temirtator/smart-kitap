@@ -17,12 +17,10 @@ export function getUserInfo(token) {
 			}
 		})
 		.then(response => {
-			console.log(response, 'getUserData')
 			dispatch({
 				type: types.SET_USER_DATA,
 				data: response.data
 			})
-			
 		})
 		.catch(error => {
 			return error

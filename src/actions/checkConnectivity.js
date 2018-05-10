@@ -8,22 +8,13 @@ export function onlineCheck() {
 	        xhr.onload = () => {
 	            isOnline = true
 	            resolve(isOnline)
-	            console.log('good')
 	        }
 	        xhr.onerror = () => {
 	            isOnline = false
 	            reject(isOnline)
-	            console.log('bad')
 	        }
 	        xhr.open('GET', baseUrl, true)
 	        xhr.send()
 	    })
 	}
 }
-
-/*this.props.checkConnectivity.onlineCheck().then(() => {
-			
-})
-.catch(() => {
-	alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
-})*/
