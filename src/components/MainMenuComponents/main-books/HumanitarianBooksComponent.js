@@ -1,16 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import BookItem from '../BookItemComponent'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 import * as appStateControlActions from '../../../actions/appStateControl'
+import PropTypes from 'prop-types'
 
 class HumanitarianBooks extends Component {
-  static propTypes = {
-    humanitarian_books: PropTypes.array.isRequired,
-    isMyBook: PropTypes.bool.isRequired
-  }
-  
   constructor(props) {
     super(props)
 
@@ -41,6 +37,11 @@ class HumanitarianBooks extends Component {
             </div>
         )
     }
+}
+
+HumanitarianBooks.propTypes = {
+  humanitarian_books: PropTypes.array.isRequired,
+  isMyBook: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({

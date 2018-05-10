@@ -1,20 +1,12 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-
+import React, { Component } from 'react'
 import TextSettings from '../GeneralComponents/TextSettingsComponent'
-//import BookOrientation from './BookOrientationComponent'
 import VideoLecture from './VideoLectureComponent'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import * as bookVideoRequest from '../../actions/bookVideoRequest'
 import * as checkConnectivity from '../../actions/checkConnectivity'
-
-import Model3d from '../3d-components/Model3d'
-import {ModalContainer} from 'react-modal-dialog'
+import { ModalContainer } from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
-
-
 import ReactGA from 'react-ga'
 
 let textStyle = {
@@ -28,7 +20,6 @@ let textStyle = {
 class VideoComponent extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             license_token: window.localStorage.getItem('license_token'),
             access_token: window.localStorage.getItem('access_token'),
@@ -41,12 +32,10 @@ class VideoComponent extends Component {
             videoFlashing: [],
             prevIndex: 0
         }
-
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Видеолекция')
         this.loadVideoLectures = this.loadVideoLectures.bind(this)
     }
-
     componentWillMount() {
         this.props.checkConnectivity.onlineCheck().then(() => {
             let {license_token, access_token, book_id} = this.state

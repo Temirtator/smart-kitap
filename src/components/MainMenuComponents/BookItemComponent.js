@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -6,29 +6,19 @@ import * as appStateControlActions from '../../actions/appStateControl'
 import * as bookRequestActions from '../../actions/booksRequest'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 import { url as url_api } from '../../path.json'
+import PropTypes from 'prop-types'
 
 class BookItem extends Component {
-	static propTypes = {
-		img: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		author: PropTypes.string.isRequired,
-		isMyBook: PropTypes.bool.isRequired,
-		book_id: PropTypes.number.isRequired
-	}
-	
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			isMyBook: this.props.isMyBook,
 			license_token: window.localStorage.getItem('license_token'),
 			access_token: window.localStorage.getItem('access_token')
 		}
-
 		this.onClickHandler = this.onClickHandler.bind(this)
 		this.setMyBookState = this.setMyBookState.bind(this)
 	}
-	
 	onClickHandler() {
 		let { book_id, img, name, author } = this.props
 		window.localStorage.setItem('book_id', book_id)
@@ -42,7 +32,6 @@ class BookItem extends Component {
                     }
         })
 	}
-	
 	setMyBookState(e) {
 		e.persist()
 		this.setState({
@@ -57,14 +46,12 @@ class BookItem extends Component {
 			alert('Интернет не работает. Пожалуйста проверьте ваше соединениеfwefwefwe')
 		})
 	}
-	
 	render() {
 		let { img, name, author} = this.props
-		
         return (
             <div className="col-sm-4 books__book" >
 				<img 	onClick={this.onClickHandler} src={ url_api + img}
-						alt="book image" />
+						alt="book" />
 				<div className="books__book__wrap">
 					<div className="books__book__text__wrap col-md-10">
 						<p 	title={name} 
@@ -81,6 +68,14 @@ class BookItem extends Component {
 			</div>
         )
     }
+}
+
+BookItem.propTypes = {
+	img: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	author: PropTypes.string.isRequired,
+	isMyBook: PropTypes.bool.isRequired,
+	book_id: PropTypes.number.isRequired
 }
 
 const mapStateToProps = state => ({

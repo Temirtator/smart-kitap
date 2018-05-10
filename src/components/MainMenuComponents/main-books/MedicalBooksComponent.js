@@ -1,33 +1,23 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import BookItem from '../BookItemComponent'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 import * as appStateControlActions from '../../../actions/appStateControl'
+import PropTypes from 'prop-types'
 
 class MedicalBooks extends Component {
-    
-    static propTypes = {
-      medical_books: PropTypes.array.isRequired,
-      isMyBook: PropTypes.bool.isRequired
-    }
-
     constructor(props) {
       super(props)
-
       this.bookFilter = this.bookFilter.bind(this)
     }
-
     bookFilter(book) {
       let { searchBookText } = this.props.appStateControl
       return (String(book.name).toLowerCase()).match(searchBookText.toLowerCase()) || (String(book.author).toLowerCase()).match(searchBookText.toLowerCase())
     }
-
     componentDidMount() {
       this.props.appStateControlActions.setBookCategory('medical_books')
     }
-    
     render() {
         let filteredBooks = this.props.medical_books.filter(this.bookFilter)
         return (
@@ -43,6 +33,11 @@ class MedicalBooks extends Component {
             </div>
         )
     }
+}
+
+MedicalBooks.propTypes = {
+  medical_books: PropTypes.array.isRequired,
+  isMyBook: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({

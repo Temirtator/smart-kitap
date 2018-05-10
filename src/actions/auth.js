@@ -1,6 +1,6 @@
-import * as types from '../constants/e_reader'
+// import * as types from '../constants/e_reader'
 import axios from 'axios'
-import * as checkConnectivity from './checkConnectivity'
+// import * as checkConnectivity from './checkConnectivity'
 import { url as url_api, api_v1 } from '../path.json'
 
 let url = url_api

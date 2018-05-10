@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as languages from '../../resources/language/languages.json'
 
@@ -11,15 +11,7 @@ const iconStyle = {
     float: 'left',
     padding: '5px 10px 0 0'
 }
-
 class BookOrientation extends Component {
-    
-    static propTypes = {
-        menuSelected: PropTypes.func,
-        isInMainPage: PropTypes.bool,
-        selected: PropTypes.string
-    }
-    
     constructor(props) {
         super(props)
         this.state = {
@@ -29,11 +21,9 @@ class BookOrientation extends Component {
 
         this.clickOnMenu = this.clickOnMenu.bind(this)
     }
-
     seToDefault() {
         this.setState({ chosen: [false, false, false] })
     }
-
     checkChosen(key) {
         this.seToDefault()
         if (key === 'conspect') {
@@ -53,7 +43,6 @@ class BookOrientation extends Component {
             })
         }
     }
-    
     clickOnMenu(key) {
         if (this.refs.bookOrientation) {
             this.checkChosen(key)
@@ -89,7 +78,6 @@ class BookOrientation extends Component {
             }
         }
     }
-    
     bookOrientationFlashing() {
         let { isInMainPage, selected } = this.props
         if (isInMainPage) {
@@ -99,11 +87,9 @@ class BookOrientation extends Component {
             }
         }
     }
-    
     componentDidMount() {
         this.bookOrientationFlashing()
     }
-    
     render() {
         const { goBack } = this.props.history
         let { language } = this.props.appStateControl.user_settings
@@ -221,16 +207,18 @@ class BookOrientation extends Component {
         )
     }
 }
-
+BookOrientation.propTypes = {
+    menuSelected: PropTypes.func,
+    isInMainPage: PropTypes.bool,
+    selected: PropTypes.string
+}
 const mapStateToProps = state => ({
    main_book_item: state.main_book_item,
    my_book_item: state.my_book_item,
    appStateControl: state.appStateControl
 })
-
 const mapDispatchToProps = dispatch => ({
 })
-
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps

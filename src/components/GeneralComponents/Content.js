@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {Link} from 'react-router-dom'
-
 import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 import Book from './Book'
 import $ from 'jquery'
-
 import * as userProgressRequest from '../../actions/userProgressRequest'
 import * as booksRequest from '../../actions/booksRequest'
 import * as precis_action from '../../actions/precis'
@@ -13,18 +10,13 @@ import * as appStateControlActions from '../../actions/appStateControl'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 import * as main_actions from '../../actions/'
 import ReactGA from 'react-ga'
-
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {withRouter, Redirect} from 'react-router'
-
+import {withRouter} from 'react-router'
 import BookOrientation from './BookOrientationComponent'
 import TextSettings from './TextSettingsComponent'
 import Sidebar from './Sidebar'
-
-import ImageZoom from 'react-medium-image-zoom'
 import * as languages from '../../resources/language/languages.json'
-
 import Model3d from '../3d-components/Model3d'
 import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
@@ -45,6 +37,7 @@ const ShowToolTipComponent = (props) => {
                     style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
 
                 <img    src='./image/quote.png'
+                        alt=""
                         style={{ width: '100%' }} />
             </div>
         )
@@ -64,8 +57,6 @@ let textStyle = {
     transform: 'translate(-50%, -50%)',
     left: 'calc(50vw + 100px)'
 }
-
-let TRange=null
 
 class Content extends Component {
     constructor(props) {
@@ -189,7 +180,7 @@ class Content extends Component {
                 rect  = range.getBoundingClientRect()
 
                 parentEl = range.commonAncestorContainer
-                if (parentEl.nodeType != 1) {
+                if (parentEl.nodeType !== 1) {
                     parentEl = parentEl.parentNode
                 }
                 parentEl = parentEl.closest('.page')
@@ -197,27 +188,25 @@ class Content extends Component {
                     let parentElId = parentEl.id // cannot read property id of null
                     let book_page_id = Number(parentElId.substr(5, parentElId.length-1))
                     
-                    relativePos.top = rect.top - parentPos.top,
-                    relativePos.right = rect.right - parentPos.right,
-                    relativePos.bottom = rect.bottom - parentPos.bottom,
-                    relativePos.left = rect.left - parentPos.left,
-                    relativePos.width = rect.width,
+                    relativePos.top = rect.top - parentPos.top
+                    relativePos.right = rect.right - parentPos.right
+                    relativePos.bottom = rect.bottom - parentPos.bottom
+                    relativePos.left = rect.left - parentPos.left
+                    relativePos.width = rect.width
                     this.validateNewText(text, selectionText, relativePos, book_page_id)
                 }
                 catch(e) {
                     console.log('Some error on parentElId', e)
                 }
             }
-
         } else if (window.getSelection && quoteExist) {
             selection = window.getSelection()
             if (selection && selection.rangeCount > 0) {
                 text = selection.toString()
                 range = selection.getRangeAt(0)
                 rect = range.getBoundingClientRect()
-
                 parentEl = range.commonAncestorContainer
-                if (parentEl.nodeType != 1) {
+                if (parentEl.nodeType !== 1) {
                     parentEl = parentEl.parentNode
                 }
                 let parentElId = null, book_page_id = null
@@ -228,11 +217,11 @@ class Content extends Component {
                 } catch (e) {
                     console.log(e)
                 }
-                relativePos.top = rect.top - parentPos.top,
-                relativePos.right = rect.right - parentPos.right,
-                relativePos.bottom = rect.bottom - parentPos.bottom,
-                relativePos.left = rect.left - parentPos.left,
-                relativePos.width = rect.width,
+                relativePos.top = rect.top - parentPos.top
+                relativePos.right = rect.right - parentPos.right
+                relativePos.bottom = rect.bottom - parentPos.bottom
+                relativePos.left = rect.left - parentPos.left
+                relativePos.width = rect.width
                 this.validateNewText(text, selectionText, relativePos, book_page_id)
             }
         }
@@ -520,12 +509,12 @@ class Content extends Component {
                             ...span_el,
                             ...p_el,
                             ...strong_el,
+                            ...em_el
                              ] // all elements in page
                 this.settingTextSize(all_el, newTextSize)
                 all_el = []
             }
             prevTextSize = newTextSize
-
         })
         callback()
     }
@@ -729,7 +718,7 @@ class Content extends Component {
         let content = $('#static-content')
         this.find_H1(sidebarMainMenu, content, scrollToElement)
         let content1 = ReactDOM.findDOMNode(this.refs.statiContent)
-        let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
+        // let sidebarMainMenu1 = ReactDOM.findDOMNode(this.refs.sidebar_place).getElementsByClassName('main-menu')
         let h2El = content1.getElementsByTagName('h2')
         this.someFunc(h2El, (result) => { // callback
             for (let i = 0; i <= result.length - 1; i++) {
@@ -907,25 +896,18 @@ class Content extends Component {
     }
 
     render() {
-        let {   pageInView,
-                rect,
-                readedPage,
+        let {   rect,
                 pageCount,
                 progressBarPercent,
                 progressBarPage,
-                color,
-                book_id,
-                localStorage,
                 content,
                 name,
                 author,
-                img, BookLoaded, show3D, changingTextSize, imageOpen, imageLink, imgWidth, imgHeight } = this.state
+                img, BookLoaded, imageOpen, imageLink, imgWidth, imgHeight } = this.state
 
-        let {   language,
-                blindMode,
+        let {   blindMode,
                 user_settings,
-                theme_settings,
-                opened_book_category } = this.props.appStateControl
+                theme_settings } = this.props.appStateControl
 
         let choosenLang = languages[0][user_settings.language]
         let headerClass = "content__header"
@@ -960,15 +942,17 @@ class Content extends Component {
                         <img style={{   width: imgWidth, 
                                         height: imgHeight,
                                         maxWidth: '80vw',
-                                        maxHeight: '80vh' }} src={imageLink} />
+                                        maxHeight: '80vh' }} 
+                            src={imageLink}
+                            alt="" />
                     </ModalDialog>
                 </ModalContainer>
             }
-
+            
                 <div className={headerClass}>
                     <div className="content__header__sub">
                         <div className="content__header__sub__left">
-                            <img src={ url_api + img} alt="book image"/>
+                            <img src={ url_api + img} alt="book"/>
                         </div>
                         <div className="content__header__sub__right">
                             <div className="content__header__sub__name">

@@ -12,7 +12,6 @@ $menu_font_size: 17px
 $correct-test-answer: #02d81f
 $incorrect-test-answer: #ff0000
 
-
 @import _mixins
 @import fonts
 @import _react-tabs
@@ -101,7 +100,6 @@ ol
 				color: $base-color
 				border-left: 1px solid $base-color
 				padding: 0 0 0 10px
-				
 
 	.main-menu:last-child
 		padding-bottom: 0px
@@ -123,22 +121,17 @@ ol
 	transform: translate(100% ,-50%)
 	display: grid
 	grid-template-rows: 1fr 1fr 1fr 1fr
-
 	a
 		cursor: pointer
 		padding-bottom: 20px
 		padding-left: 10px
 		/* border: 1px solid */
-		
 		img:hover
 			padding-left: 10px 	
-	
-
 .content
 	height: 100vh
 	width: 100vw
 	position: relative
-
 .content__text
 	padding: 0 35px 0 35px
 	background: #fff
@@ -146,7 +139,6 @@ ol
 	height: calc(100vh - 146px)
 	position: relative
 	overflow-y: scroll
-
 	p.pageNum
 		width: fit-content
 		margin: 0 auto
@@ -158,13 +150,11 @@ ol
 
 .wrap
 	display: flex
-	height: -webkit-fill-available
+	height: stretch // fill-available
 	height: auto
-
 .personal-home-page
 	width: 100vw
 	height: 100vh
-
 .content__header, .video-header, .personal-home-page__header
 	width: 300px
 	height: 100vh
@@ -173,7 +163,6 @@ ol
 	//padding: 0 270px 0 130px
 	background: $base-color
 	z-index: 0
-
 	h1
 		font-family: $page-font
 		color: #0d6d6d
@@ -194,22 +183,17 @@ ol
 	position: fixed
 	background-color: $book-sidebar-color
 	display: inline-grid
-
 .personal-home-page__header
 	display: grid
 	grid-template-rows: 253px 60vh
-	
 	p, h1, h2, h3, h4, span
 		color: #fff 
-
 	.personal-home-page__header__first-lvl
 		height: 40vh
 		text-align: center
-
 		.first-lvl__logo
 			float: left
 			width: 100%
-			
 			img
 				width: 40px
 				float: left
@@ -219,13 +203,11 @@ ol
 				float: left
 				//font-weight: bold
 				margin: 35.3px 0 0 0
-
 		.first-lvl__avatar
 			display: inline-grid
 			margin: 0 auto
 			position: relative
 			top: 55px
-			
 			&__initial
 				width: 65px
 				height: 65px
@@ -233,14 +215,12 @@ ol
 				border-radius: 50%
 				margin: 0 auto
 				color: #fff
-
 				p
 					margin: 0
 					position: relative
 					top: 50%
 					transform: translateY(-50%)
 					font-size: 20px 
-
 			h4
 				float: left
 				//position: relative
@@ -274,7 +254,6 @@ ol
 		div
 			display: grid
 			margin-top: 40px
-
 		span:hover, span:active
 			border-left: 1px solid
 			p
@@ -282,7 +261,6 @@ ol
 			svg
 				path
 					fill: #fff !important
-		
 		span.isChecked
 			border-left: 1px solid
 			p
@@ -290,18 +268,15 @@ ol
 			svg
 				path
 					fill: #fff !important	
-
 .video-header
 	position: relative
 	width: 300px
 	height: 100vh
 	z-index: 0
 	padding: 0px 20px 20px 20px
-	
 	button
 		float: left
 		height: 35px
-
 .video-header__sub
 	margin: 0 auto
 	width: 1000px
@@ -313,12 +288,10 @@ ol
 			padding: 7px 0 7px 0
 			float: left
 			margin: 0 0 0 0
-
 .video-header__sub__back
 	display: inline-block
 	margin: 20px 0 20px 0
 	height: 40px
-
 .content__header__sub
 	width: inherit
 	height: 209px
@@ -333,13 +306,11 @@ ol
 			padding: 7px 0 7px 0
 			float: left
 			margin: 0 0 0 0
-
 	.content__header__sub__left
 		display: inline-block
 		float: left
 		img
 			width: 75px
-	
 	.content__header__sub__right
 		display: inline-block
 		float: left
@@ -347,42 +318,33 @@ ol
 		.content__header__sub__name
 			float: left
 			padding: 0 0 0 10px
-				
 			h5
 				margin-top: 0px
 				padding-right: 5px
 				overflow: hidden
 				text-overflow: ellipsis
-			
 			p
 				font-size: 10px
 				color: #aeafaf
-	
 		.content__header__sub__progress-bar
 			display: grid
 			width: 100%
 			padding: 4px 0 0 10px
 
-
 .content__header__sub1
 	width: auto
 	height: calc(100vh - 209px)
-
-
 .stylish-input-group
 	-webkit-margin-before: 1.3em
 	-webkit-margin-after: 1.3em
 	-webkit-margin-start: 0px
 	-webkit-margin-end: 0px
 	width: 100%
-
 	.input-group-addon
 		background: white !important 
-	
 	.form-control
 		box-shadow: 0 0 0
 		border-color: #ccc	
-
 	.form-control_search
 		background-image: url('./../../search-icon.png')
 		background-position: 12px 9px 
@@ -395,44 +357,33 @@ ol
 		font-weight: bold
 		color: #576271
 		border-color: #e5ecf4
-
 .imaginary_container
 	width: 100% !important
 	padding: 12px 0
 	float: right !important
-	
-
-
 button
 	outline: none
-
 .pagination
 	display: inline-block
-	
 	a
 		color: black
 		float: left
 		padding: 8px 16px
 		text-decoration: none
 		border: 1px solid #ddd
-
 	a.not-answered
 		background-color: #c96828
 		color: white
 		border: 1px solid #c96828
-
 	a.answered
 		background-color: #4caf50
 		color: white
 		border: 1px solid #4caf50
-
 	a:hover:not(.active)
 		background-color: #ddd
-
 	a:first-child
 		border-top-left-radius: 5px
 		border-bottom-left-radius: 5px
-
 	a:last-child
 		border-top-right-radius: 5px
 		border-bottom-right-radius: 5px
@@ -441,13 +392,11 @@ button
 	display: grid
 	padding: 10px 10px
 	width: fit-content
-	
 	label
 		margin: 5px 0
 		input
 			float: left
 			margin-right: 15px
-
 		p
 			float: left
 			margin: 0
@@ -456,11 +405,9 @@ button
 			transform: translateY(-50%)
 			padding: 0 0 0 15px
 			line-height: 0
-
 		input[type=radio]
 			position: absolute
 			visibility: hidden
-
 		.check
 			display: block
 			position: relative
@@ -473,7 +420,6 @@ button
 			float: left
 			top: 37%
 			transform: translateY(-50%)
-			
 		.check::before
 			display: block
 			position: absolute
@@ -486,31 +432,22 @@ button
 			margin: auto
 			transition: background 0.25s linear
 			-webkit-transition: background 0.25s linear
-			
 		input[type=radio]:checked ~ .check
 			border: 2px solid $correct-test-answer
-		
 		input[type=radio]:checked ~ p
 			color: $correct-test-answer
-
 		input[type=radio]:checked ~ .check::before
 			background: $correct-test-answer
-
 		.right_answer
 			border-color: #02d81f !important
-
 		.left_answer
 			border-color: #ff0000 !important
-
 		.usual_answer
 			border-color: #AAAAAA !important
-		
 		.right_answer:before
 			background: #02d81f !important
-
 		.left_answer:before
 			background: #ff0000 !important
-
 		
 .test-question
 	padding: 10px 20px
@@ -611,7 +548,6 @@ button
 		margin-left: 80px
 		padding: 16px 0
 		font-family: $roboto-bold
-
 		.header__menu__conspect,
 		.header__menu__video,
 		.header__menu__test
@@ -620,7 +556,6 @@ button
 			margin: 0 10px
 			cursor: pointer
 			display: flex
-
 			p
 				margin: 0
 				color: #838384
@@ -629,33 +564,27 @@ button
 				position: relative
 				top: 50%
 				transform: translateY(-50%)
-				
 			svg, g#svg, path#path0, path#path1
 				width: 40px
 				height: 30px
 				fill: #919291
-				
 		.header__menu__conspect:hover,
 		.header__menu__video:hover,
 		.header__menu__test:hover,
 		.header__menu--selected
 			border-color: $base-color
-			
 			p
 				color: $base-color
 				
 			svg
-				fill: $base-color
-				
+				fill: $base-color	
 .model-3d
 	width: fit-content
 	margin: 0 auto
-
 .fixed-page-show
 	position: fixed
 	right: 45px
 	top: 250px
-
 .flash-on-viewport
 	color: $base-color
 	background-color: $book-sidebar-color
@@ -664,24 +593,19 @@ button
 		color: $base-color
 		border-left: 1px solid $base-color
 		padding: 0 0 0 10px	
-
 .precis-component
 	width: 100%
 	height: 100%
-	
-
 .new-precises
 	width: 100%
 	padding: 0 40px 0 21px
 	height: calc(100vh - 147px)
 	overflow-y: scroll	
-	
 	.new-precise
 		height: fit-content
 		padding: 20px 20px
 		margin: 20px auto
 		box-shadow: 0 0 10px rgba(0,0,0,0.5)
-		
 		.new-precise__header
 			display: flex
 			width: 100%
@@ -690,75 +614,57 @@ button
 			border-bottom: 1px solid
 			border-color: #e6edf5
 			overflow: hidden
-
 			.new-precise__header__left
 				float: left
-
 				img
 					width: 50px
-
 			.new-precise__header__right
 				float: left
 				width: 100%
 				height: 100%
 				position: relative
-				
 				.new-precise__header__right__first-lvl
 					display: inline-block
 					width: auto
 					float: right
-
 					h5
 						margin: 0
 						color: #595959
-
 					.col-sm-2
 						display: flex
 						padding: 0
-						
 						div.precisEdit,
 						div.precisClear
 							cursor: pointer
 							margin: 0 0
-						
 						svg
 							margin: 0 7px
-
 				.new-precise__header__right__second-lvl
 					padding: 0 15px
 					position: absolute
 					bottom: 0
-
 					p
 						font-size: 10px
 						margin: 0
 						color: #b3b3b3
-		
 		.new-precise__body
 			padding: 15px 0 0 0
 			word-wrap: break-word
 			cursor: pointer
-
 			textarea
 				width: 100%
 				height: 100%
 				resize: none
-
 			p
 				color: #595959
 
 +scrollBarStyle(new-precises, $scrollbar-color, $scrollbar-color1)
-
-
-
 .quote 
 	cursor: pointer
 	position: absolute
 	transform: translateX(-50%)
 	width: 50px
 	height: 50px
-
-
 .video-body__precises, 
 .content__body__precises, 
 .sidebar__header, 
@@ -769,25 +675,20 @@ button
 	border-bottom: 2px solid
 	background-color: #f9fafb
 	border-color: #e4ebf1
-
 	p
 		padding: 14px 33px
 		margin: 0
 		font-size: 18px
 		color: #6a7d8a
-
 .test-component
 	width: 100%
-
 	&__body
 		overflow-y: scroll
 		height: calc(100vh - 150px)
 		position: relative
-		
 		.side-test-menu
 			padding: 10px 21px 0 0 !important
 			//border: 1px solid #e4ebf1
-		
 		&__test-menu
 			width: 100%
 			height: auto
@@ -795,10 +696,8 @@ button
 			background-color: #f9fafb
 			padding: 15px 15px
 			cursor: pointer
-
 			p
 				margin: 0
-
 		&__test-menu:hover,
 		.test-menu--selected
 			background-color: $base-color
@@ -1015,7 +914,7 @@ button
 	display: -webkit-inline-box
 	float: left
 	position: relative
-	height: -webkit-fill-available
+	height: stretch // fill-available
 
 	.text-settings__text-style
 		display: flex
@@ -1108,18 +1007,13 @@ button
 			font-size: 19px
 		span:nth-child(2)
 			font-size: 13px
-
-
 .sidebar-header-name
 	padding: 0px 20px
 	color: #47565f
 	margin-bottom: 5px
-	
-
 .book-rate
 	float: left
 	font-size: 19px
-
 //changing style of star rating component 
 .dv-star-rating
 	display: grid !important

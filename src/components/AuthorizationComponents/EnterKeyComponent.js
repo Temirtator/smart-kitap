@@ -1,14 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as licenseRequestActions from '../../actions/licenseRequest'
 import * as checkConnectivity from '../../actions/checkConnectivity'
+import PropTypes from 'prop-types'
 
 class EnterKey extends Component {
-    static PropTypes = {
-        callBackFunc: PropTypes.func
-    }
-
     constructor(props) {
         super(props)
         this.state = {
@@ -18,7 +15,6 @@ class EnterKey extends Component {
     }
 
     enterKey() {
-
         // this.props.licenseRequestActions.activation(this.state.key)
         // .then(response => {
         //     if (response.data.status === 200) {
@@ -68,6 +64,10 @@ class EnterKey extends Component {
         	</div>
         )
     }
+}
+
+EnterKey.propTypes = {
+    callBackFunc: PropTypes.func
 }
 
 const mapStateToProps = state => ({

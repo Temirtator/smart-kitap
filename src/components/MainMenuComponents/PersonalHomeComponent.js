@@ -1,10 +1,8 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import MyBooksProgress from './../ProgressComponents/MyBooksProgressComponent'
 import NavigationHeader from './NavigationHeaderComponent'
-
 import TextSettings from './../GeneralComponents/TextSettingsComponent'
 import BookOrientation from './../GeneralComponents/BookOrientationComponent'
-
 import MainBooks from './MainBooksComponent'
 import MyBooks from './my-books/MyBooksComponent'
 import VideoComponent from '../VideoComponents/VideoComponent'
@@ -15,7 +13,6 @@ import PersonSettings from './PersonSettingsComponent'
 import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-//import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 import * as userDataRequest from '../../actions/userDataRequest'
 import * as appStateActions from '../../actions/appStateControl'
@@ -23,32 +20,23 @@ import * as checkConnectivity from '../../actions/checkConnectivity'
 
 const MyElement = (props) => {
     let menuItem = props.menuItem
-
     switch (menuItem) {
         case 'main':
             return <MainBooks />
-            break
         case 'mybooks':
             return <MyBooks />
-            break
         case 'book/video':
             return <VideoComponent />
-            break
         case 'book/conspect':
             return <PrecisComponent />
-            break
         case 'book/test':
             return <TestComponent />
-            break
         case 'myprogress':
             return <MyBooksProgress />
-            break
         case 'about':
             return <About />
-            break
         case 'settings':
             return <PersonSettings />
-            break
         default:
             break
     }
@@ -57,7 +45,6 @@ const MyElement = (props) => {
 class PersonalHomePage extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             menuSelected: 'main',
             isBookOrientation: false,
@@ -96,7 +83,6 @@ class PersonalHomePage extends Component {
                 break
             }
         }
-        //this.setState({ isBookOrientation: false })
     }
 
     switchFunction(key) {
@@ -111,7 +97,7 @@ class PersonalHomePage extends Component {
         }
 
         if (key === 'reset') {
-            let needPassword = prompt('Введите пароль для сброса');
+            let needPassword = prompt('Введите пароль для сброса')
             if ( needPassword !== null && 
                  needPassword !== '' && 
                  needPassword === '7894321') {
@@ -161,13 +147,13 @@ class PersonalHomePage extends Component {
     }
 
     render() {
-        let {icons, menuSelected, isBookOrientation} = this.state
-        let {language} = this.props.appStateControl.user_settings
-        let {blindMode} = this.props.appStateControl
-        let {isTurnOn, theme} = this.props.appStateControl.theme_settings
+        let { menuSelected, isBookOrientation } = this.state
+        let { language } = this.props.appStateControl.user_settings
+        let { blindMode } = this.props.appStateControl
+        let { isTurnOn, theme } = this.props.appStateControl.theme_settings
         let bodyClass = 'personal-home-page__body'
         let bodyMainClass = 'personal-home-page__body__main'
-        if (blindMode) {
+        if ( blindMode ) {
             bodyClass += ' blindMode'
             bodyMainClass += ' blindMode'
         }

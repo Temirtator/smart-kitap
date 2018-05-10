@@ -1,26 +1,16 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-//import SidebarAddittional from './SidebarAddittional'
-
 import * as mainActions from '../../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 
-const sidebarScrollStyle = {
-    overflowY:'scroll',
-    height: '100%',
-    paddingBottom: '30px'
-}
-
 class Sidebar extends Component {
-    
     render() {
         return (
             <div ref="sidebar" id="sidebar-menu" className={this.props.appStateControl.blindMode ? "sidebar blindMode" : "sidebar"}>
             	<ul className={this.props.appStateControl.blindMode ? "main-menu nav nav-stacked affix blindMode" : "main-menu nav nav-stacked affix"}>
             	   
-              </ul>
+                </ul>
             </div>
         );
     }

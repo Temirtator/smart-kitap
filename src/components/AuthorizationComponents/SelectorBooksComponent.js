@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import { ModalContainer } from 'react-modal-dialog'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -70,10 +70,10 @@ class SelectorBooks extends Component {
 			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
 		})
 	}
-
+	
     render() {
     	let {orders, organization, phone_number, contact_email, address, isShowingModal} = this.state
-    	let showModal = (isShowingModal == 'true')
+    	let showModal = (isShowingModal === 'true')
     	return (
     		<div>
             { showModal ? <ModalContainer>
@@ -99,7 +99,7 @@ class SelectorBooks extends Component {
 	            	{
 	            		orders.map((value, index) => 
 	            			<div className="col-sm-4 books__book" key={index}>
-								<img src={ url_api + value.book.cover} alt="book image" />
+								<img src={ url_api + value.book.cover} alt="book" />
 								<div className="books__book__wrap">
 									<div className="books__book__wrap__text col-md-10">
 										<p 	title={value.book.name} 

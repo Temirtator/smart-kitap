@@ -2,7 +2,6 @@ import {  CHANGE_NEW_PRECIS,
           CHANGE_OLD_PRECIS,
           SET_NEW_BOOK_PRECIS,
           SET_OLD_BOOK_PRECIS,
-          SET_BOOK_INFO,
           GET_USER_OLD_PRECIS } from '../constants/e_reader'
 
 const initialPrecises = {

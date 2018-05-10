@@ -760,7 +760,7 @@ ol {
 
 .wrap {
   display: flex;
-  height: -webkit-fill-available;
+  height: stretch;
   height: auto; }
 
 .personal-home-page {
@@ -1561,7 +1561,7 @@ button {
   display: -webkit-inline-box;
   float: left;
   position: relative;
-  height: -webkit-fill-available; }
+  height: stretch; }
   .text-settings .text-settings__text-style {
     display: flex;
     position: relative;

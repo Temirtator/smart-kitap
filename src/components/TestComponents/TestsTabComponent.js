@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import { Tab, Tabs, TabList, TabPanel} from 'react-tabs'
 import ReadedBooks from '../ProgressComponents/ReadedBooksComponent'
 import IReadBooks from '../ProgressComponents/IReadBooksComponent'
-
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
 import * as languages from '../../resources/language/languages.json'
 
 class TestsTab extends Component {

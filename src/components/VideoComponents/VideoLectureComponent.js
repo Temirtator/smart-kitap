@@ -1,16 +1,10 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component } from 'react'
 import 'video-react/dist/video-react.css'
 import {Player} from 'video-react'
 import { url as url_api } from '../../path.json'
+import PropTypes from 'prop-types'
 
 class VideoLecture extends Component {
-    static propTypes = {
-        title: PropTypes.string,
-        description: PropTypes.string,
-        cover: PropTypes.string,
-        videoSrc: PropTypes.string
-    }
-
     render() {
         let {title, description, cover, videoSrc} = this.props
         if (!videoSrc.startsWith('http')) {
@@ -36,4 +30,12 @@ class VideoLecture extends Component {
         )
     }
 }
+
+VideoLecture.propTypes = {
+    title: PropTypes.string,
+    description: PropTypes.string,
+    cover: PropTypes.string,
+    videoSrc: PropTypes.string
+}
+
 export default VideoLecture

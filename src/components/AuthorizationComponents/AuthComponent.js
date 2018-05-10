@@ -4,7 +4,6 @@ import Login from './LoginComponent'
 import Registration from './RegistrationComponent'
 import EnterKey from './EnterKeyComponent'
 import UpdateApp from './UpdateAppComponent'
-import {withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as licenseRequestActions from '../../actions/licenseRequest'
@@ -15,7 +14,7 @@ import ReactGA from 'react-ga';
 import {version} from '../../../package.json'
 
 import SelectorBooks from './SelectorBooksComponent'
-import { url as url_api } from '../../path.json'
+// import { url as url_api } from '../../path.json'
 
 /*window.onbeforeunload = function () { // i need finish to write this function
  let massive = ['access_token', 'author', 'book_id', 'img', 'name', 'opened_book_menu']
@@ -77,7 +76,6 @@ class AuthComponent extends Component {
     }
     
     authType(key) {
-        let {license_token} = this.state
         switch (key) {
             case 'enter-key':
                 this.setState({enterKey: true, registration: false, login: false})
@@ -89,6 +87,8 @@ class AuthComponent extends Component {
                 
             case 'login':
                 this.setState({enterKey: false, registration: false, login: true})
+                break
+            default:
                 break
         }
     }
@@ -114,7 +114,7 @@ class AuthComponent extends Component {
                                 ReactGA.event({
                                     category: 'Приложение',
                                     action: 'Установление обновление' + response.data.version
-                                });
+                                })
                                 this.setState({isLoading: false})
                                 window.runUpdate()
                                 // this.setState({progress: 0, fileStatus: data.status === 200 ? 'waitReboot' : 'error'})
@@ -172,8 +172,6 @@ class AuthComponent extends Component {
             enterKey,
             registration,
             progress,
-            login,
-            license_token,
             enterKeyClass,
             registrationClass,
             loginClass,
@@ -181,7 +179,6 @@ class AuthComponent extends Component {
             appApproved,
             license_id
         } = this.state
-
         let element
         if (enterKey) {
             element = <EnterKey callBackFunc={() => this.setState(prev => {

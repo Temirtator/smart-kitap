@@ -9,12 +9,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import './resources/styles/css/index.css'
 
 import App from './containers/App'
-import TestComponent from './components/TestComponents/TestComponent'
-import VideoComponent from './components/VideoComponents/VideoComponent'
-import PrecisComponent from './components/PrecisComponents/PrecisComponent'
 import AuthComponent from './components/AuthorizationComponents/AuthComponent'
 import PersonalHomePage from './components/MainMenuComponents/PersonalHomeComponent'
-import MyBooksProgress from './components/ProgressComponents/MyBooksProgressComponent'
 import Model3dExp from './components/3d-components/Model3d_Exp'
 
 import registerServiceWorker from './registerServiceWorker'
@@ -38,4 +34,4 @@ render(
 
 )
 
-registerServiceWorker();
+registerServiceWorker()

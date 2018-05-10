@@ -1,23 +1,16 @@
-import React, {Component, PropTypes} from 'react'
-import axios from 'axios'
+import React, {Component} from 'react'
 import $ from 'jquery'
+import PropTypes from 'prop-types'
 
 class Book extends Component {
-    static propTypes = {
-        book: PropTypes.string.isRequired
-    }
-    
     constructor(props) {
         super(props)
-
         this.createMarkup = this.createMarkup.bind(this)
         this.renderBook = this.renderBook.bind(this)
     }
-    
     createMarkup() {
         return {__html: this.props.book}
     }
-    
     componentDidMount() {
         setTimeout(() => {
             let maths = document.getElementsByTagName('math')
@@ -29,20 +22,18 @@ class Book extends Component {
         }, 1000)
         setTimeout(() => {
             try {
-                let script = $('.mceNonEditable').children('script');
+                let script = $('.mceNonEditable').children('script')
                 for(let i=0;i<script.length;i++){
-                    window.eval(script[i].innerHTML);
+                    window.eval(script[i].innerHTML)
                 }
             } catch (e) {
-                console.error('HTML_ERROR', e);
+                console.error('HTML_ERROR', e)
             }
         }, 3000)
     }
-    
     renderBook() {
         return <div className="book" dangerouslySetInnerHTML={this.createMarkup()}/>
     }
-    
     render() {
         return (
             <div>
@@ -51,5 +42,10 @@ class Book extends Component {
         )
     }
 }
+
+Book.propTypes = {
+    book: PropTypes.string.isRequired
+}
+
 
 export default Book

@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
-//import logo from './logo.svg'
 import '../resources/styles/css/App.css'
 import Ereader from '../components/GeneralComponents/e_readerComponent'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../resources/styles/font-awesome/svg-with-js/js/fontawesome-all.js'
 
-//const Fragment = React.Fragment;
 class App extends Component {
-	
-	constructor(props) {
-		super(props)
-	}
-
 	render() {
 	    return (
 	      <div>
@@ -20,6 +13,4 @@ class App extends Component {
 	    );
 	}
 }
-
-
-export default App;
+export default App

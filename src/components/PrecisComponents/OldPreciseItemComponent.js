@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import PreciseTextInput from './PreciseTextInputComponent'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -6,18 +6,11 @@ import * as precis_action from '../../actions/precis'
 import * as appStateControlActions from '../../actions/appStateControl'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 import { withRouter } from 'react-router'
+import PropTypes from 'prop-types'
 
 class OldPreciseItem extends Component {
-    static propTypes = {
-        text: PropTypes.string.isRequired,
-        index: PropTypes.number.isRequired,
-        book_id: PropTypes.number.isRequired,
-        precis_id: PropTypes.number.isRequired
-    }
-    
     constructor(props) {
         super(props)
-
         this.state = {
             editing: false,
             editingText: '',
@@ -110,7 +103,7 @@ class OldPreciseItem extends Component {
     
     render() {
     	let { text, index, precisesStore, book_id, precis_id } = this.props
-        let { editing, editingText, name, author, img } = this.state
+        let { editing } = this.state
         let { new_precises } = precisesStore.precises
         let book_position
         for (let i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
@@ -151,6 +144,13 @@ class OldPreciseItem extends Component {
         	</div>   
         )
     }
+}
+
+OldPreciseItem.propTypes = {
+    text: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    book_id: PropTypes.number.isRequired,
+    precis_id: PropTypes.number.isRequired
 }
 
 const mapStateToProps = state => ({

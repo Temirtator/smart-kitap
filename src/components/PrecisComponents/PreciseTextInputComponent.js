@@ -1,20 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class PreciseTextInput extends Component {
-    static propTypes = {
-        onSave: PropTypes.func.isRequired,
-	    text: PropTypes.string,
-	    placeholder: PropTypes.string,
-	    editing: PropTypes.bool,
-	    newPrecise: PropTypes.bool
-    }
-
     constructor(props) {
         super(props)
         this.state = {
         	text: this.props.text || ''
         }
-
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleBlur = this.handleBlur.bind(this)
@@ -52,6 +44,14 @@ class PreciseTextInput extends Component {
 		        onKeyDown={this.handleSubmit} />
         )
     }
+}
+
+PreciseTextInput.propTypes = {
+	onSave: PropTypes.func.isRequired,
+	text: PropTypes.string,
+	placeholder: PropTypes.string,
+	editing: PropTypes.bool,
+	newPrecise: PropTypes.bool
 }
 
 export default PreciseTextInput

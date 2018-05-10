@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import PieItemProgress from './PieItemProgressComponent'
 import PieItemDuration from './PieItemDurationComponent'
-
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
 
 class ReadedBooks extends Component {
@@ -16,7 +14,7 @@ class ReadedBooks extends Component {
 	        { readed.map((value, index) =>
 	            <div className="readed-books-component" key={index}>
 					<div className="readed-books-component__img">
-						<img src={value.image} alt='image place' />
+						<img src={value.image} alt='place' />
 					</div>
 					<div className="readed-books-component__body">
 						<div className="readed-books-component__body__text">	

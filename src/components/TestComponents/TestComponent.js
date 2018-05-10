@@ -7,9 +7,6 @@ import Question from './Question'
 import TextSettings from '../GeneralComponents/TextSettingsComponent'
 import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
-
-import { Link } from 'react-router-dom'
-
 import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 
 let textStyle = {

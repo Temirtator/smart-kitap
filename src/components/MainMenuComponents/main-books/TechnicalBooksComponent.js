@@ -1,33 +1,23 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import BookItem from '../BookItemComponent'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 import * as appStateControlActions from '../../../actions/appStateControl'
+import PropTypes from 'prop-types'
 
 class TechnicalBooks extends Component {
-
-    static propTypes = {
-      technical_books: PropTypes.array.isRequired,
-      isMyBook: PropTypes.bool.isRequired
-    }
-
     constructor(props) {
       super(props)
-
       this.bookFilter = this.bookFilter.bind(this)
     }
-
     bookFilter(book) {
       let { searchBookText } = this.props.appStateControl
       return (String(book.name).toLowerCase()).match(searchBookText.toLowerCase()) || (String(book.author).toLowerCase()).match(searchBookText.toLowerCase())
     }
-    
     componentDidMount() {
       this.props.appStateControlActions.setBookCategory('technical_books')
     }
-    
     render() {
         let filteredBooks = this.props.technical_books.filter(this.bookFilter)
         return (
@@ -43,6 +33,11 @@ class TechnicalBooks extends Component {
       			</div>
         )
     }
+}
+
+TechnicalBooks.propTypes = {
+  technical_books: PropTypes.array.isRequired,
+  isMyBook: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({

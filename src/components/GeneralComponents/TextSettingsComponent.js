@@ -1,39 +1,26 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Tooltip from 'rc-tooltip'
 import 'rc-tooltip/assets/bootstrap.css'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as appStateControl from '../../actions/appStateControl'
+import PropTypes from 'prop-types'
 
 class TextSettings extends Component {
-    static propTypes = {
-        textSize: PropTypes.object,
-        textColor: PropTypes.object,
-        blindMode: PropTypes.object,
-        generalStyle: PropTypes.object,
-        changeTextSize: PropTypes.func,
-        changeColor: PropTypes.func
-    }
-    
     constructor(props) {
         super(props)
-
         this.state = {
             visible: false
         }
-        
         this.changeColor = this.changeColor.bind(this)
         this.changeSize = this.changeSize.bind(this)
         this.setBlindMode = this.setBlindMode.bind(this)
     }
-    
     onVisibleChange = (visible) => {
         this.setState({
             visible
         })
     }
-    
     renderTextSize = (props) => {
         return (
             <div className="text-settings__choice">
@@ -143,6 +130,15 @@ class TextSettings extends Component {
             </div>
         )
     }
+}
+
+TextSettings.propTypes = {
+    textSize: PropTypes.object,
+    textColor: PropTypes.object,
+    blindMode: PropTypes.object,
+    generalStyle: PropTypes.object,
+    changeTextSize: PropTypes.func,
+    changeColor: PropTypes.func
 }
 
 const mapStateToProps = state => ({

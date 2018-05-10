@@ -18,19 +18,16 @@ class Registration extends Component {
         }
         this.registration = this.registration.bind(this)
     }
-    
     validateEmail(email) {
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         return re.test(String(email).toLowerCase());
     }
-
     validateNameSurname(name, surname) {
         if (name.length >= 2 && surname.length >= 2) {
             return true
         }
         return false
     }
-
     registration() {
         this.props.checkConnectivity.onlineCheck().then(() => {
             let { name, surname, email, password, repeat_password, license_token } = this.state
@@ -41,7 +38,7 @@ class Registration extends Component {
                     }
                     else {
                         this.setState({ isPasswRepeated: true })
-                        this.props.authActions.registration(name, surname, email, password, this.state.license_token)
+                        this.props.authActions.registration(name, surname, email, password, license_token)
                         .then(response => {
                             alert(response.data.msg)
                         })
@@ -52,13 +49,11 @@ class Registration extends Component {
             } else {
                 alert('Пожалуйста, заполните поля имени и фамилии')
             }
-
         })
         .catch(() => {
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         }) 
     }
-    
     render() {
     	let { name, surname, email, password, repeat_password, isPasswRepeated } = this.state
         return (
@@ -95,16 +90,11 @@ class Registration extends Component {
         )
     }
 }
-
-const mapStateToProps = state => ({
-   
-})
-
+const mapStateToProps = state => ({ })
 const mapDispatchToProps = dispatch => ({
    authActions: bindActionCreators(authActions, dispatch),
    checkConnectivity: bindActionCreators(checkConnectivity, dispatch),
 })
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

@@ -99,8 +99,7 @@ class Login extends Component {
 	}
 
     render() {
-    	let { email, password } = this.state
-        return (
+    	return (
         	<div>
        			{this.renderLoginComponent()}
        		</div>
@@ -108,9 +107,7 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-   
-})
+const mapStateToProps = state => ({ })
 
 const mapDispatchToProps = dispatch => ({
    authActions: bindActionCreators(authActions, dispatch),

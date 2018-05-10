@@ -1,4 +1,4 @@
-import * as types from '../constants/e_reader'
+// import * as types from '../constants/e_reader'
 import axios from 'axios'
 import ReactGA from 'react-ga';
 import { url as url_api, api_v1 } from '../path.json'

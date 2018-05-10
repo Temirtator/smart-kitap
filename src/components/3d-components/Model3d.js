@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import React3 from 'react-three-renderer'
 import * as THREE from 'three'
 import TrackballControls from '../3d-modules/TrackballControls'
+import PropTypes from 'prop-types'
 import MTLLoader from '../3d-modules/MTLLoader'
 import OBJLoader from '../3d-modules/OBJLoader'
 import DDSLoader from '../3d-modules/DDSLoader'
@@ -18,12 +19,7 @@ const mainCameraName = 'mainCamera'
 const perspectiveCameraRotation = new THREE.Euler(0, Math.PI, 0)
 
 class Model3d extends Component {
-	static propTypes = {
-		obj: PropTypes.string.isRequired,
-		mtl: PropTypes.string.isRequired
-	}
-	
-    constructor(props, context) {
+	constructor(props, context) {
         super(props, context)
         let { obj, mtl } = props
         this.state = {
@@ -252,19 +248,7 @@ class Model3d extends Component {
 	}
 
     render() {
-	    const divStyle = {
-	      position: 'absolute',
-	      right: '20px',
-	      top: '20px',
-	    }
-
-	    const inputStyle = {
-	      width: '500px',
-	      height: '40px',
-	      fontSize: '30px',
-	    }
-
-        return (
+	    return (
         	<div className="zoom_wrap">
 		        <div  	ref="modelwrap"
 		        		onClick={this.show3DModal}
@@ -280,6 +264,11 @@ class Model3d extends Component {
 		    </div>
         )
     }
+}
+
+Model3d.propTypes = {
+	obj: PropTypes.string.isRequired,
+	mtl: PropTypes.string.isRequired
 }
 
 export default Model3d

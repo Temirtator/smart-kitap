@@ -1,12 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import {PieChart} from 'react-easy-chart'
+import React, { Component } from 'react'
+import { PieChart } from 'react-easy-chart'
+import PropTypes from 'prop-types'
 
 class PieItemDuration extends Component {
-    static propTypes = {
-    	chartData: PropTypes.array.isRequired,
-    	itemName: PropTypes.array.isRequired
-    }
-
     render() {
     	let { chartData, itemName } = this.props
     	return (
@@ -33,5 +29,8 @@ class PieItemDuration extends Component {
         )
     }
 }
-
+PieItemDuration.propTypes = {
+	chartData: PropTypes.array.isRequired,
+	itemName: PropTypes.array.isRequired
+}
 export default PieItemDuration

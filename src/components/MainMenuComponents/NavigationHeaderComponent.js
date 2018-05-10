@@ -1,17 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import * as languages from '../../resources/language/languages.json'
+import PropTypes from 'prop-types'
 
 class NavigationHeader extends Component {
-	static propType = {
-		switchFunction: PropTypes.func.isRequired
-	}
-    
-    state = {
+	state = {
         isClicked: ''
     }
-
     render() {
     	let { switchFunction, appStateControl, userData } = this.props
     	let { language } = this.props.appStateControl.user_settings
@@ -222,6 +217,10 @@ class NavigationHeader extends Component {
             </div>
         )
     }
+}
+
+NavigationHeader.propTypes = {
+    switchFunction: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({

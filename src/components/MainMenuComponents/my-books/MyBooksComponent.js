@@ -14,12 +14,10 @@ import * as checkConnectivity from '../../../actions/checkConnectivity'
 class MyBooks extends Component {
 	constructor(props) {
 		super(props)
-		
 		this.state = {
 			access_token: window.localStorage.getItem('access_token'),
 			license_token: window.localStorage.getItem('license_token')
 		}
-
 		this.checkAuth = this.checkAuth.bind(this)
 	}
 	

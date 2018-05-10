@@ -5,7 +5,7 @@ import * as precis_action from '../../actions/precis'
 import { bindActionCreators } from 'redux'
 import Masonry from 'react-masonry-infinite'
 import NewPreciseItem from './NewPreciseItemComponent'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import {ModalContainer} from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 
 let textStyle = {
@@ -41,7 +41,7 @@ class NewPrecises extends Component {
     
     getIndexes(book_id) {
         let new_precises = this.props.precisesStore.precises.new_precises
-        let indexPrecise, indexBook
+        let indexPrecise
         for (let i = new_precises.length - 1; i >= 0; i--) {
             if (Number(new_precises[i].book_id) === Number(book_id)) {
                 indexPrecise = i
@@ -86,10 +86,9 @@ class NewPrecises extends Component {
     }
     
    	render() {
-    	let { precisesStore, appStateControl } = this.props
+    	let { precisesStore } = this.props
         let book_id = Number(this.state.book_id)
         let { indexPrecise, PrecisLoaded } = this.state
-        let { name, author, img } = this.props.precisesStore.precises
         let precises = precisesStore.precises.new_precises[indexPrecise].precise
         return (
             <div className="new-precises">
