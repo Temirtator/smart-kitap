@@ -31,11 +31,10 @@ const initialPrecises = {
 }
 
 export default function appStateControl(state = initialPrecises, action) {
-
   switch (action.type) {
   	case CHANGE_BLIND_MODE:
-  		return {...state, blindMode: !state.blindMode}
-
+      return {...state, blindMode: !state.blindMode}
+      
     case SAVE_USER_LANG:
     	let user_settings = state.user_settings
     	user_settings.language = action.app_lang

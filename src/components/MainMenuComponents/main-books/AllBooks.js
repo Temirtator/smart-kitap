@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
 import * as appStateControlActions from '../../../actions/appStateControl'
 
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga'
 class AllBooks extends Component {
     static propTypes = {
       all_books: PropTypes.array.isRequired,
@@ -14,11 +14,9 @@ class AllBooks extends Component {
     
     constructor(props) {
       super(props)
-
       this.bookFilter = this.bookFilter.bind(this)
-
-        ReactGA.initialize('UA-66591915-12')
-        ReactGA.pageview('/Все книги')
+      ReactGA.initialize('UA-66591915-12')
+      ReactGA.pageview('/Все книги')
     }
     
     bookFilter(book) {
@@ -28,10 +26,14 @@ class AllBooks extends Component {
       }
       return (String(book.name).toLowerCase()).match(String(searchBookText).toLowerCase()) || (String(book.author).toLowerCase()).match(String(searchBookText).toLowerCase())
     }
-    
+
     componentDidMount() {
       // call to system that this is all_books category, important
       this.props.appStateControlActions.setBookCategory('all_books')  
+    }
+
+    componentWillUnmount() {
+      this.props.appStateControlActions.setSearchBook('')
     }
     
     render() {
