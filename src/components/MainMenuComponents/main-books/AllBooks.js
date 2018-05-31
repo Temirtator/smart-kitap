@@ -14,12 +14,10 @@ class AllBooks extends Component {
       ReactGA.initialize('UA-66591915-12')
       ReactGA.pageview('/Все книги')
     }
+    //У тебя это не работало
     bookFilter(book) {
-      let { searchBookText } = this.props.appStateControl
-      if (!/[^?()/\\*[]]+$/.test(searchBookText)) {
-        return this.props.all_books
-      }
-      return (String(book.name).toLowerCase()).match(String(searchBookText).toLowerCase()) || (String(book.author).toLowerCase()).match(String(searchBookText).toLowerCase())
+        let { searchBookText } = this.props.appStateControl
+        return (String(book.name).toLowerCase()).match(searchBookText.toLowerCase()) || (String(book.author).toLowerCase()).match(searchBookText.toLowerCase())
     }
     componentDidMount() {
       // call to system that this is all_books category, important
@@ -30,6 +28,7 @@ class AllBooks extends Component {
     }
     render() {
         let filteredBooks = this.props.all_books.filter(this.bookFilter)
+        console.log(filteredBooks.length);
         return (
             <div className="books">
                   { filteredBooks.map((value, i) => 
