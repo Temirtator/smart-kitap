@@ -5,7 +5,7 @@ import * as precis_action from '../../actions/precis'
 import { bindActionCreators } from 'redux'
 import Masonry from 'react-masonry-infinite'
 import NewPreciseItem from './NewPreciseItemComponent'
-import {ModalContainer} from 'react-modal-dialog'
+import { ModalContainer } from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 
 let textStyle = {
@@ -30,15 +30,14 @@ class NewPrecises extends Component {
             license_token: window.localStorage.getItem('license_token'),
             PrecisLoaded: true
         }
-        
         this.loadMorePrecis = this.loadMorePrecis.bind(this)
         this.getIndexes = this.getIndexes.bind(this)
     }
-    
+
     loadMorePrecis() {
     	console.log('load more precis')
     }
-    
+
     getIndexes(book_id) {
         let new_precises = this.props.precisesStore.precises.new_precises
         let indexPrecise
@@ -59,7 +58,7 @@ class NewPrecises extends Component {
         }
         this.setState({
             indexPrecise
-        })   
+        })
     }
     
     componentWillMount() {
@@ -101,19 +100,19 @@ class NewPrecises extends Component {
                     </ModalContainer> : null
                 }
                 {
-                (precises.length < 1) ? <p className="no-data-message">Нет конспектов</p> : null
+                    (precises.length < 1) ? <p className="no-data-message">Нет конспектов</p> : null
                 }
                 <Masonry
 		            className="masonry"
 		            
-		            loader={
-		              <div className="sk-folding-cube">
-		                <div className="sk-cube1 sk-cube" />
-		                <div className="sk-cube2 sk-cube" />
-		                <div className="sk-cube4 sk-cube" />
-		                <div className="sk-cube3 sk-cube" />
-		              </div>
-		            }
+		            // loader={
+		            //   <div className="sk-folding-cube">
+		            //     <div className="sk-cube1 sk-cube" />
+		            //     <div className="sk-cube2 sk-cube" />
+		            //     <div className="sk-cube4 sk-cube" />
+		            //     <div className="sk-cube3 sk-cube" />
+		            //   </div>
+		            // }
 		            sizes={[
 		            		{ mq: '400px', columns: 1, gutter: 0 },
 					      	{ mq: '400px', columns: 2, gutter: 25 }]}

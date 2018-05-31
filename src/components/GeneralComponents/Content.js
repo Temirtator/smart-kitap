@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import 'bootstrap/fonts/glyphicons-halflings-regular.svg'
 import Book from './Book'
@@ -18,9 +18,11 @@ import TextSettings from './TextSettingsComponent'
 import Sidebar from './Sidebar'
 import * as languages from '../../resources/language/languages.json'
 import Model3d from '../3d-components/Model3d'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
+import { ModalContainer, ModalDialog } from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 import { url as url_api } from '../../path.json'
+import IDB from '../../containers/idb'
+import * as md5 from 'md5'
 
 let book = null, prevTextSize = null, prevStyle = null
 
@@ -31,7 +33,7 @@ const ShowToolTipComponent = (props) => {
         let centralizeLeft = (rect.left + ((rect.width) / 2) + 25),
             centralizeTop = (rect.top - 25)
         return (
-            <div    onClick={onToolTipClick}
+            <div    onClick={ onToolTipClick }
                     className="quote"
                     id="quote"
                     style={{ top: centralizeTop + 'px' , left: centralizeLeft + 'px' }}>
@@ -61,7 +63,6 @@ let textStyle = {
 class Content extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             pageInView: 1,
             pageInViewId: null,
@@ -119,6 +120,12 @@ class Content extends Component {
         this.tablesFixer = this.tablesFixer.bind(this)
         this.prevAll_h1 = this.prevAll_h1.bind(this)
         this.onClickHandler = this.onClickHandler.bind(this)
+        this.saveBookToLocal = this.saveBookToLocal.bind(this)
+        this.saveBookInfoToLocal = this.saveBookInfoToLocal.bind(this)
+        this.saveBookInfoLocalStorage = this.saveBookInfoLocalStorage.bind(this)
+        this.saveBookInfoLocalState = this.saveBookInfoLocalState.bind(this)
+        this.loadBookFromInternet = this.loadBookFromInternet.bind(this)
+        this.onBookReady = this.onBookReady.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -130,7 +137,7 @@ class Content extends Component {
             this.props.history.push('/')
         }
     }
-
+    // Function for scrolling to element when clicked to sidebar
     scrollToElement(e) {
         try {
             let id = e.target.id.substr(0, e.target.id.length-5)
@@ -140,7 +147,7 @@ class Content extends Component {
             console.log('scrollToElement error', e)
         }
     }
-
+    // Validation of new text for book precise
     validateNewText(newText, oldText, rectanglePos, book_page_id) {
          if (newText !== oldText) {
             if (newText.trim() === '') {
@@ -161,7 +168,6 @@ class Content extends Component {
             }
         }
     }
-
     // firing when text selected on book content 
     getSelectionText() {
         let {quoteExist, selectionText} = this.state
@@ -226,7 +232,6 @@ class Content extends Component {
             }
         }
     }
-
     // on call show tooltip by some rect position
     showToolTip() {
         if (this.state.rect !== null) {
@@ -239,8 +244,7 @@ class Content extends Component {
             quoteExist: true
         })
     }
-
-    // take click action on tooltip
+    // adding precise on tooltip click
     onToolTipClick(e) {
         this.props.checkConnectivity.onlineCheck().then(() => {
             let {new_precises} = this.props.preciStore.precises
@@ -266,7 +270,6 @@ class Content extends Component {
                     book_id: book_id,
                     precise: []
                 }
-
                 newPrecises.precise.push(newObject)
                 this.props.precisActions.setNewBookPrecis(newPrecises) // adding new precise
                 book_position = new_precises.length - 1
@@ -287,7 +290,7 @@ class Content extends Component {
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
     }
-
+    // progress bar of book, when open the book
     increaseProgressBar() {
         if (this.refs.bookReadedLoader) {
             let {pageCount, readedPage} = this.state
@@ -308,7 +311,6 @@ class Content extends Component {
             }
         }
     }
-
     // search text from book content
     findText(e) {
         if (e.keyCode === 13) {
@@ -322,16 +324,14 @@ class Content extends Component {
             }
         }
     }
-
-    //this function cancel default menu on right click
+    // this function cancel default menu on right click
     cancelDefaultMenu() {
         return false
     }
-
     // sidebar chapters flashing
     // firing when scroll event happen
     chapterFlashing() {
-        let {chapters, subChapters, sidebarChapters, sidebarSubChapters} = this.state
+        let { chapters, subChapters, sidebarChapters, sidebarSubChapters } = this.state
         for (let i = 0; i < chapters.length; i++) {
             let isVisible = this.isElementInViewport(chapters, i)
             let { curElement } = this.state
@@ -366,7 +366,6 @@ class Content extends Component {
                 }
             }
         }
-
         //For subchapters
         for (let j = 0; j < subChapters.length; j++) {
             let isVisible1 = this.isElementInViewport(subChapters, j)
@@ -401,9 +400,7 @@ class Content extends Component {
                 }
             }
         }
-        /* callback(chapters)*/
     }
-
     // identify 'is element in viewport?'
     isElementInViewport(el, index) {
         let relativeEl = el[index].getBoundingClientRect()
@@ -414,22 +411,18 @@ class Content extends Component {
             el[index] = el[index].offsetParent
             top += el[index].offsetTop
         }
-
         let isVisible =
             top < (window.pageYOffset + window.innerHeight) &&
             (top + height) > window.pageYOffset
-
         return isVisible
     }
-
     // identify, is book page in viewport?
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        let el = book.getElementsByClassName("page") // program can fall in this moment
-        for (let i = 0; i < el.length; i++) { // iterate over all pages
+        let el = book.getElementsByClassName("page") // program can fall in this moment TODO: fixing possible bug here
+        for (let i = 0; i < el.length; i++) { // iterate over all pages, this is not very good TODO: need optimize this function
             let isVisible = this.isElementInViewport(el, i)
-
-            if(isVisible){
+            if( isVisible ){
                 this.setState({ pageInView: i+1, pageInViewId: el[i].id })
                 break
             } else {
@@ -437,11 +430,10 @@ class Content extends Component {
             }
         }
     }
-
+    // Convert to pt to px
     pointToPixel(value) {
         return (3/4) * value
     }
-
     settingTextSize(all_el, newTextSize) {
         for (let j = 0; j <= all_el.length - 1; j++) {
             let style = window.getComputedStyle(all_el[j], null).getPropertyValue('font-size')
@@ -481,7 +473,6 @@ class Content extends Component {
             }
         }
     }
-
     changeTextSize(newTextSize, callback) {
         this.setState({ changingTextSize: true }, () => {
             let book = ReactDOM.findDOMNode(this.refs.book)
@@ -530,7 +521,7 @@ class Content extends Component {
         }
         prevStyle = colorStyle
     }
-
+    // Firing when clicked on image in book
     onClickHandler(e) {
         let img = e.target
         let width = img.clientWidth
@@ -544,7 +535,6 @@ class Content extends Component {
             imgWidth = vW
             imgHeight = height * ratio
         }
-
         if (height > vH) {
             ratio = vH / height
             imgHeight = vH
@@ -564,17 +554,6 @@ class Content extends Component {
         for (let i = images.length - 1; i >= 0; i--) {
             images[i].addEventListener('click', (e) => this.onClickHandler(e), false)
         }
-        /*for (let i = images.length - 1; i >= 0; i--) {
-            let parentNode = images[i].parentNode
-            let src = images[i].src //src link of my image
-            let newEl = document.createElement('div')
-            let srcLink = src //.substr(22, src.length) rectify image link
-            parentNode.removeChild(images[i])
-            
-            const zoomEl = <ImageZoom image={{ src: srcLink, alt: 'image', className: "img-responsive" }} />
-            newEl.innerHTML = '<div className="zoom-image"></div>'
-            ReactDOM.render(zoomEl, parentNode.insertBefore(newEl, parentNode.firstChild))
-        }*/
     }
 
     tablesFixer() {
@@ -762,95 +741,155 @@ class Content extends Component {
         return objects
     }
 
+    saveBookToLocal(content) { // saving book content into Indexed DB
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
+        new IDB().add({
+            encrypted: md5(content),
+            content,
+            id: bookId
+        }, 'book-pages')
+    }
+
+    saveBookInfoLocalStorage(data) {
+        window.localStorage.setItem('img', data.cover)
+        window.localStorage.setItem('author', data.author)
+        window.localStorage.setItem('name', data.name)            
+    }
+    
+    saveBookInfoToLocal(data) { // saving into Indexed DB
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
+        let { name, cover, author, page_count, last_opened_page, last_opened_page_id } = data
+        new IDB().add({
+            name,
+            cover,
+            author,
+            page_count,
+            last_opened_page,
+            last_opened_page_id, 
+            id: bookId
+        }, 'books-info')
+    }
+
+    saveBookInfoLocalState(data, content) {
+        let progress = data.progress
+        let last_opened_page_id = progress ? progress.last_opened_page_id : 1
+        this.setState({
+            name: data.name,
+            author: data.author,
+            img: data.cover,
+            content,
+            pageCount: data.page_count,
+            readedPage: data.last_opened_page,
+            readedPageId: last_opened_page_id
+        })
+    }
+    
+    getHeadersOfBook(statiContent, sidebar_place) {
+        // here i get an array of elements
+        this.setState({
+            chapters: statiContent.getElementsByTagName('h1'),
+            subChapters: statiContent.getElementsByTagName('h2'),
+            sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
+            sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
+        })
+    }
+
+    loadBookFromInternet() {
+        let { license_token, access_token } = this.state
+        this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+        .then((data) => {
+            try {
+                let content = ''
+                let sortedBook = this.sortBookPages(data.book_page)
+                for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
+                    content += sortedBook[i].content
+                }
+                this.saveBookToLocal(content) // to indexed db
+                this.saveBookInfoToLocal(data) // to indexed db
+                this.saveBookInfoLocalStorage(data)
+                this.saveBookInfoLocalState(data, content)
+                ReactGA.event({
+                    category: 'Книга',
+                    action: 'Открыто книга: ' + data.name
+                })
+            }
+            catch(e) {
+                console.log('Error on loading book', e)
+            }
+            this.setState({ BookLoaded: false })
+        })
+        .then(() => {
+            this.onBookReady()
+        })
+    }
+
+    onBookReady() {
+        try {
+            let {statiContent, sidebar_place} = this.refs
+            this.getHeadersOfBook(statiContent, sidebar_place)
+            statiContent.addEventListener('scroll', this.pageInViewport)
+            //statiContent.addEventListener('scroll', this.chapterFlashing)
+            book = statiContent.getElementsByClassName('book')[0]
+            book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
+            //window.oncontextmenu = this.cancelDefaultMenu
+            this.countOfPage()
+            this.setIdHeader()
+            this.increaseProgressBar()
+            this.parse3D()
+            this.imageZoom()
+            this.tablesFixer()
+            this.sidebarFunc(this.scrollToElement)
+            /*to scroll into view*/
+            try {
+                let { book_page_id } = this.props.appStateControl
+                let element = document.getElementById('page_' + book_page_id ) // i used document, because i couldnt find another solution
+                if (element === null) {
+                    element = document.getElementById('page_' + this.state.readedPageId )
+                }
+                element.scrollIntoView()
+                this.props.appStateControlActions.setBookScrollPos(0)
+            }
+            catch(e) {
+                console.log('Error on scrolling by precise', e)
+            }
+        }
+        catch(e) {
+            console.log('Error on loading book', e)
+        }
+    }
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
     }
     
     componentDidMount() {
-        this.props.checkConnectivity.onlineCheck().then(() => {
-            let { license_token, access_token } = this.state
-            this.setState({
-                book_id: window.localStorage.getItem('book_id')
-            })
-            this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
-            .then((data) => {
-
-                try {
-                    let content = ''
-                    let sortedBook = this.sortBookPages(data.book_page)
-                    for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
-                        content += sortedBook[i].content
-                    }
-                    window.localStorage.setItem('img', data.cover)
-                    window.localStorage.setItem('author', data.author)
-                    window.localStorage.setItem('name', data.name)
-                    ReactGA.event({
-                        category: 'Книга',
-                        action: 'Открыто книга: ' + data.name
-                    })
-                    let progress = data.progress
-                    let last_opened_page_id = progress ? progress.last_opened_page_id : 1
-                    this.setState({
-                        name: data.name,
-                        author: data.author,
-                        img: data.cover,
-                        content: content,
-                        pageCount: data.page_count,
-                        readedPage: data.last_opened_page,
-                        readedPageId: last_opened_page_id
-                    })
-                }
-                catch(e) {
-                    console.log('Error on loading book', e)
-                }
-                this.setState({ BookLoaded: false })
-            })
-            .then(() => {
-                try {
-                    let {statiContent, sidebar_place} = this.refs
-                    // here i get an array of elements
-                    this.setState({
-                        chapters: statiContent.getElementsByTagName('h1'),
-                        subChapters: statiContent.getElementsByTagName('h2'),
-                        sidebarChapters: sidebar_place.getElementsByClassName('chapter-header'),
-                        sidebarSubChapters: sidebar_place.getElementsByClassName('sub-header')
-                    })
-
-                    statiContent.addEventListener('scroll', this.pageInViewport)
-                    //statiContent.addEventListener('scroll', this.chapterFlashing)
-                    book = statiContent.getElementsByClassName('book')[0]
-                    book.onmouseup = book.onselectionchange = this.getSelectionText // i delete onmouseup event here
-                    //window.oncontextmenu = this.cancelDefaultMenu
-                    this.countOfPage()
-                    this.setIdHeader()
-                    this.increaseProgressBar()
-                    this.parse3D()
-                    this.imageZoom()
-                    this.tablesFixer()
-                    this.sidebarFunc(this.scrollToElement)
-                    /*to scroll into view*/
-                    try {
-                        let { book_page_id } = this.props.appStateControl
-                        let element = document.getElementById('page_' + book_page_id ) // i used document, because i couldnt find another solution
-                        if (element === null) {
-                            element = document.getElementById('page_' + this.state.readedPageId )
-                        }
-
-                        element.scrollIntoView()
-                        this.props.appStateControlActions.setBookScrollPos(0)
-                    }
-                    catch(e) {
-                        console.log('Error on scrolling by precise', e)
-                    }
-                }
-                catch(e) {
-                    console.log('Error on loading book too', e)
-                }
-            })
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
+        this.setState({
+            book_id: bookId
         })
-        .catch(() => {
-            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        new IDB().get(bookId, 'book-pages').then((result) => {
+            let book_pages_type = typeof result
+            if (typeof result === "object") {
+                console.log('loading from indexed db')
+                new IDB().get(bookId, 'books-info')
+                .then((data) => {
+                    this.saveBookInfoLocalStorage(data)
+                    this.saveBookInfoLocalState( data, result.content)
+                    this.setState({ BookLoaded: false })
+                })
+                .then(() => {
+                    this.onBookReady()
+                })
+            } else {
+                this.props.checkConnectivity.onlineCheck().then(() => {
+                    console.log('loading from internet')
+                    this.loadBookFromInternet()
+                })
+                .catch(() => {
+                    alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+                })
+            }                
         })
     }
 

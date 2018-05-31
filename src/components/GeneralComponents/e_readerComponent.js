@@ -12,4 +12,4 @@ class e_readerComponent extends Component {
     }
 }
 
-export default e_readerComponent;
+export default e_readerComponent

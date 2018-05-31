@@ -18,7 +18,6 @@ import registerServiceWorker from './registerServiceWorker'
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(reduxThunk)))
 
 render(
-  
 	<Provider store={store}>
       <Router> 
         <Switch>

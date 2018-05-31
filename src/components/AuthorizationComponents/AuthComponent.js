@@ -10,7 +10,7 @@ import * as licenseRequestActions from '../../actions/licenseRequest'
 import * as updateAppActions from '../../actions/updateVersion'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga'
 import {version} from '../../../package.json'
 
 import SelectorBooks from './SelectorBooksComponent'

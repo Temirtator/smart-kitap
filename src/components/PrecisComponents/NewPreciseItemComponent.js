@@ -113,7 +113,7 @@ class NewPreciseItem extends Component {
     	let { new_precises } = precisesStore.precises
         let book_position
         for (let i = new_precises.length - 1; i >= 0; i--) { //defining the position of the books in the array
-            if (Number(new_precises[i].book_id)  === Number(book_id)) {
+            if (Number(new_precises[i].book_id) === Number(book_id)) {
                 book_position = i
             }
         }
