@@ -126,6 +126,7 @@ class Content extends Component {
         this.saveBookInfoLocalState = this.saveBookInfoLocalState.bind(this)
         this.loadBookFromInternet = this.loadBookFromInternet.bind(this)
         this.onBookReady = this.onBookReady.bind(this)
+        this.checkBookForUpdate = this.checkBookForUpdate.bind(this)
 
         ReactGA.initialize('UA-66591915-12')
         ReactGA.pageview('/Чтение книги')
@@ -858,6 +859,25 @@ class Content extends Component {
         }
     }
 
+    checkBookForUpdate() {
+        let { license_token, access_token } = this.state
+        this.props.checkConnectivity.onlineCheck().then(() => {
+            this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+            .then((data) => {
+                let content = ''
+                let sortedBook = this.sortBookPages(data.book_page)
+                for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
+                    content += sortedBook[i].content
+                }
+                let encryptedNewContent = md5(content)
+
+            })
+        })
+        .catch(() => {
+            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+        })
+    }
+
     componentWillMount() {
         this.checkAuth()
         this.startTimer(this)
@@ -871,7 +891,8 @@ class Content extends Component {
         new IDB().get(bookId, 'book-pages').then((result) => {
             let book_pages_type = typeof result
             if (typeof result === "object") {
-                console.log('loading from indexed db')
+                console.log('loading from indexed db', result)
+                // this.checkBookForUpdate()
                 new IDB().get(bookId, 'books-info')
                 .then((data) => {
                     this.saveBookInfoLocalStorage(data)
