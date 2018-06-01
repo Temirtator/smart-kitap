@@ -206,3 +206,25 @@ export function setBookReserve(license_token, access_token, order_ids) {
 		})
 	}
 }
+
+export function getEncryptedBook(license_token, access_token, book_id) {
+	return dispatch => {
+		return axios({
+			method: 'post',
+			url: url + api + 'book/' + book_id,
+			data: {
+				'COMP_ACCESS_TOKEN': license_token
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + access_token
+			}
+		})
+		.then(response => {
+			return response.data
+		})
+		.catch(error => {
+			console.log('getEncryptedBook', error)
+		})
+	}
+}

@@ -10,9 +10,9 @@ import * as appStateControlActions from '../../actions/appStateControl'
 import * as checkConnectivity from '../../actions/checkConnectivity'
 import * as main_actions from '../../actions/'
 import ReactGA from 'react-ga'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import BookOrientation from './BookOrientationComponent'
 import TextSettings from './TextSettingsComponent'
 import Sidebar from './Sidebar'
@@ -340,7 +340,7 @@ class Content extends Component {
             if (isVisible) { // if header is visible
                 if ((curElement !== -1) && (i !== curElement)) { // if there is curElement which already flashing
                     try {
-                        sidebarChapters[curElement].classList.remove("flash-on-viewport") // deleting class from current chapter
+                        sidebarChapters[curElement].classList.remove('flash-on-viewport') // deleting class from current chapter
                         sidebarChapters[i].className += " flash-on-viewport" // here flashing new class
                         this.setState({ curElement: i }) // now i change current element
                     }
@@ -420,7 +420,7 @@ class Content extends Component {
     // identify, is book page in viewport?
     pageInViewport() {
         let book = ReactDOM.findDOMNode(this.refs.book)
-        let el = book.getElementsByClassName("page") // program can fall in this moment TODO: fixing possible bug here
+        let el = book.getElementsByClassName('page') // program can fall in this moment TODO: fixing possible bug here
         for (let i = 0; i < el.length; i++) { // iterate over all pages, this is not very good TODO: need optimize this function
             let isVisible = this.isElementInViewport(el, i)
             if( isVisible ){
@@ -861,16 +861,21 @@ class Content extends Component {
 
     checkBookForUpdate() {
         let { license_token, access_token } = this.state
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
         this.props.checkConnectivity.onlineCheck().then(() => {
-            this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+            this.props.booksRequestActions.getEncryptedBook(license_token, access_token, bookId)
             .then((data) => {
-                let content = ''
-                let sortedBook = this.sortBookPages(data.book_page)
-                for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
-                    content += sortedBook[i].content
-                }
-                let encryptedNewContent = md5(content)
-
+                let newCheckSum = data.check_sum
+                new IDB().get(bookId, 'book-pages')
+                .then((data) => {
+                    let oldCheckSum = data.encrypted
+                    if (newCheckSum !== oldCheckSum) {
+                        return false
+                    } else {
+                        return true
+                    }
+                })
+                
             })
         })
         .catch(() => {
@@ -890,9 +895,9 @@ class Content extends Component {
         })
         new IDB().get(bookId, 'book-pages').then((result) => {
             let book_pages_type = typeof result
-            if (typeof result === "object") {
-                console.log('loading from indexed db', result)
-                // this.checkBookForUpdate()
+            if (typeof result === 'object') {
+                // let needUpdate = this.checkBookForUpdate()
+                // console.log(needUpdate, 'fwefwfwefwefwe')
                 new IDB().get(bookId, 'books-info')
                 .then((data) => {
                     this.saveBookInfoLocalStorage(data)
@@ -970,16 +975,16 @@ class Content extends Component {
                 theme_settings } = this.props.appStateControl
 
         let choosenLang = languages[0][user_settings.language]
-        let headerClass = "content__header"
-        let bodyClass = "content__body"
+        let headerClass = 'content__header'
+        let bodyClass = 'content__body'
         // i need this because, desktop app have blindMode and blackMode
         if (blindMode) {
-            headerClass += " blindMode"
-            bodyClass += " blindMode"
+            headerClass += ' blindMode'
+            bodyClass += ' blindMode'
         }
         else if (theme_settings.isTurnOn && (theme_settings.theme === 1)) {
-            headerClass += " blackMode"
-            bodyClass += " blackMode"
+            headerClass += ' blackMode'
+            bodyClass += ' blackMode'
         }
         let progressStyle = {
           width: progressBarPercent + "%"
