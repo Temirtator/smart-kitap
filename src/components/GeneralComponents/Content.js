@@ -22,7 +22,6 @@ import { ModalContainer, ModalDialog } from 'react-modal-dialog'
 import ReactSpinner from 'react-spinjs'
 import { url as url_api } from '../../path.json'
 import IDB from '../../containers/idb'
-import * as md5 from 'md5'
 
 let book = null, prevTextSize = null, prevStyle = null
 
@@ -742,10 +741,10 @@ class Content extends Component {
         return objects
     }
 
-    saveBookToLocal(content) { // saving book content into Indexed DB
+    saveBookToLocal(content, encryptedContent) { // saving book content into Indexed DB
         let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
         new IDB().add({
-            encrypted: md5(content),
+            encrypted: encryptedContent,
             content,
             id: bookId
         }, 'book-pages')
@@ -797,34 +796,38 @@ class Content extends Component {
 
     loadBookFromInternet() {
         let { license_token, access_token } = this.state
-        this.props.booksRequestActions.getBookById(license_token, access_token, window.localStorage.getItem('book_id'))
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
+        this.props.booksRequestActions.getBookById(license_token, access_token, bookId)
         .then((data) => {
-            try {
-                let content = ''
-                let sortedBook = this.sortBookPages(data.book_page)
-                for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
-                    content += sortedBook[i].content
+            this.props.booksRequestActions.getEncryptedBook(license_token, access_token, bookId)
+            .then((encryptedData) => {
+                try {
+                    let content = ''
+                    let sortedBook = this.sortBookPages(data.book_page)
+                    for (let i = 0; i <= sortedBook.length - 1; i++) { //iterate over every page of the book
+                        content += sortedBook[i].content
+                    }
+                    this.saveBookToLocal(content, encryptedData.check_sum) // to indexed db
+                    this.saveBookInfoToLocal(data) // to indexed db
+                    this.saveBookInfoLocalStorage(data)
+                    this.saveBookInfoLocalState(data, content)
+                    ReactGA.event({
+                        category: 'Книга',
+                        action: 'Открыто книга: ' + data.name
+                    })
                 }
-                this.saveBookToLocal(content) // to indexed db
-                this.saveBookInfoToLocal(data) // to indexed db
-                this.saveBookInfoLocalStorage(data)
-                this.saveBookInfoLocalState(data, content)
-                ReactGA.event({
-                    category: 'Книга',
-                    action: 'Открыто книга: ' + data.name
-                })
-            }
-            catch(e) {
-                console.log('Error on loading book', e)
-            }
-            this.setState({ BookLoaded: false })
-        })
-        .then(() => {
-            this.onBookReady()
+                catch(e) {
+                    console.log('Error on loading book', e)
+                }
+                this.setState({ BookLoaded: false })
+            }).then(() => {
+                this.onBookReady()
+            })
         })
     }
 
     onBookReady() {
+        console.log('onBookReady')
         try {
             let {statiContent, sidebar_place} = this.refs
             this.getHeadersOfBook(statiContent, sidebar_place)
@@ -858,29 +861,8 @@ class Content extends Component {
             console.log('Error on loading book', e)
         }
     }
-
     checkBookForUpdate() {
-        let { license_token, access_token } = this.state
-        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
-        this.props.checkConnectivity.onlineCheck().then(() => {
-            this.props.booksRequestActions.getEncryptedBook(license_token, access_token, bookId)
-            .then((data) => {
-                let newCheckSum = data.check_sum
-                new IDB().get(bookId, 'book-pages')
-                .then((data) => {
-                    let oldCheckSum = data.encrypted
-                    if (newCheckSum !== oldCheckSum) {
-                        return false
-                    } else {
-                        return true
-                    }
-                })
-                
-            })
-        })
-        .catch(() => {
-            alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
-        })
+        
     }
 
     componentWillMount() {
@@ -889,24 +871,40 @@ class Content extends Component {
     }
     
     componentDidMount() {
+        let { license_token, access_token } = this.state
         let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
         this.setState({
             book_id: bookId
         })
+        
         new IDB().get(bookId, 'book-pages').then((result) => {
             let book_pages_type = typeof result
             if (typeof result === 'object') {
-                // let needUpdate = this.checkBookForUpdate()
-                // console.log(needUpdate, 'fwefwfwefwefwe')
-                new IDB().get(bookId, 'books-info')
-                .then((data) => {
-                    this.saveBookInfoLocalStorage(data)
-                    this.saveBookInfoLocalState( data, result.content)
-                    this.setState({ BookLoaded: false })
-                })
-                .then(() => {
-                    this.onBookReady()
-                })
+                // let localCheckSum = result.encrypted
+                // this.props.booksRequestActions.getEncryptedBook(license_token, access_token, bookId)
+                // .then((external) => {
+                    console.log('loading from indexed db')
+                    // if ( localCheckSum !== external.check_sum ) {
+                    //     this.props.checkConnectivity.onlineCheck().then(() => {
+                    //         console.log('loading from internet')
+                    //         this.loadBookFromInternet()
+                    //     })
+                    //     .catch(() => {
+                    //         alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
+                    //     })
+                    // } else {
+                        new IDB().get(bookId, 'books-info')
+                        .then((data) => {
+                            this.saveBookInfoLocalStorage(data)
+                            this.saveBookInfoLocalState( data, result.content)
+                            this.setState({ BookLoaded: false })
+                        })
+                        .then(() => {
+                            this.onBookReady()
+                        })
+                    // }
+                // })
+                
             } else {
                 this.props.checkConnectivity.onlineCheck().then(() => {
                     console.log('loading from internet')
@@ -1041,7 +1039,7 @@ class Content extends Component {
                 </div>
 
                 <div className={bodyClass}>
-                    <div className="content__body__main__header">
+                    <div className="content__body__main__header">   
                         <BookOrientation    isInMainPage={false} />
                         <div className="col-sm-4 imaginary_container">
                             <div className="input-group stylish-input-group">
