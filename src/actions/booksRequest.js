@@ -138,7 +138,6 @@ export function addToFavouriteBooks(license_token, access_token, book_id, isFavo
 	}
 }
 
-
 export function sendBookDuration(license_token, access_token, book_id, duration) {
 	return dispatch => {
 		axios({

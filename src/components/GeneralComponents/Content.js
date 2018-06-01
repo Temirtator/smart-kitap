@@ -928,7 +928,7 @@ class Content extends Component {
                 pageInViewId,
                 pageCount,
                 readedPage} = this.state
-
+        
         let id = Number(book_id)
 
         if (timerCount >= 30) { // if spend time in book more than 30 sec

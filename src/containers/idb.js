@@ -33,7 +33,7 @@ export default class IDB {
         this.clear = this.clear.bind(this)
         this.getAll = this.getAll.bind(this)
     }
-
+    
     get(key, table) {
         return this.dbPromise
           .then(db =>
@@ -69,11 +69,10 @@ export default class IDB {
 
     delete(key) {
         return this.dbPromise.then(db => {
-          const tx = db.transaction('book-pages', 'readwrite')
-          tx.objectStore('book-pages').delete(key)
-          tx.objectStore('book-pages').getAll()
-            
-          return tx.complete
+            const tx = db.transaction('book-pages', 'readwrite')
+            tx.objectStore('book-pages').delete(key)
+            tx.objectStore('book-pages').getAll()
+            return tx.complete
         })
     }
     
