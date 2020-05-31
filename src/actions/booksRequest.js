@@ -66,6 +66,7 @@ export function getBookById(license_token, access_token, book_id) {
 			}
 		})
 		.then(response => {
+			console.log(response)
 			return response.data
 		})
 		.catch(error => {

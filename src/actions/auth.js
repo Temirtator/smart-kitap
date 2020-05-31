@@ -36,7 +36,7 @@ export function forgotPassword(email) {
 			data: {
 				email: email,
 			},
-			headers: { // why ? here token
+			headers: {
 				'Content-Type': 'application/json'
 			}
 		})

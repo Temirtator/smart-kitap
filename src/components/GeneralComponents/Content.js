@@ -25,7 +25,7 @@ import IDB from '../../containers/idb'
 
 let book = null, prevTextSize = null, prevStyle = null
 
-//here is some terrible code
+// here is some terrible code
 const ShowToolTipComponent = (props) => {
     let {rect, onToolTipClick} = props
     if ((typeof rect === 'object') && (rect !== null)) {
@@ -567,7 +567,7 @@ class Content extends Component {
     parse3D() {
         let book = ReactDOM.findDOMNode(this.refs.book)
         let models = book.getElementsByClassName('models_3d')
-
+        
         for (let i = 0; i <= models.length - 1; i++) {
             let wrapper = models[i].getElementsByClassName('models_3d_textarea')[0].value
             let info3d = JSON.parse(wrapper)
@@ -742,7 +742,7 @@ class Content extends Component {
     }
 
     saveBookToLocal(content, encryptedContent) { // saving book content into Indexed DB
-        let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
+        let bookId = Number.parseInt(window.localStorage.getItem('book_id'), 10)
         new IDB().add({
             encrypted: encryptedContent,
             content,
@@ -861,7 +861,8 @@ class Content extends Component {
             console.log('Error on loading book', e)
         }
     }
-    checkBookForUpdate() {
+
+    checkBookForUpdate() { // TODO
         
     }
 
@@ -871,14 +872,14 @@ class Content extends Component {
     }
     
     componentDidMount() {
-        let { license_token, access_token } = this.state
+        // let { license_token, access_token } = this.state
         let bookId = Number.parseInt(window.localStorage.getItem('book_id'))
         this.setState({
             book_id: bookId
         })
         
         new IDB().get(bookId, 'book-pages').then((result) => {
-            let book_pages_type = typeof result
+            // let book_pages_type = typeof result
             if (typeof result === 'object') {
                 // let localCheckSum = result.encrypted
                 // this.props.booksRequestActions.getEncryptedBook(license_token, access_token, bookId)

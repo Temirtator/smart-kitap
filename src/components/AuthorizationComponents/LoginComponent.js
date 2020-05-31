@@ -34,8 +34,8 @@ class Login extends Component {
 					alert('Почта или пароль являются неверными')
 				}
 			})
-		})
-		.catch(() => {
+		}).catch((e) => {
+			console.log(e, 'fwefwefwefw')
 			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
 		})
 	}
@@ -44,7 +44,9 @@ class Login extends Component {
 			this.props.checkConnectivity.onlineCheck().then(() => {
 				this.props.authActions.forgotPassword(this.state.emailForgot)
 				.then(response => {
-					alert(response.data.msg)
+					if (response.data) {
+						alert(response.data.msg)
+					}
 				})
 				this.setState(prev => {
 					return {

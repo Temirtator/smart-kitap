@@ -53,7 +53,7 @@ class Model3d extends Component {
     }
     
 	loadAndRenderObject() {
-		try{
+		try {
 		    const onProgress = ( xhr ) => {
 		    	if ( xhr.lengthComputable ) {
 		    		let percentComplete = xhr.loaded / xhr.total * 100
