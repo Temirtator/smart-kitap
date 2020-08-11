@@ -44,7 +44,8 @@ class EnterKey extends Component {
                 }
             })  
         })
-        .catch(() => {
+        .catch((e) => {
+            console.error(e)
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
     }
@@ -52,7 +53,6 @@ class EnterKey extends Component {
     render() {
         return (
             <div className="enterKey-component">
-
         		<div className="row">
 					<div className="col-md-4 email__auth">
 						<input type="text" value={this.state.key} onChange={(e) => this.setState({key: e.target.value})} className="form-control" placeholder="Ключ от программы" />

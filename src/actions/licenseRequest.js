@@ -8,28 +8,42 @@ let api = api_v1
 /*'0000-0000-0000-0003'*/
 export function activation(serial_code) {
 	return dispatch => {
-		return axios({
-			method: 'post',
-			url: url + api + 'credentials',
+		const fakeResp = {
 			data: {
-				serial_code: serial_code,
-				technical_computer_info: window.system_info!==undefined?window.system_info+window.wan_interface: 'TEST',
-				mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST_16'
-			},
-			headers: {
-				'Content-Type': 'application/json'
+				msg: "Ключ правильный",
+				status: 200,
+				data: {
+					access_token: "access_token",
+					is_new_computer: true,
+					history: {
+						id: 'id'
+					}
+				},
 			}
-		})
-		.then(response => {
-            ReactGA.event({
-                category: 'Приложение',
-                action: 'Проверка ключа'
-            })
-			return response
-		})
-		.catch(error => {
-			console.log(error)
-		})
+		}
+		return Promise.resolve(fakeResp);
+		// return axios({
+		// 	method: 'post',
+		// 	url: url + api + 'credentials',
+		// 	data: {
+		// 		serial_code: serial_code,
+		// 		technical_computer_info: window.system_info!==undefined?window.system_info+window.wan_interface: 'TEST',
+		// 		mac_address: window.serial_number!==undefined?window.serial_number:'TEST_TEST_16'
+		// 	},
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// })
+		// .then(response => {
+    //         ReactGA.event({
+    //             category: 'Приложение',
+    //             action: 'Проверка ключа'
+    //         })
+		// 	return response
+		// })
+		// .catch(error => {
+		// 	console.log(error)
+		// })
 	}
 }
 

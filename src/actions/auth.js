@@ -8,23 +8,29 @@ let api = api_v1
 
 export function login(email, password) {
 	return dispatch => {
-		return axios({
-			method: 'post',
-			url: url + api + 'user/login',
+		const fakeData = {
 			data: {
-				email: email,
-				password: password
-			},
-			headers: {
-				'Content-Type': 'application/json'
+				token: 'token'
 			}
-		})
-		.then(response => {
-			return response
-		})
-		.catch(error => {
-			return error
-		})
+		}
+		return Promise.resolve(fakeData);
+		// return axios({
+		// 	method: 'post',
+		// 	url: url + api + 'user/login',
+		// 	data: {
+		// 		email: email,
+		// 		password: password
+		// 	},
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// })
+		// .then(response => {
+		// 	return response
+		// })
+		// .catch(error => {
+		// 	return error
+		// })
 	}
 }
 
@@ -51,26 +57,32 @@ export function forgotPassword(email) {
 
 export function registration(first_name, last_name, email, password, license_token) {
 	return dispatch => {
-		return axios({
-			method: 'post',
-			url: url + api + 'user/register',
+		const fakeData = {
 			data: {
-				first_name: first_name,
-				last_name: last_name,
-				email: email,
-				password: password,
-				COMP_ACCESS_TOKEN: license_token // here some bug
-			},
-			headers: {
-				'Content-Type': 'application/json'
+				msg: 'Registration successfully'
 			}
-		})
-		.then(response => {
-			return response
-		})
-		.catch(error => {
-			console.log('registration', error)
-		})
+		}
+		return Promise.resolve(fakeData);
+		// return axios({
+		// 	method: 'post',
+		// 	url: url + api + 'user/register',
+		// 	data: {
+		// 		first_name: first_name,
+		// 		last_name: last_name,
+		// 		email: email,
+		// 		password: password,
+		// 		COMP_ACCESS_TOKEN: license_token // here some bug
+		// 	},
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	}
+		// })
+		// .then(response => {
+		// 	return response
+		// })
+		// .catch(error => {
+		// 	console.log('registration', error)
+		// })
 	}
 }
 

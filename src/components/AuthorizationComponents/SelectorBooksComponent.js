@@ -14,10 +14,10 @@ class SelectorBooks extends Component {
 		license_token: window.localStorage.getItem('license_token'),
 		access_token: window.localStorage.getItem('access_token'),
 		orders: [],
-		organization: '',
-		phone_number: '',
-		contact_email: '',
-		address: '',
+		organization: 'Университет им. Сулеймана Демиреля',
+		phone_number: '+7777 777 77 77',
+		contact_email: 'sdu@gmail.com',
+		address: 'Каскелен, Абылай хана 1',
 		isShowingModal: window.localStorage.getItem('new_computer'),
 		order_ids: []
 	}

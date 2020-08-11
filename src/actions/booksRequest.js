@@ -7,24 +7,37 @@ let api = api_v1, api2 = api_v2
 
 export function getAllBooks(license_token, access_token) {
 	return dispatch => {
-		axios({
-			method: 'post',
-			url: url + api + 'book',
-			data: {
-				'COMP_ACCESS_TOKEN': license_token 
-			},
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + access_token
-			}
-		})
-		.then(response => {
-			let all_books = response.data
-			if (response.data.status === undefined) {
+		const fakeData = {
+			data: [
+				{
+					category_id: 1
+				},
+				{
+					category_id: 2
+				},
+				{
+					category_id: 3
+				}
+			]
+		}
+		// axios({
+		// 	method: 'post',
+		// 	url: url + api + 'book',
+		// 	data: {
+		// 		'COMP_ACCESS_TOKEN': license_token 
+		// 	},
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		'Authorization': 'Bearer ' + access_token
+		// 	}
+		// })
+		// .then(response => {
+			let all_books = fakeData.data
+		// 	if (response.data.status === undefined) {
 
-			} else {
-				all_books = []
-			}
+		// 	} else {
+		// 		all_books = []
+		// 	}
 			
 			dispatch({
 				type: types.SET_MAIN_ALL_BOOKS,
@@ -45,10 +58,10 @@ export function getAllBooks(license_token, access_token) {
 				type: types.SET_MAIN_MEDICAL_BOOKS,
 				data: all_books.filter(object => object.category_id === 3)
 			})
-		})
-		.catch(error => {
-			console.log(error)
-		})
+		// })
+		// .catch(error => {
+		// 	console.log(error)
+		// })
 	}
 }
 

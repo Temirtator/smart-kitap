@@ -35,7 +35,7 @@ class Login extends Component {
 				}
 			})
 		}).catch((e) => {
-			console.log(e, 'fwefwefwefw')
+			console.log(e)
 			alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
 		})
 	}

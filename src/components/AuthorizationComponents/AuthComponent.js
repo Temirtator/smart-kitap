@@ -154,7 +154,8 @@ class AuthComponent extends Component {
                         })
                 }
             })
-        }).catch(() => {
+        }).catch((e) => {
+            console.error(e)
             alert('Интернет не работает. Пожалуйста проверьте ваше соединение')
         })
         try {
@@ -187,7 +188,6 @@ class AuthComponent extends Component {
                     enterKeyClass: prev.enterKeyClass + ' disableElement',
                     registrationClass: 'auth-component__header__registration',
                     loginClass: 'auth-component__header__login',
-
                     enterKey: false, registration: true, appApproved: true
                 }
             })}/>
@@ -203,11 +203,11 @@ class AuthComponent extends Component {
         }
         return (
             <div className="auth-component">
-                { appApproved ? <SelectorBooks /> : null}
+                {appApproved && <SelectorBooks />}
                 <p style={ versionStyle }>Версия: {version}</p>
                 {license_id !== '' &&
                 <p style={ versionStyle2 }>Лицензия: {license_id}</p>}
-                {isLoading ? <UpdateApp progress={progress} isLoading={isLoading}/> : null}
+                {isLoading && <UpdateApp progress={progress} isLoading={isLoading}/>}
                 <div className="auth-component__header">
                     <div className="auth-component__abs">
                         <img src="./image/logo_white.png" alt="logo"/>
